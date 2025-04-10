@@ -1,0 +1,17 @@
+{
+    "name": "aidrivers",
+    "description": "AiDrivers Software Stack",
+    "dependencies": [
+      "boost-system",
+      "boost-program-options",
+      {
+        "name": "fmt",
+        "version>=": "10.1.0"
+      },
+      "nlohmann-json",
+      {
+        "name": "spdlog",
+        "version>=": "1.12.0"
+      }
+    ]
+  }

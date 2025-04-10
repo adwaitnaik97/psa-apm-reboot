@@ -1,0 +1,16 @@
+/build*
+/_build*
+
+*venv*/*
+/out/*
+.vs
+.vscode
+CMakeUserPresets.json
+/cmake.lock
+/vcpkg_installed/
+**/vcpkg/*
+
+**/docs/api/*
+**/scripts/*
+*.sh
+/packages/*
