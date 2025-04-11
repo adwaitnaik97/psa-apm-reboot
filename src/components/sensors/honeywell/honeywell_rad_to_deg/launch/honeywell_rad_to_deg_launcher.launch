@@ -1,0 +1,6 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+
+  <node pkg="honeywell_rad_to_deg" type="honeywell_rad_to_deg" name="honeywell_rad_to_deg"/>
+
+</launch>

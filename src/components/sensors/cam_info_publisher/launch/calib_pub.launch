@@ -1,0 +1,8 @@
+<launch>
+
+  <arg name="cfg_file"/>
+  <node pkg="cam_info_publisher" name="camera_info_pub" type="cam_info_publisher" output="screen">
+    <rosparam file="$(arg cfg_file)" />
+  </node>
+
+</launch>

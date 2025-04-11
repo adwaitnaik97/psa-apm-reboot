@@ -1,0 +1,34 @@
+# Information about channel 0 to 31 validity
+# custom gps_channel_validity_t
+	bool channel_0  # 0 = Invalid | 1 = Valid
+	bool channel_1  # 0 = Invalid | 1 = Valid
+	bool channel_2  # 0 = Invalid | 1 = Valid
+	bool channel_3  # 0 = Invalid | 1 = Valid
+	bool channel_4  # 0 = Invalid | 1 = Valid
+	bool channel_5  # 0 = Invalid | 1 = Valid
+	bool channel_6  # 0 = Invalid | 1 = Valid
+	bool channel_7  # 0 = Invalid | 1 = Valid
+	bool channel_8  # 0 = Invalid | 1 = Valid
+	bool channel_9  # 0 = Invalid | 1 = Valid
+	bool channel_10  # 0 = Invalid | 1 = Valid
+	bool channel_11  # 0 = Invalid | 1 = Valid
+	bool channel_12  # 0 = Invalid | 1 = Valid
+	bool channel_13  # 0 = Invalid | 1 = Valid
+	bool channel_14  # 0 = Invalid | 1 = Valid
+	bool channel_15  # 0 = Invalid | 1 = Valid
+	bool channel_16  # 0 = Invalid | 1 = Valid
+	bool channel_17  # 0 = Invalid | 1 = Valid
+	bool channel_18  # 0 = Invalid | 1 = Valid
+	bool channel_19  # 0 = Invalid | 1 = Valid
+	bool channel_20  # 0 = Invalid | 1 = Valid
+	bool channel_21  # 0 = Invalid | 1 = Valid
+	bool channel_22  # 0 = Invalid | 1 = Valid
+	bool channel_23  # 0 = Invalid | 1 = Valid
+	bool channel_24  # 0 = Invalid | 1 = Valid
+	bool channel_25  # 0 = Invalid | 1 = Valid
+	bool channel_26  # 0 = Invalid | 1 = Valid
+	bool channel_27  # 0 = Invalid | 1 = Valid
+	bool channel_28  # 0 = Invalid | 1 = Valid
+	bool channel_29  # 0 = Invalid | 1 = Valid
+	bool channel_30  # 0 = Invalid | 1 = Valid
+	bool channel_31  # 0 = Invalid | 1 = Valid

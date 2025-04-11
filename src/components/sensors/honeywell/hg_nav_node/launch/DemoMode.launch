@@ -1,0 +1,11 @@
+<!-- -*- mode: XML -*- -->
+<!-- run hg_nav_node/serial_publisher_nav via /dev/ttyUSB0 at 921600 -->
+<!-- display the data and unit position in RVIZ -->
+
+<launch>
+	<node pkg="hg_nav_node" name="pub" type="serial_publisher_nav" args="/dev/ttyUSB0 921600"/>
+	<node pkg="hg_nav_node" name="tf" type="vehicle_tf" args="$(find hg_nav_node)/launch/vehicle_tf.yaml"/>
+	<node pkg="rviz" name="rviz" type="rviz" args="-f LocalVertical -d $(find hg_nav_node)/launch/RvizDemo.rviz"/>
+	<!--<node pkg="hg_nav_node" name="sub" type="demo_mode_nav" args="45 -93 252"/>--> <!-- Honeywell Minneapolis Office -->
+	<node pkg="hg_nav_node" name="sub" type="demo_mode_nav" args="49.169 16.67 252"/> <!-- Honeywell Brno Office -->
+</launch>

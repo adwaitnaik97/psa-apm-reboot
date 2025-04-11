@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="ehmi_driver" type="serial_communication.py" name="ehmi_serial_communication" output="screen" />
+</launch>

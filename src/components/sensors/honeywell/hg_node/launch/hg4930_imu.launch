@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!--****** Ros Param Config ****** -->
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find hg_node)/config/imu_rosconsole.conf"/>
+
+  <!--****** Ros Console Config ****** -->
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+
+
+<rosparam param="/airs/config/imu"  subst_value="True">2</rosparam>
+<group ns="HgDataProvider">
+	<node pkg="hg_node" name="pub" type="serial_publisher" respawn="true" args="/dev/ttyhg4930 1000000"/>
+	<node pkg="turtlesim" name="sim" type="turtlesim_node"/>
+	<node pkg="hg_node" name="sub" type="listener_example"/>
+</group>
+
+<include file="$(find hg_node)/launch/imu_heading.launch" />
+
+</launch>

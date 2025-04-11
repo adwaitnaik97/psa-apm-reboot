@@ -1,0 +1,11 @@
+<!-- -*- mode: XML -*- -->
+<!-- run hg_nav_node/serial_publisher_nav via /dev/ttyUSB0 at 921600 -->
+<!-- feed the 0x2311 inertial data to the turtle sim -->
+
+<launch>
+
+
+	<node pkg="hg_nav_node" name="n580_imu_data_nav" type="n580_imu_data_nav"/>
+
+
+</launch>

@@ -1,0 +1,18 @@
+#Transformations from HGuide frame
+
+# Transformations defined as array
+# missing 'pos' or 'rpy' are replaced by [0,0,0]
+# Transformations are applied in ROS (ENU) frame
+Transformations:
+  - frameName: velodyne
+    pos: [1,0,0.1] # [m]
+    rpy: [0,0,3] # [deg]
+  - frameName: second
+    pos: [1,1,0.1] # [m]
+    rpy: [0,90,180] # [deg]
+  - frameName: third
+    pos: [-1,0,0.1] # [m]
+    rpy: [0,0,90] # [deg]
+
+
+

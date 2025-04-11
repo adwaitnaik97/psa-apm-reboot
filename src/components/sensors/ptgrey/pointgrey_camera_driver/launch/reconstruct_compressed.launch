@@ -1,0 +1,8 @@
+<launch>
+<node name="republish" type="republish" pkg="image_transport" output="screen"
+    args="compressed in:=image_raw raw out:=image_raw" ns="camera_top_center_front" />
+<node name="republish" type="republish" pkg="image_transport" output="screen"
+    args="compressed in:=image_raw raw out:=image_raw" ns="camera_top_left_front" />
+<node name="republish" type="republish" pkg="image_transport" output="screen"
+    args="compressed in:=image_raw raw out:=image_raw" ns="camera_top_right_front" />
+</launch>
