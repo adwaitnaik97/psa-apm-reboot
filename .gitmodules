@@ -26,3 +26,42 @@
 [submodule "src/components/rslidar_helios"]
 	path = src/components/rslidar_helios
 	url = https://github.com/aidrivers/lidar-robosense-sdk
+[submodule "src/components/airs"]
+	path = src/components/airs
+	url = https://github.com/aidrivers/airs-l.git
+[submodule "src/components/aisd"]
+	path = src/components/aisd
+	url = https://github.com/aidrivers/aisd.git
+[submodule "src/components/aidc"]
+	path = src/components/aidc
+	url = https://github.com/aidrivers/aidc-l.git
+[submodule "src/components/aisc"]
+	path = src/components/aisc
+	url = https://github.com/aidrivers/aisc-l.git
+[submodule "src/components/common"]
+	path = src/components/common
+	url = https://github.com/aidrivers/aios-l-common.git
+[submodule "src/components/hungarian"]
+	path = src/components/hungarian
+	url = https://github.com/aidrivers/hungarian.git
+[submodule "src/components/ukf_tracker"]
+	path = src/components/ukf_tracker
+	url = https://github.com/aidrivers/ukf_tracker.git
+[submodule "src/components/pointcloud-algorithms"]
+	path = src/components/pointcloud-algorithms
+	url = https://github.com/aidrivers/pointcloud-algorithms.git
+[submodule "src/components/supporting-libraries"]
+	path = src/components/supporting-libraries
+	url = https://github.com/aidrivers/supporting-libraries.git
+[submodule "src/components/ehmi-driver"]
+	path = src/components/ehmi-driver
+	url = https://github.com/aidrivers/ehmi-driver.git
+[submodule "src/components/aipe"]
+	path = src/components/aipe
+	url = https://github.com/aidrivers/aipe-l.git
+[submodule "src/components/aide/apm"]
+	path = src/components/aide/apm
+	url = https://github.com/aidrivers/aide-l.git
+[submodule "src/components/aide/3rd_party"]
+	path = src/components/aide/3rd_party
+	url = https://github.com/aidrivers/aide-l-3rd-party-libraries.git
