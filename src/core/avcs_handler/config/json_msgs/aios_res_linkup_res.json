@@ -1,0 +1,12 @@
+{
+    "type":"link_up_response",
+    "data":{
+        "id":"MOAPM833021022023132412",
+        "link_up_type_c":"v",
+        "ack_st_c":"00",
+        "control_port_st_c":"L",
+        "view_port_st_c":"L",
+        "console_id":"xxxxxx",
+        "error_msg":""
+    }
+}

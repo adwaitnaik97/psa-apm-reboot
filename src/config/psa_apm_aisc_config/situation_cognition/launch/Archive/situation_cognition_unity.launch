@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="project_name" default="PSA" />
+
+	<!-- Default : PSA -->
+	<group if="$(eval arg('project_name') =='PSA')">
+		<arg name="rndf_file" default="$(find aios_config)/rndf/psa_st2/unity/rndf_psa_st2_unity_v7.rndf"/>
+		<arg name="junction_box_csv" default="$(find situation_cognition)/csv_files/junction_box_unity_02_12_2021.csv"/>
+		<arg name="lane_info_csv" default="$(find situation_cognition)/csv_files/Terminal_2_01_12_2021.csv"/>
+		<arg name="pedestrian_box_csv" default="$(find situation_cognition)/csv_files/pedestrian_box_unity_29_11_2021.csv"/>
+
+		<!-- Updating the RNDF, Junction and Lane details -->
+		<param name="rndf_file" value="$(arg rndf_file)"/>
+		<param name="lane_info_csv" value="$(arg lane_info_csv)"/>
+		<param name="pedestrian_box_csv" value="$(arg pedestrian_box_csv)"/>
+		<param name="junction_box_csv" value="$(arg junction_box_csv)"/>
+		<param name="traffic_moving_on" value="left"/>
+	</group>
+
+	<!-- PTP -->
+	<group if="$(eval arg('project_name') =='PTP')">
+		<arg name="rndf_file" default="$(find situation_cognition)/rndf/ptp_wgs84_v3.rndf"/>
+		<arg name="junction_box_csv" default="$(find situation_cognition)/csv_files/PTP/ptp-junction_box_unity_block-1.csv"/>
+		<arg name="lane_info_csv" default="$(find situation_cognition)/csv_files/PTP/ptp_lane_details.csv"/>
+		<arg name="pedestrian_box_csv" default="$(find situation_cognition)/csv_files/PTP/ptp_pedestrian_box_unity_29_11_2021.csv"/>
+
+		<!-- Updating the RNDF, Junction and Lane details -->
+		<param name="rndf_file" value="$(arg rndf_file)"/>
+		<param name="lane_info_csv" value="$(arg lane_info_csv)"/>
+		<param name="pedestrian_box_csv" value="$(arg pedestrian_box_csv)"/>
+		<param name="junction_box_csv" value="$(arg junction_box_csv)"/>
+		<param name="traffic_moving_on" value="left"/>
+	</group>
+
+	<!-- Jubail -->
+	<group if="$(eval arg('project_name') =='JCP')">
+		<arg name="rndf_file" default="$(find situation_cognition)/rndf/jcp_wgs84_v3.rndf"/>
+		<arg name="junction_box_csv" default="$(find situation_cognition)/csv_files/JCP/jubail_jun_details_070722.csv"/>
+		<arg name="lane_info_csv" default="$(find situation_cognition)/csv_files/JCP/jubail_lane_details_260722.csv"/>
+		<arg name="pedestrian_box_csv" default="$(find situation_cognition)/csv_files/JCP/jcp_pedestrian_box_unity_070722.csv"/>
+
+		<!-- Updating the RNDF, Junction and Lane details -->
+		<param name="rndf_file" value="$(arg rndf_file)"/>
+		<param name="lane_info_csv" value="$(arg lane_info_csv)"/>
+		<param name="pedestrian_box_csv" value="$(arg pedestrian_box_csv)"/>
+		<param name="junction_box_csv" value="$(arg junction_box_csv)"/>
+		<param name="traffic_moving_on" value="right"/>
+	</group>
+
+	<!-- ADP -->
+	<group if="$(eval arg('project_name') =='ADP')">
+		<arg name="rndf_file" default="$(find situation_cognition)/rndf/adp_wgs84_v1.rndf"/>
+		<arg name="junction_box_csv" default="$(find situation_cognition)/csv_files/ADP/adp_junction_details_040822.csv"/>
+		<arg name="lane_info_csv" default="$(find situation_cognition)/csv_files/ADP/adp_lane_details_090822_v1.csv"/>
+		<arg name="pedestrian_box_csv" default="$(find situation_cognition)/csv_files/ADP/adp_pedestrian_box_unity_040822.csv"/>
+
+		<!-- Updating the RNDF, Junction and Lane details -->
+		<param name="rndf_file" value="$(arg rndf_file)"/>
+		<param name="lane_info_csv" value="$(arg lane_info_csv)"/>
+		<param name="pedestrian_box_csv" value="$(arg pedestrian_box_csv)"/>
+		<param name="junction_box_csv" value="$(arg junction_box_csv)"/>
+		<param name="traffic_moving_on" value="right"/>
+	</group>
+
+	<rosparam command="load" file="$(find situation_cognition)/config/situation_cognition.yaml" />
+
+	<param name="/aisc_bypass_hazard/min_angle_of_observation" value="-180.00"/>
+	<param name="/aisc_bypass_hazard/max_angle_of_observation" value="180.00"/>
+
+	<param name="/aisc_junction_hazard/max_global_convex_hull_points_to_consider" value="0"/>
+	<param name="/aisc_bypass_hazard/max_global_convex_hull_points_to_consider" value="0"/>
+	<param name="/aisc_pedestrian_crossing_hazard/max_global_convex_hull_points_to_consider" value="0"/>
+	<param name="/aisc_trajectory_hazard/max_global_convex_hull_points_to_consider" value="0"/>
+	
+	<node pkg="situation_cognition" name="aisc_lane_info" type="situation_cognition_lane_info_publisher.py" output="screen"/>
+	<node pkg="situation_cognition" name="aisc_main" type="situation_cognition_node" output="screen"/>
+
+	<rosparam command="load" file="$(find inside_workshop_publisher)/config/workshop_coordinates.yaml" />
+  	<node pkg="inside_workshop_publisher" name="inside_workshop_publisher" type="inside_workshop_publisher_node" output="screen"/>
+
+	<include file="$(find jsk_visualiser)/launch/jsk_visualiser.launch" />
+</launch>

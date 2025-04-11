@@ -1,0 +1,16 @@
+{
+  "toMqttTopicName": "breaklink",
+  "fromMqttTopicName": "breaklink",
+  "BreakLinkReason":
+  {
+    "notApplicable": 0,
+    "timeout" : 1,
+    "hardwareDisconnect" : 2,
+    "teardownTimeout" : 3,
+    "maxLinkupAttempts" : 4
+
+  },
+  "consoleId": "",
+  "vehicleId": "",
+  "breakLinkReason": 0
+}   

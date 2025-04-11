@@ -1,0 +1,50 @@
+<launch>
+  <!--****** Ros Console Config ****** -->
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}" />
+
+  <arg name="aios_debug" default="False" />
+  <arg name="xterm_req" default="" if="$(eval aios_debug==False)" />
+  <arg name="xterm_req" default="xterm -e" if="$(eval aios_debug==True)" />
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aios_config)/apm_rosconsole_debug.conf"
+    if="$(eval aios_debug)" />
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aios_config)/apm_rosconsole.conf"
+    unless="$(eval aios_debug)" />
+  <rosparam command="load" file="$(find remote_handler)/config/remote_handler_config.yaml" />
+
+  <!--******Node Launch ****** -->
+
+    <node pkg="remote_handler" type="remote_handler" name="remote_handler"
+      launch-prefix="$(arg xterm_req)" output="screen">
+
+      <!--Remote json message formats -->
+
+      <param name="linkup_json_file" value="$(find remote_handler)/config/json_msgs/linkup.json"/>
+      <param name="breaklink_json_file" value="$(find remote_handler)/config/json_msgs/breaklink.json"/>
+      <param name="teardown_json_file" value="$(find remote_handler)/config/json_msgs/teardown.json"/>
+      <param name="ping_json_file" value="$(find remote_handler)/config/json_msgs/ping.json"/>
+      <param name="emergency_brake_command_json_file" value="$(find remote_handler)/config/json_msgs/emergency_brake_command.json"/>
+      <param name="cmd_signal_light_json_file" value="$(find remote_handler)/config/json_msgs/cmd_signal_light.json"/>
+      <param name="cmd_head_light_remote_json_file" value="$(find remote_handler)/config/json_msgs/cmd_head_light_remote.json"/>
+      <param name="traffic_light_override_json_file" value="$(find remote_handler)/config/json_msgs/traffic_light_override.json"/>
+      <param name="cmd_horn_json_file" value="$(find remote_handler)/config/json_msgs/cmd_horn.json"/>
+      <param name="stop_json_file" value="$(find remote_handler)/config/json_msgs/stop.json"/>
+      <param name="precedence_override_json_file" value="$(find remote_handler)/config/json_msgs/precedence_override.json"/>
+      <param name="goal_json_file" value="$(find remote_handler)/config/json_msgs/goal.json"/>
+      <param name="adjust_position_json_file" value="$(find remote_handler)/config/json_msgs/adjust_position.json"/>
+      <param name="non_yard_goal_json_file" value="$(find remote_handler)/config/json_msgs/non_yard_goal.json"/>
+      <param name="location_json_file" value="$(find remote_handler)/config/json_msgs/location.json"/>
+      <param name="manual_push_remote_json_file" value="$(find remote_handler)/config/json_msgs/manual_push_remote.json"/>
+      <param name="override_path_json_file" value="$(find remote_handler)/config/json_msgs/override_path.json"/>
+      <param name="ego_state_json_file" value="$(find remote_handler)/config/json_msgs/ego_state.json"/>
+      <param name="alert_metric_json_file" value="$(find remote_handler)/config/json_msgs/alert_metric.json"/>
+ 
+    </node>
+
+
+    <include file="$(find remote_ops)/launch/remote_console.launch"></include>
+
+    <!-- <node pkg="rosbag" type="record" name="teleop_record"
+       args="-o teleop /aios/remote/instructions /aios/remote_handler/mqtt/from_client /aios/remote_handler/mqtt/to_client /remoteops/incoming_payload /remoteops/outgoing_payload /rosout"/>    -->
+
+</launch>

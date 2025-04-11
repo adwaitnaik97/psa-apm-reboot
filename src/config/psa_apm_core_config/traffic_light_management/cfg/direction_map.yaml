@@ -1,0 +1,5 @@
+#direction number used in the traffic light control related dictionaries
+straight : 0
+right : 1
+left : 2
+

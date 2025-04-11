@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!--****** Ros Param Config ****** -->
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find hg_node)/config/imu_rosconsole.conf"/>
+
+  <!--****** Ros Console Config ****** -->
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+
+  <!--****** Simulation args ****** -->
+  <arg name="simulation" default="False"/>
+
+
+
+    <rosparam param="/airs/config/imu"   subst_value="True">1</rosparam>
+    <rosparam param="/aide/imu_preprocessing/imu_relative_orientation">[0.0, 0.0, 0.0] </rosparam>
+
+    <node pkg="hg_nav_node" name="pub" type="serial_publisher_nav" args="/dev/ttyn580 921600" unless="$(arg simulation)"/>
+    <include file="$(find honeywell_rad_to_deg)/launch/honeywell_rad_to_deg_launcher.launch" />
+    <include file="$(find hg_nav_node)/launch/n580_imu_launcher.launch" />
+
+
+	<group ns="imu">
+	    <node pkg="robot_localization" type="ukf_localization_node" name="imu_filtered" output="log">
+		<rosparam command="load" file="$(find hg_nav_node)/config/imu_config.yaml" />
+		<param name="base_link_frame"   value="imu_link"/>
+		<remap from="odometry/filtered" to="filtered/"/>
+	    </node>
+	</group>
+
+</launch>

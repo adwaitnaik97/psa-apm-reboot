@@ -1,0 +1,6 @@
+{
+  "toMqttTopicName": "",
+  "fromMqttTopicName": "cmd_working_light",
+  "frontState": false,
+  "rearState": false
+}   

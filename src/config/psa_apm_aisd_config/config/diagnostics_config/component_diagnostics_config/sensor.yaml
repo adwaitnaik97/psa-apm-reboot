@@ -1,0 +1,610 @@
+# This is a generic system monitoring node. This yaml is the configurations for the nodes and topics that needs to be monitored.
+# This node can monitor the nodes and topics, define whether the nodes and topics are currently working or not.
+# The node also output an action value (std_msgs::Float32) to determine what kind of action we want to be carried out, if there are
+# abnormalities in the components.
+# There are a set of other nodes that do the monitoring. This node mainly works to unify the input information, output the determined actions
+# and perform logics.
+# nodes: The information about the nodes that need to be monitored.
+#   topic_name: The topic that is the input of the monitored list.
+#   control_loop_rate: I am not sure what this is but it is always set to 5
+#   output_topic: I am not sure what this is either
+#   list: The list of the nodes that needs to be monitored.
+#     - {id: number_by_order, name: name_of_the_node}. The id is not used in computaiton, but it is convenient for checking.
+# topics: The information about the nodes that need to be monitored.
+#   topic_name: The topic that is the input of the monitored list.
+#   control_loop_rate: I am not sure what this is but it is always set to 5
+#   output_topic: I am not sure what this is either
+#   list: The list of the nodes that needs to be monitored.
+#     -  {id: number_by_order, name: name_of_the_node, timeout_sec: how_long_since_the_topic_last_published_to_be_considered_timed_out,
+#        check_frequency_sec: how_often_the_topic_needs_to_be_checked}
+# message_field: This is to declare the message fields that is used to perform logics. This message field has to output as a boolean value.
+#  - {id: number_by_order, name: unique_name_for_this_message_field , topic: topic_name, field: full_flatten_out_field}
+#
+# computation: The group of information to perform logics
+#   action: The group of information for which action to be published
+#     default: The default action if there is no issues with the nodes
+#     list: The list of information about the action. Only one action logic can be true at a time. 
+#           If MORE THAN ONE action logic is true, that means there are something wrong with the node, and the action 0 will be published 
+#     - name: The name of the derived logic that will determine the action_value below. If the logic determined is true, the action_value below will be 
+#             published
+#       action_value: The value that will be published if the logic determined by the name above is true.
+#   logic_list: The list of information to perform logics. Each entry can perform either && or || . To have both && and || in the same logic, 
+#               please use another to merge. For example logic 0 does &&, logic 2 does || , logic 3 does "logic 1 && logic 2".
+#   - id: The id in ordered number. This is not used in logics, but would be useful for debugging.
+#     name: The unique identification name.
+#     relationship: "or" or "and". The relationships between the values in the list.
+#     list: The list of the logics that needs to be performed. Note that the logics needs to be done in order.
+#     - type: The type of the input. Can be "topic", "node", "message_field" or "derived". "derived" is one of the topics
+#       name: Name of the input. Use the "name:" field in the yaml.
+#       negate: "true" or "false". Determine whether the logic of the input needs to be negated or not.
+# output: The information of the output 
+#   system_monitoring_topic: The topic name for the ouput of the system monitoring, including the results of all the logics.
+#   action_topic: The topic name for the ouput of the action.
+
+
+
+#Check if they are running or not
+nodes:
+  control_loop_rate: 5
+  topic_name: /aisd/apm_diagnostic/sensors/nodes
+  output_topic: nodes
+  list:
+    #Dummy
+    - {id: 0, name: /Dummy}
+    #lidar
+    - {id: 1, name: /lidar_top_center/rslidar_nodelet_manager}
+    - {id: 2, name: /lidar_top_left/rslidar_nodelet_manager}
+    - {id: 3, name: /lidar_top_right/rslidar_nodelet_manager}
+    - {id: 4, name: /lidar_bottom_left/rslidar_nodelet_manager}
+    - {id: 5, name: /lidar_bottom_right/rslidar_nodelet_manager}
+    - {id: 6, name: /lidar_top_center/os_nodelet_mgr}
+    - {id: 7, name: /lidar_bottom_left/os_nodelet_mgr}
+    - {id: 8, name: /lidar_bottom_right/os_nodelet_mgr}
+    - {id: 9, name: /velodyne_tc}
+    #camera
+    - {id: 10, name: /dummy}
+    - {id: 11, name: /dummy}
+    - {id: 12, name: /dummy}
+    - {id: 13, name: /dummy}
+    - {id: 14, name: /camera_top_center_front/camera_driver_nodelet}
+    - {id: 15, name: /camera_top_right_front/camera_driver_nodelet}
+    - {id: 16, name: /camera_top_left_front/camera_driver_nodelet}
+    - {id: 17, name: /camera_top_center_front}
+    - {id: 18, name: /camera_top_left_front}
+    - {id: 19, name: /camera_top_right_front}
+    - {id: 20, name: /camera_top_center_rear}
+    #gnss
+    - {id: 21, name: /novatel/oem7/driver}
+    #imu
+    - {id: 22, name: /xsens_mti_node}
+    - {id: 23, name: /n580_imu_data_nav}
+    - {id: 24, name: /HgDataProvider/sub}
+    #radar
+    - {id: 25, name: /delphi_esr_can}
+    - {id: 26, name: /ars_40X_ros}
+    #wheel encoder
+    - {id: 27, name: /plc_driver_read}
+    - {id: 28, name: /plc_parser}
+
+#Check if they are being advertised or not
+topics:
+  control_loop_rate: 5
+  topic_name: /aisd/apm_diagnostic/sensors/topics
+  output_topic: topics
+  list:
+    #lidar
+    - {node_id: 0, id: 0, name: /lidar_top_center/rslidar_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 1, name: /lidar_top_left/rslidar_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 2, name: /lidar_top_right/rslidar_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 3, name: /lidar_bottom_left/rslidar_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 4, name: /lidar_bottom_right/rslidar_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 5, name: /lidar_top_center/points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 6, name: /lidar_bottom_left/points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 7, name: /lidar_bottom_right/points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    #camera
+    - {node_id: 0, id: 8, name: /camera_top_center_front/image_raw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 9, name: /camera_top_center_rear/image_raw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 10, name: /camera_top_left_front/image_raw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 11, name: /camera_top_right_front/image_raw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 12, name: /cam_front_top_centre/image_raw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 13, name: /cam_front_bottom_right/image_raw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 14, name: /cam_front_bottom_left/image_raw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 15, name: /dummy, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 16, name: /dummy, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 17, name: /dummy, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 18, name: /dummy, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    #gnss
+    - {node_id: 0, id: 19, name: /novatel/oem7/bestpos, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    #imu
+    - {node_id: 0, id: 20, name: /imu/data, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 21, name: /HgDataProvider/HGuide/Std/Imu, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 22, name: /HGuide/Std/Imu, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    #radar
+    - {node_id: 0, id: 23, name: /radar_bottom_center/radar_status, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 24, name: /radar_bottom_left/radar_status, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 25, name: /radar_bottom_right/radar_status, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    #wheel encoder
+    - {node_id: 0, id: 26, name: /wheelencoder, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 27, name: /airs/plc/wheel_encoder/reg_65, timeout_sec: 5.0, check_frequency_sec: 1.0}
+
+message_field:
+  - {id: 0, name: v2i_error , topic: /aisd/system_monitoring/core_result, field: /v2i_error, type: bool}
+  - {id: 1, name: v2i_timeout , topic: /aisd/system_monitoring/core_result, field: /v2i_timeout, type: bool}
+  - {id: 2, name: v2e_error , topic: /aisd/system_monitoring/core_result, field: /v2e_error, type: bool}
+  - {id: 3, name: v2e_timeout , topic: /aisd/system_monitoring/core_result, field: /v2e_timeout, type: bool}
+  - {id: 4, name: apm_status , topic: /aidc/apm_status/status, field: /data, type: number, compare_value: 18, comparison: equal}
+  - {id: 5, name: in_tl_zone , topic: /aisc/situation_cognition/in_traffic_light_zone, field: /data, type: bool}
+  - {id: 6, name: inside_bay , topic: /aisc/situation_cognition/inside_bay, field: /data, type: bool}
+  - {id: 7, name: target_location_id , topic: /aifo/trip_job/status, field: /data, type: string, compare_value: place_holder}
+output: 
+  system_monitoring_topic: "/aisd/system_monitoring/sensors_result_new"
+  action_topic: "/aisd/actions/airs_sensor_nodes_diagnostic_new"
+computation:
+  action:
+    default: 3
+    list:
+    - name: aisd_action_0
+      action_value: 0
+    - name: aisd_action_1_component_2
+      action_value: 1
+    - name: aisd_action_2
+      action_value: 2
+
+  logic_list:
+  - id: 0
+    name: v2i_available
+    relationship: and
+    list:
+    - type: message_field
+      name: v2i_error
+      negate: true
+    - type: message_field
+      name: v2i_timeout
+      negate: true
+  - id: 1
+    name: v2e_available
+    relationship: and
+    list:
+    - type: message_field
+      name: v2e_error
+      negate: true
+    - type: message_field
+      name: v2e_timeout
+      negate: true
+  - id: 2
+    name: imu_timeout
+    relationship: and
+    list:
+    - type: topic
+      name: /imu/data
+      
+    - type: topic
+      name: /HgDataProvider/HGuide/Std/Imu
+      
+    - type: topic
+      name: /HGuide/Std/Imu
+      
+  - id: 3
+    name: lidar_tc_timeout
+    relationship: and
+    list:
+    - type: topic
+      name: /lidar_top_center/rslidar_points
+      
+    - type: topic
+      name: /lidar_top_center/points
+      
+  - id: 4
+    name: lidar_bl_timeout
+    relationship: and
+    list:
+    - type: topic
+      name: /lidar_bottom_left/rslidar_points
+      
+    - type: topic
+      name: /lidar_bottom_left/points
+      
+  - id: 5
+    name: lidar_br_timeout
+    relationship: and
+    list:
+    - type: topic
+      name: /lidar_bottom_right/rslidar_points
+      
+    - type: topic
+      name: /lidar_bottom_right/points
+      
+  - id: 6
+    name: radar_timeout
+    relationship: and
+    list:
+    - type: topic
+      name: /radar_bottom_center/radar_status
+      
+    - type: topic
+      name: /radar_bottom_left/radar_status
+      
+  - id: 7
+    name: camera_top_center_front_timeout
+    relationship: and
+    list:
+    - type: topic
+      name: /camera_top_center_front/image_raw
+      
+    - type: topic
+      name: /cam_front_top_centre/image_raw
+      
+  - id: 8
+    name: camera_top_right_front_timeout
+    relationship: and
+    list:
+    - type: topic
+      name: /camera_top_right_front/image_raw
+      
+    - type: topic
+      name: /cam_front_bottom_right/image_raw
+      
+  - id: 9
+    name: camera_top_left_front_timeout
+    relationship: and
+    list:
+    - type: topic
+      name: /camera_top_left_front/image_raw
+      
+    - type: topic
+      name: /cam_front_bottom_left/image_raw
+      
+  - id: 10
+    name: wheel_encoder_timeout
+    relationship: and
+    list:
+    - type: topic
+      name: /wheelencoder
+      
+    - type: topic
+      name: /airs/plc/wheel_encoder/reg_65
+      
+  - id: 11
+    name: lidar_tc_error
+    relationship: and
+    list:
+    - type: node
+      name: /lidar_top_center/rslidar_nodelet_manager
+      
+    - type: node
+      name: /lidar_top_center/os_nodelet_mgr
+      
+  - id: 12
+    name: lidar_bl_error
+    relationship: and
+    list:
+    - type: node
+      name: /lidar_bottom_left/rslidar_nodelet_manager
+      
+    - type: node
+      name: /lidar_bottom_left/os_nodelet_mgr
+      
+  - id: 13
+    name: lidar_br_error
+    relationship: and
+    list:
+    - type: node
+      name: /lidar_bottom_right/rslidar_nodelet_manager
+      
+    - type: node
+      name: /lidar_bottom_right/os_nodelet_mgr
+      
+  - id: 14
+    name: imu_error
+    relationship: and
+    list:
+    - type: node
+      name: /xsens_mti_node
+      
+    - type: node
+      name: /n580_imu_data_nav
+      
+    - type: node
+      name: /HgDataProvider/sub
+      
+  - id: 15
+    name: radar_error
+    relationship: and
+    list:
+    - type: node
+      name: /delphi_esr_can
+      
+    - type: node
+      name: /ars_40X_ros
+      
+  - id: 16
+    name: camera_top_center_front_error
+    relationship: and
+    list:
+    - type: node
+      name: /camera_top_center_front
+      
+    - type: node
+      name: /camera_top_center_front/camera_driver_nodelet
+      
+  - id: 17
+    name: camera_top_right_front_error
+    relationship: and
+    list:
+    - type: node
+      name: /camera_top_right_front
+      
+    - type: node
+      name: /camera_top_right_front/camera_driver_nodelet
+      
+  - id: 18
+    name: camera_top_left_front_error
+    relationship: and
+    list:
+    - type: node
+      name: /camera_top_left_front
+      
+    - type: node
+      name: /camera_top_left_front/camera_driver_nodelet
+      
+  - id: 19
+    name: wheel_encoder_error
+    relationship: and
+    list:
+    - type: node
+      name: /plc_driver_read
+      
+    - type: node
+      name: /plc_parser
+      
+  - id: 20
+    name: lidar_tc_failed
+    relationship: or
+    list:
+    - type: derived
+      name: lidar_tc_timeout
+      
+    - type: derived
+      name: lidar_tc_error
+      
+  - id: 21
+    name: lidar_bl_failed
+    relationship: or
+    list:
+    - type: derived
+      name: lidar_bl_timeout
+      
+    - type: derived
+      name: lidar_bl_error
+      
+  - id: 22
+    name: lidar_br_failed
+    relationship: or
+    list:
+    - type: derived
+      name: lidar_br_timeout
+      
+    - type: derived
+      name: lidar_br_error
+      
+  - id: 23
+    name: cam_ftc_failed
+    relationship: or
+    list:
+    - type: derived
+      name: camera_top_center_front_timeout
+      
+    - type: derived
+      name: camera_top_center_front_error
+      
+  - id: 24
+    name: cam_ftr_failed
+    relationship: or
+    list:
+    - type: derived
+      name: camera_top_right_front_timeout
+      
+    - type: derived
+      name: camera_top_right_front_error
+      
+  - id: 25
+    name: cam_ftl_failed
+    relationship: or
+    list:
+    - type: derived
+      name: camera_top_left_front_timeout
+      
+    - type: derived
+      name: camera_top_left_front_error
+      
+  - id: 26
+    name: imu_failed
+    relationship: or
+    list:
+    - type: derived
+      name: imu_error
+      
+    - type: derived
+      name: imu_timeout
+      
+  - id: 27
+    name: gnss_failed
+    relationship: or
+    list:
+    - type: node
+      name: /novatel/oem7/driver
+      
+    - type: topic
+      name: /novatel/oem7/bestpos
+      
+  - id: 28
+    name: aisd_action_0_component_1
+    relationship: or
+    list:
+    - type: derived
+      name: lidar_tc_failed
+      
+    - type: derived
+      name: imu_failed
+      
+    - type: derived
+      name: gnss_failed
+      
+  - id: 29
+    name: aisd_action_0_component_2
+    relationship: and
+    list:
+    - type: derived
+      name: cam_ftc_failed
+      
+    - type: message_field
+      name: in_tl_zone
+      
+    - type: derived
+      name: v2i_available
+      negate: true
+  - id: 30
+    name: aisd_action_0
+    relationship: or
+    list:
+    - type: derived
+      name: aisd_action_0_component_1
+      
+    - type: derived
+      name: aisd_action_0_component_2
+      
+  - id: 31
+    name: aisd_action_1_component_1
+    relationship: or
+    list:
+    - type: derived
+      name: cam_ftl_failed
+      
+    - type: derived
+      name: cam_ftr_failed
+      
+  - id: 32
+    name: aisd_action_1_component_2
+    relationship: and
+    list:
+    - type: derived
+      name: aisd_action_1_component_1
+      
+    - type: derived
+      name: v2e_available
+      negate: true
+    - type: message_field
+      name: apm_status
+      
+  - id: 33
+    name: aisd_action_1
+    relationship: or
+    list:
+    - type: derived
+      name: cam_rtc_failed
+      
+    - type: derived
+      name: aisd_action_1_component_2
+      
+  - id: 34
+    name: aisd_action_2_component_1
+    relationship: or
+    list:
+    - type: derived
+      name: lidar_br_failed
+      
+    - type: derived
+      name: lidar_bl_failed
+      
+  - id: 35
+    name: aisd_action_2
+    relationship: and
+    list:
+    - type: derived
+      name: lidar_tc_failed
+      negate: true
+    - type: derived
+      name: aisd_action_2_component_1
+      
+
+aisd_rviz_plugins:
+  - name: lidar_br
+    field:
+      - source: lidar_br_error
+        type: derived
+        error_message: "Error"
+      - source: lidar_br_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: lidar_bl
+    field:
+      - source: lidar_bl_error
+        type: derived
+        error_message: "Error"
+      - source: lidar_bl_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: lidar_tc
+    field:
+      - source: lidar_tc_error
+        type: derived
+        error_message: "Error"
+      - source: lidar_tc_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: camera_top_left_front
+    field:
+      - source: camera_top_left_front_error
+        type: derived
+        error_message: "Error"
+      - source: camera_top_left_front_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: camera_top_right_front
+    field:
+      - source: camera_top_right_front_error
+        type: derived
+        error_message: "Error"
+      - source: camera_top_right_front_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: camera_top_center_front
+    field:
+      - source: camera_top_center_front_error
+        type: derived
+        error_message: "Error"
+      - source: camera_top_center_front_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: gnss
+    field:
+      - source: /novatel/oem7/driver
+        type: node
+        error_message: "Error"
+      - source: /novatel/oem7/bestpos
+        type: topic
+        error_message: "Time Out"
+  - name: radar
+    field:
+      - source: radar_error
+        type: derived
+        error_message: "Error"
+      - source: radar_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: imu
+    field:
+      - source: imu_error
+        type: derived
+        error_message: "Error"
+      - source: imu_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: wheel_encoder
+    field:
+      - source: wheel_encoder_error
+        type: derived
+        error_message: "Error"
+      - source: wheel_encoder_timeout
+        type: derived
+        error_message: "Time Out"

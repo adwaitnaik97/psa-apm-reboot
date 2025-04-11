@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<robot name="psa_apm">
+  <link name="base_link">
+    <visual name="base_visual">
+      <origin xyz="2.25985 0.02808 -0.41660" rpy="0 0 -1.570796327" />
+      <geometry>
+        <mesh filename="package://aios_config/model/psa_apm_v1.dae" scale="10 10 10"/>
+      </geometry>
+    </visual>
+  </link>
+</robot>

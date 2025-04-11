@@ -1,0 +1,14 @@
+{
+  "toMqttTopicName": "teardown",
+  "fromMqttTopicName": "teardown",
+  "TeardownResult":
+  {
+    "notApplicable": 0,
+    "success" : 1,
+    "fail" : 2
+  },
+  "consoleId": "",
+  "vehicleId": "",
+  "result": 0,
+  "resultText": ""
+}   

@@ -1,0 +1,45 @@
+# Subscribe topics
+avcs_handler:
+  frame_map:
+      {
+          "FRAME_N":  "NW",
+          "FRAME_E":  "NE",
+          "FRAME_S":  "SE",
+          "FRAME_W":  "SW",
+          "FRAME_NE40":  "N",
+          "FRAME_NE50":  "N",
+          "FRAME_SE40":  "E",
+          "FRAME_SW40":  "S",
+          "FRAME_NW40":  "W"
+      }
+
+  config:
+    version: v2.2.0
+    trim_road_blocks: true
+    container_overide: false
+    accept_job_via_instructions: true
+
+  mqtt:
+    aios_payload_outttopic: /aios/avcs_handler/mqtt/to_client
+
+
+    # Published topics
+    aios_payload_intopic_instructions: /aios/avcs_handler/mqtt/from_client
+    aios_payload_inttopic_maps: /aios/avcs_handler/mqtt/from_client/block
+
+    # MQTT Params (Upto 5 Topics)
+    mqtt_subtopic_instructions: /from_avcs
+    mqtt_subtopic_maps: /map/wgs84
+    mqtt_subtopic_maps2: /map/WGS84
+    mqtt_subtopic_blocks: /map/blocks
+
+    mqtt_pubtopic_general: /to_avcs
+
+    timeout_sec: 10
+    local_broker_addr: 127.0.0.1:1883
+    sit_broker_addr: 10.66.147.28:18884
+    production_broker_addr: 10.66.144.6:18885
+    
+    client_id_prefix: APM
+    # 0 - Local , 1 - SIT, 2 - Production,  -1 - No MQTT
+    comm_type: 0

@@ -1,0 +1,10 @@
+{
+    "type": "switch_mode_response",
+    "data":
+        {
+            "id":"job132414",
+            "set_mode":"OP",
+            "success": 1,
+            "rejection_code": ""
+        }
+}

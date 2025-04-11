@@ -1,0 +1,9 @@
+{
+    "type":"update_trailer",
+	"data":
+        {
+            "num_trailers": 1,
+            "trailer_numbers": ["567001"],
+            "trailer_seq_numbers": [1]
+        }
+}

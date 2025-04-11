@@ -1,0 +1,10 @@
+{
+  "toMqttTopicName": "",
+  "fromMqttTopicName": "goal",
+  "blockName": "",
+  "blockId": 0,
+  "laneId": 0, 
+  "slotId": 0,
+  "containerType": 0,
+  "jobType":0
+}   

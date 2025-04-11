@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<launch>
+  <param name="ptp_temp_wheel_odometry" value="false"/>
+  <arg name="aide_localization_debug" default="False"/>
+  <arg name="wheel_odometry_debug" default="False"/>
+  <arg name="odometry_dr_debug" default="False"/>
+  <arg name="gnss_localization_debug" default="False"/>
+  <arg name="aide_bridge_debug" default="False"/>
+  <arg name="project_aide2aidc_bridge_config_file_path" default="$(find psa_apm_aide_config)/config/global_aide2aidc_bridge_config.yaml" />
+
+  <include file="$(find aide_localization)/launch/aide_localization.launch" >
+    <arg name="aide_debug" value="$(arg aide_localization_debug)"/> 
+  </include>
+
+  <include file="$(find aide_odometry_localization)/launch/wheel_odometry.launch" >
+    <arg name="aide_debug" value="$(arg wheel_odometry_debug)"/> 
+  </include>
+
+  <include file="$(find aide_odometry_localization)/launch/odometry_dr.launch" >
+    <arg name="aide_debug" value="$(arg odometry_dr_debug)"/> 
+  </include>
+
+  <include file="$(find psa_apm_aide_config)/launch/gnss_localization.launch" >
+    <arg name="aide_debug" value="$(arg gnss_localization_debug)"/> 
+  </include>
+
+  <include file="$(find aide_transform)/launch/aide_transform.launch" >
+    <arg name="aide_debug" value="$(arg aide_bridge_debug)"/> 
+  </include>
+
+  <include file="$(find aide_bridge)/launch/aide_bridge.launch" >
+    <arg name="aide_debug" value="$(arg aide_bridge_debug)"/> 
+  </include>
+
+
+  <include file="$(find aide_bridge)/launch/aide2aidc_bridge.launch" >
+    <arg name="aide_debug" value="$(arg aide_bridge_debug)"/> 
+	  <arg name="global_config_file_path" value="$(arg project_aide2aidc_bridge_config_file_path)"/>
+  </include>
+
+<include file="$(find aide_apm_diagnostic)/launch/aide_site_localizer.launch" />
+
+<!--group ns="aide/apm_debugger">
+  <node pkg="aide_apm_diagnostic" type="debugger" name="debugger" output="log"/>
+</group-->
+
+<include file="$(find psa_apm_aide_config)/aide_instruction_handler/launch/aide_instruction_handler.launch" />
+
+</launch>

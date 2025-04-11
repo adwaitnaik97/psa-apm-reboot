@@ -1,0 +1,234 @@
+aipe_preprocessing:
+  inside_bay_topic: "/aide_info/zones"
+  inside_bay_topic_remapped: "/aipe/preprocessing/inside_bay"
+  parking_area_topic: "/aide_info/zones"
+  parking_area_topic_remapped: "/aipe/preprocessing/inside_workshop"
+  chassis_lane_topic: "/aide_info/zones"
+  chassis_lane_topic_remapped: "/aipe/preprocessing/chassis_lane"
+  junction_area_topic: "/aisc/situation_cognition/inside_observation_area"
+  junction_area_topic_remapped: "/aipe/preprocessing/inside_observation_area"
+  taxi_flag_topic: "/aisc/situation_cognition/taxi_flag"
+  taxi_flag_topic_remapped: "/aipe/preprocessing/taxi_flag"
+  apm_position_lidarlink_topic: "/aide/pose/filtered/utm/lidarlink"
+  apm_position_lidarlink_topic_remapped: "/aipe/preprocessing/pose/filtered/utm/lidarlink"
+  apm_position_baselink_topic: "/aide/odometry/filtered/utm/baselink"
+  apm_position_baselink_topic_remapped: "/aipe/preprocessing/odometry/filtered/utm/baselink"
+  apm_speed_topic: "/airs/plc/critical_fbk/reg_37"
+  apm_speed_topic_remapped: "/aipe/preprocessing/apm_speed"
+
+aipe_bridge:
+ tl_classifications_topic: "/aipe/camera_top_center_front/classifications /aipe/camera_top_left_front/classifications /aipe/camera_top_right_front/classifications"
+ tl_junction_status_topic: "/aipe/traffic_light/signal"
+ tl_junction_v2i_status_topic: "/aipe/tl_signal/v2i"
+ tl_junction_vision_status_topic: "/aipe/tl_signal/junction"
+ tl_cas_status_topic: "/aipe/tl_signal/cas"
+ obj_detections_2d_topic: "/aipe/camera_top_center_front/detections /aipe/camera_top_left_front/detections /aipe/camera_top_right_front/detections"
+ lane_detection_2d_topic: "/aipe/lane_detections/2d"
+ lane_detection_3d_topic: "/aipe/lane_detections/3d"
+ obj_detections_3d_topic: "/aipe/lidar/detected_objects"
+ tracked_objects_topic: "/aipe/lidar/tracked_objects"
+ fused_objects_topic: "/aipe/fused/tracked_objects"
+ trailer_yaw_topic: "/aipe/trailer_localization/trailer_yaw"
+ trailer_points_topic: "/aipe/trailer_points"
+ apm_load_config_topic: "/aios/apm_load_config"
+ junction_id_topic: "/aipe/junction_id"
+ lane_center_angle_topic: "/aipe/lane_projection/lane_center_angle"
+ lane_offset_topic: "/aipe/lane_projection/offset"
+ output_topic: "/aipe/bridge_status"
+ msg_timeout: 150
+
+voxel_grid_filter:
+  input_topic: "/aipe/lidar/box_filter_points"
+  output_topic: "/aipe/lidar/voxel_grid_points"
+  leaf_size: 0.4
+
+box_filter_nodelet:
+  input_topic: "/points_raw"
+  output_topic: "/aipe/lidar/box_filter_points"
+  min_x: -4
+  max_x: 0.8
+  min_y: -1.8
+  max_y: 1.8
+  min_z: -4
+  max_z: 4
+  inside_bay_topic: "/aipe/preprocessing/inside_bay"
+  max_z_inside_bay: 20
+  parking_area_topic: "/aipe/preprocessing/inside_workshop"
+  max_z_inside_parking_area : 1.4
+
+ransac_ground_removal:
+  input_topic: "/aipe/lidar/roi_filter_points"
+  output_topic: "/aipe/lidar/ground_filter_points"
+  output_ground_topic: "/aipe/lidar/ground_plane_points"
+  max_iterations: 150
+  ransac_height_from_ground_threshold: 0.5
+  ransac_height_from_ground_threshold_junction: 0.5
+  ransac_leaf_size: 0.4
+  input_topic_junction: "/aipe/preprocessing/inside_observation_area"
+  max_slope: 10
+  z_filter_model: 3
+  # 0 - Z filter disabled
+  # 1 - Z filter applied at all time
+  # 2 - filter z for z_filter_blocks
+  # 3 - filter z for z_filter_blocks and reduce the z towards the end of block
+  z_filter_blocks: ["BLOCK_TU"] # z filter blocks for z filter model 2 and 3
+  max_z: -3.2 # The z value considered for model 1, 2 and 3
+  reduced_max_z: -2.5 # reduced z filter value for z filter model 3
+  max_distance_to_junction: 25.0 # Max distance to the junction to reduce the z value for z_filter model 3
+
+roi_filter_config:
+  input_topic: "/aipe/lidar/voxel_grid_points"
+  #input_topic: "/aipe/lidar/box_filter_points"
+  output_topic: "/aipe/lidar/roi_filter_points"
+  apm_pose_topic: "/aipe/preprocessing/pose/filtered/utm/lidarlink"
+  trailer_points_topic: "/aipe/trailer_points"
+  local_frame: "/lidar_link"
+  global_frame: "/utm"
+  distance_threshold: 200
+  neighbor_yard_filtering: 0
+  neighbor_yard_distance_threshold: 30
+  yard_lane_topic: "/aipe/preprocessing/inside_bay"
+  trailer_threshold_height: 1.1
+
+radar_roi_filter_config:
+  input_topic: "/as_tx/radar_tracks"
+  output_topic: "/aipe/radar_tracks"
+  local_frame: "/lidar_link"
+  global_frame: "/utm"
+  distance_threshold: 200
+  object_max_distance: 150
+
+euclidean_cluster_detect:
+  input_topic_ransac: "/aipe/lidar/ground_filter_points"
+  output_topic: "/aipe/lidar/detected_objects"
+  cluster_size_min: 3
+  cluster_size_max: 100000
+  cluster_merge_threshold: 1.5
+  cluster_merge_threshold_spreader: 2.0
+  clustering_distance: 1.25
+  output_frame: "lidar_link"
+
+lidar_detection_filter:
+  spreader_flag_output_topic: "/aipe/spreader_flag"
+  spreader_objects_output_topic: "/aipe/lidar/spreader_objects"
+  spreader_objects_behind_output_topic: "/aipe/lidar/spreader_objects_behind"
+  z_axis_max: 4
+  trailer_elimination: 1
+  spreader_height_min: 2
+  spreader_length_min: 5.5
+  project_2D_objects: 0
+  project_min_distance: 20
+  min_radar_speed: 15
+  #Create virtual 3D objects with unmatched radar tracks. Radar tracks are still used to locate 2D detections even if disabled
+  create_virtual_radar_objs: 0
+  spreader_match_distance_threshold: 5.0
+  spreader_match_height_threshold: 5.0
+  spreader_timeout: 45000
+  spreader_behind_timeout: 10000
+  spreader_height_threshold: 10
+  spreader_max_detection_distance: 50
+  spreader_min_detection_distance: -50
+  spreader_behind_lateral_threshold_distance: 2.0
+  spreader_release_time_top: 5000
+
+sensor_fusion:
+  tracked_objects_radar: /as_tx/radar_tracks
+  detected_objects_vision: /aipe/camera_top_center_front/detections
+  tracked_objects_lidar: /aipe/lidar/tracked_objects
+  classification_vision: /aipe/camera_top_center_front/classifications
+  apm_speed_src: /aipe/preprocessing/apm_speed
+  camera_info_src: /camera_top_center_front/camera_info
+  camera_image_src: /camera_top_center_front/image_raw
+  overlap_threshold: 0.1
+  sensors_to_fuse: CLR
+  output_frame_id: lidar_link
+  loud: 0
+
+trailer_localization:
+  odom_topic: /aipe/preprocessing/odometry/filtered/utm/baselink
+  lidar_topic: /points_raw
+  apm_status_topic: /aidc/apm_status/status
+  length_trailer: 11.343
+  width_trailer: 3.2
+  width_buffer_trailer: 0.5
+  length_pm: 3.101
+  dist_hitch: -0.293
+  dist_to_pm_front: 1.590
+  steer_thresh: 0.005
+  yawrate_thresh: 1.0
+  speed_thresh: 4
+  time_buffer: 100
+  show_buffer: 1
+  right_lidar_low_thresh: 150
+  right_lidar_high_thresh: 170
+  left_lidar_low_thresh: 180
+  left_lidar_high_thresh: 200
+  print_num_points: 0
+  container_min_num_points: 100
+
+chassis_alignment:
+  final_offset: 1.6
+  distance_threshold: 30
+  precision_alignment_active: 1
+  precision_alignment_distance: 70
+  reference_min_x: -5.0
+  reference_max_x: 2.0
+  reference_min_y_left_chassis: 0.5
+  reference_max_y_left_chassis: 1.5
+  reference_min_y_right_chassis: -2.0
+  reference_max_y_right_chassis: -1.0
+  reference_min_z: 4.6
+  reference_max_z: 5.3
+
+lane_projection:
+  output_topic: "/aipe/lane_detection_fnet_3D"
+  detection_topic: "/aipe/lane_detection_fnet"
+  points_raw_topic: "/points_raw"
+  taxi_flag_topic: "/aipe/preprocessing/taxi_flag"
+  chassis_lane_topic: "/aipe/preprocessing/chassis_lane"
+  steering_topic: "/aipe/adas_steering"
+  top_centre_camera_info_topic: "/camera_top_center_front/camera_info"
+  distance_threshold: 10
+  offset_distance: 50
+  max_slope: 0.5
+  offset_bias: 0.0
+
+cluster_merger:
+  detection_topic: "/aipe/lidar/detected_objects_filtered"
+  lane_info_topic: "/aisc/situation_cognition/lane_info"
+  inside_observation_area: "/aisc/situation_cognition/in_traffic_light_zone"
+  output_topic: "/aipe/lidar/detected_objects_merged"
+  global_frame_id: "utm"
+  merging_distance: 19.0
+  vehicle_len: 19.0
+  vehicle_width: 3.0
+  vehicle_height: 4.0
+  car_height: 0.5
+  max_dimension_tolerance: 0.2
+  min_vehicle_width: 1.5
+  tl_junction_dist: 25.0
+  virtual_junction_dist: 15.0
+  lane_threshold: 1.5
+
+ukf_3d_tracker:
+  gating_thres: 12
+  gate_probability: 0.9
+  detection_probability: 0.9
+  life_time_thres: 8
+  static_velocity_thres: 0.5
+  static_num_history_thres: 3
+  prevent_explosion_thres: 1000
+  tracker_input_topic: "/aipe/lidar/detected_objects_merged"
+  tracker_output_topic: "/aipe/lidar/tracked_objects"
+  use_sukf: true
+  tracking_frame: "utm"
+  merge_distance_threshold: 1
+  namespace: "/aipe/lidar/"
+  min_age: 0
+
+container_localization:
+  model: 1
+  # 1 - Use /points_raw for container detection detection
+  # 2 - Use /lidar_top_centre_vertical/points for detection
+  top_center_vertical_topic: /lidar_top_centre_vertical/points
+  target_frame: lidar_link

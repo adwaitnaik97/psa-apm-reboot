@@ -1,0 +1,5 @@
+{
+  "toMqttTopicName": "",
+  "fromMqttTopicName": "cmd_weather_state",
+  "state": 0
+}   

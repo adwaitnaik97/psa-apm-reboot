@@ -1,0 +1,28 @@
+# -1 to show nothing, 0 to show the 0th topic, 1 to show the next topic etc.
+show_topic: -1
+
+# INTER_AREA or INTER_LINEAR
+interp_method: "INTER_AREA"
+
+# suppress detections below this level of confidence
+obj_threshold: 0.7
+image_topics: "/camera_top_left_front/image_raw /camera_top_center_front/image_raw /camera_top_right_front/image_raw"
+det_topics: "/aipe/camera_top_left_front/detections /aipe/camera_top_center_front/detections /aipe/camera_top_right_front/detections"
+width: 256
+height: 256
+channels: 3
+batch_size: 2
+classifier_class: "Traffic_light"
+
+# params for normalising image before classification
+norm_R_mean: 0.485
+norm_G_mean: 0.456
+norm_B_mean: 0.406
+norm_R_std: 0.229
+norm_G_std: 0.224
+norm_B_std: 0.225
+
+# weights
+onnx_file: "$(find aipe_config)/assets/classifier/traffic_lights_c8_b2_v6.onnx"
+engine_file: "$(find aipe_config)/assets/classifier/traffic_lights_c8_b2_v6.trt"
+labels_file: "$(find aipe_config)/assets/classifier/traffic_lights.list"

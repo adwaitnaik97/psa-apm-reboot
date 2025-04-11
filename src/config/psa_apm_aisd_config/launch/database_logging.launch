@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+  <!--****** Ros Console Config ****** -->
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+
+<arg name="machine_id" default="Host" />
+<arg name="launch_name" default="aios_datalogger" />
+<arg name="config_path" default="$(find psa_apm_aisd_config)/config/database_logging_config/database_logging_config.yaml"/>
+
+
+  <!--****** Remote Setup ****** -->
+  <include file="$(find aios_config)/remote_env/launch/remote.launch">
+    <arg name="machine_id" value="$(arg machine_id)"/>
+    <arg name="launch_name" value="$(arg launch_name)"/>
+  </include>
+
+
+  <arg name="aios_debug" default="false"/>
+  <arg name="xterm_req" default="" if="$(eval aios_debug==False)" /> 
+  <arg name="xterm_req" default="xterm -e" if="$(eval aios_debug==True)" /> 
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aios_config)/apm_rosconsole_debug.conf" if="$(eval aios_debug)"/>
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aios_config)/apm_rosconsole.conf" unless="$(eval aios_debug)"/>
+
+
+  <!--****** Node Launch ****** -->
+<include file="$(find database_logging)/launch/database_logging.launch" >
+  <arg name="config_path" value= "$(arg config_path)" />
+  <arg name="xterm_req" value = "$(arg xterm_req)" />
+  </include>
+
+</launch>

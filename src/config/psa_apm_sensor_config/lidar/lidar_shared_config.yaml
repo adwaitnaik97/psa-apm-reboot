@@ -1,0 +1,6 @@
+# Config used for all lidar units across the PSA-APM project
+rslidar_cloud_nodelet:
+  model: "RS16"
+  curves_path: "$(find rslidar_pointcloud)/data/rs_lidar_16/curves.csv"
+  angle_path: "$(find rslidar_pointcloud)/data/rs_lidar_16/angle.csv"
+  channel_path: "$(find rslidar_pointcloud)/data/rs_lidar_16/ChannelNum.csv"

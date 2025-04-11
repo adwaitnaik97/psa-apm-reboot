@@ -1,0 +1,409 @@
+#********************* Wildcard entry Topics ***************************************
+# included all the topics that stared with the expression before star
+#
+# example:
+# use '/camera_*' to record following topics when available
+# /camera_top_center_front/camera_info
+# /camera_top_left_front/camera_info
+# /camera_top_right_front/camera_info
+# 
+# List of wild card topics below:
+
+
+
+
+#********************* Exclusion Topics ***************************************
+# Excluded all the topics that stared with the expression dash
+#
+# example:
+# use '-/aios/avcs_handler/config/action_req' to record following topics when available
+#
+# List of Exclusion topics:
+
+
+
+
+
+#********************* All other Topics ***************************************
+# included all the topics that not stared with the expression dash or include star
+#
+# example:
+# use '/aios/avcs_handler/info' to record following topics when available
+# 
+# List of remaining topics:
+
+#radar smartmicro
+/radar/filtered_data
+/radar/pcl_filter/parameter_descriptions
+/radar/pcl_filter/parameter_updates
+/radar/radar_data
+/radar/target_list_cartesian
+
+
+# compressed image channels
+/camera_top_center_front/image_raw/compressed
+/camera_top_left_front/image_raw/compressed
+/camera_top_right_front/image_raw/compressed
+/camera_top_center_rear/image_raw/compressed
+/camera_top_left_rear/image_raw/compressed
+/camera_top_right_rear/image_raw/compressed
+
+#/camera_top_center_front/image_rect_color/compressed
+#/camera_top_left_front/image_rect_color/compressed
+#/camera_top_right_front/image_rect_color/compressed
+#/camera_top_center_rear/image_rect_color/compressed
+
+#/camera_top_center_front/image_rect_color/compressed
+#/camera_top_left_front/image_rect_color/compressed
+#/camera_top_right_front/image_rect_color/compressed
+/camera_top_center_rear/image_rect_color/compressed
+
+# compressed image channels
+#/camera_top_center_front/image_raw
+#/camera_top_left_front/image_raw
+#/camera_top_right_front/image_raw
+
+# camera calibration
+/camera_top_center_front/camera_info
+/camera_top_left_front/camera_info
+/camera_top_right_front/camera_info
+/camera_top_center_rear/camera_info
+/camera_top_left_rear/camera_info
+/camera_top_right_rear/camera_info
+
+
+# raw lidar packets
+/lidar_top_center/rslidar_packets
+/lidar_top_left/rslidar_packets
+/lidar_top_right/rslidar_packets
+/lidar_bottom_left/rslidar_packets
+/lidar_bottom_right/rslidar_packets
+/lidar_top_center/rslidar_packets_difop
+/lidar_top_left/rslidar_packets_difop
+/lidar_top_right/rslidar_packets_difop
+/lidar_bottom_left/rslidar_packets_difop
+/lidar_bottom_right/rslidar_packets_difop
+/lidar_top_center_vertical/rslidar_packets
+/lidar_top_center_vertical/rslidar_packets_difop
+# Lidar points
+# /lidar_top_center/rslidar_points
+# /lidar_bottom_right/rslidar_points
+# /lidar_bottom_left/rslidar_points
+# /lidar_top_center_vertical/rslidar_points
+
+# Sick Lidar
+/sick_fss/pointcloud
+
+# lidar calibration
+/tf
+
+
+
+# oem7 Novatel topics
+/novatel/oem7/bestpos
+/novatel/oem7/bestutm
+/novatel/oem7/bestvel
+/novatel/oem7/driver/bond
+/novatel/oem7/odom
+/novatel/oem7/oem7raw
+/novatel/oem7/rxstatus
+/novatel/oem7/time
+/novatel/oem7/heading2
+/novatel/oem7/rxstatus
+/novatel/oem7/heading2
+/novatel/oem7/ppppos
+/novatel/oem7/corrimu
+/gps/fix
+/gps/gps
+
+
+#Honeywell HG4930
+/HGuide/Std/Imu
+/HgDataProvider/HGuide/Output/0x01_ControlMessage
+/HgDataProvider/HGuide/Output/0x02_NavigationMessage
+/HgDataProvider/HGuide/Std/Imu
+/HgDataProvider/turtle1/cmd_vel
+/HgDataProvider/turtle1/color_sensor
+/HgDataProvider/turtle1/pose
+
+#Honeywell n580
+/HGuide/Std/Imu
+
+# imu topics
+
+/imu_filtered
+
+
+# oem7 Novatel topics
+/novatel/oem7/bestpos
+/novatel/oem7/bestutm
+/novatel/oem7/bestvel
+/novatel/oem7/odom
+/novatel/oem7/heading2
+/gps/fix
+/gps/gps
+/oem7/ppp/fix
+/oem7/fix
+
+
+#aipe
+/aipe/lidar/tracked_objects
+/aipe/lidar/detected_objects
+/aipe/lidar/hazard_object
+/aipe/tl_wrapper_status
+/aipe/adas_steering
+/aipe/traffic_light/log
+/aipe/trailer_localization/trailer_yaw
+/aipe/traffic_light/signal
+/aipe/environment_classifier
+/aipe/spreader_flag
+/aipe/lidar/spreader_objects
+/aipe/lidar/spreader_objects_behind
+/aipe/trailer_localization/trailer_yaw
+/aipe/trailer_points
+/aios/apm_load_config
+/aipe/container/distance_to_container
+
+#aisc
+/aisc/situation_cognition/in_traffic_light_zone
+/aisc/situation_cognition/inside_observation_area
+/aisc/situation_cognition/junction_hazard_object_id
+/aisc/situation_cognition/junction_hazard_timer
+/aisc/situation_cognition/junction_hazard_type
+/aisc/situation_cognition/l1_l0_int
+/aisc/situation_cognition/lane_info
+/aisc/situation_cognition/result
+/aisc/situation_cognition/taxi_flag
+/aisc/situation_cognition/trailer_hazard
+/aisc/situation_cognition/rtg_hazard
+/aisc/situation_cognition/rtg_lanes_to_consider
+/aisc/situation_cognition/reversing_object
+/aisc/situation_cognition/aisc_pre_process
+/aisc/system_status
+/aisc/bridge_status
+/aisc/situation_cognition/spreader_hazard
+/aisc/situation_cognition/moving_off_hazard
+/aisc/distance_to_align_wrt_container
+/viz/aisc/trailer_hazard_area
+
+#aide
+/aide/odometry/filtered/utm/baselink
+/aide/odometry/filtered/utm/novatel
+/aide_status/apmstatus
+/aide_status/gnss_management_status
+/aide_status/imu_unreliable
+/aide_status/imustatus
+/aide_status/pos
+/aide_info/zones
+/aide_status/pos_gnss_management
+/aide_status/plane_detection/yaw
+/aide/info/gnss_management
+
+
+#aios
+/aios/avcs_handler/config/action_req
+/aios/avcs_handler/info
+/aios/avcs_handler/mqtt_in/payload_str
+#/aios/avcs_handler/mqtt/from_client
+#/aios/avcs_handler/mqtt/from_client/block
+#/aios/avcs_handler/mqtt/to_client
+/aios/preprocess/info
+
+/aios/alignment_control/info
+/aios/alignment/info
+/aios/alignment_control/info/signal
+/aios_complete_job
+/aios/aisc_connect_triggered
+/aios/connect_session_triggered
+/aios/connect_triggered
+/aios/instructions
+/aios/session_management/info
+/avcs/bool_manual_route_path
+/avcs/manual_route_path_trajectory
+/aios/apm_load_config
+
+# AIOS - V2I
+/aios/v2i_handler/https/from_client
+/aios/v2i_handler/https/from_client/srv
+/aios/v2i_handler/info
+/aios/v2i_handler/https/to_client
+/aios/v2i_handler/tl_signal
+
+#aidc
+/aidc/apm_status/status
+/aidc/apm_status/feedback/velocity
+/aidc/apm_status/feedback/steering
+/aidc/apm_status/feedback/behaviour_indx
+/aidc/route_path/bool_route
+/aidc/route_path/track_indx_list
+/aidc/route_path/segment_indx_list
+/aidc/route_path/wpd_indx_list
+/aidc/run_path/trajectory_list
+/aidc/run_path/trajectory
+/aidc/run_path/bool_stop_perp_distance
+/aidc/behaviour/behaviour_indx
+/aidc/behaviour/proposed_velocity
+/aidc/run_iterator/current_track
+/aidc/run_iterator/current_track_index
+/aidc/run_iterator/iterate_track_index
+/aidc/run_iterator/light/indicator
+/aidc/run_iterator/light/hazard
+/aidc/run_iterator/bay_track_int
+/aidc/control/ctrl_cmd
+/aidc/control/ctrl_cmd_unity
+/aidc/control/gear_int
+/aidc/e_stop
+/aidc/horn
+/aidc/aios_lane_switch
+/aidc/traffic_rule
+/aidc/lane_merge_hazard_required
+/aidc/control/compute_yaw
+/aidc/control/heading_error
+/aidc/control/lateral_offset
+/aidc/control/track_yaw
+/aidc/hazard_stop
+/aidc/run_iterator/horn
+/aidc/run_iterator/turn/indicator
+/aidc/run_path/max_steer
+
+
+
+
+#airs
+/airs/plc/plc_raw
+/airs/plc/critical_fbk/reg_37
+/airs/plc/setup/reg_39
+/airs/plc/tpms/reg_41
+/airs/plc/tpms/reg_43
+/airs/plc/fss/reg_47
+/airs/plc/diag/reg_49
+/airs/plc/diag/reg_51
+/airs/plc/diag/brake/reg_57
+/airs/plc/diag/steering/reg_59
+/airs/plc/diag/throttle/reg_61
+/airs/plc/diag/tpms/reg_63
+/airs/plc/wheel_encoder/reg_65
+/airs/plc/diag/wheel_encoder/reg_67
+/airs/imu/status_monitor
+/airs/plc/acc_parameters
+/airs/plc/fss_Speed_threshold
+/airs/plc/speed_demand
+/airs/plc/speed_feedback
+/airs/plc/steering_demand
+/airs/plc/steering_feedback
+/airs/airs_steering_controller
+/airs/steering/calibration
+/airs/steering/calibrated_offset
+/airs/dbw_steering_final_cmd
+
+#System Monitoring topics
+/aios/server_params
+/aidc/system_monitoring_result
+/aipe/system_monitoring_result
+/aide/system_monitoring_result
+/aisc/system_monitoring_result
+/airs/sensor_monitoring_result
+/airs/system_monitoring_result
+/aios/actions/airs_sensor_nodes_diagnostic
+/aios/actions/airs_plc_diagnostic
+/aios/actions/airs_fss_diagnostic
+/aios/actions/diagnostic
+/aios/actions/aide_diagnostic
+/aios/actions/aipe_diagnostic
+/aios/actions/aisc_diagnostic
+/aios/actions/aidc_diagnostic
+/aios/apm_diagnostic/system_info
+/aios/navigation_mode
+/aifo/second_align_start
+/airs/dbw_steering_final_cmd
+
+#/aios/apm_diagnostic/framerate_result
+#/CE/aios/timestamp_monitor/hb_ce
+#/CE/aios/timestamp_monitor/hb_dl
+#/CE/aios/timestamp_monitor/hb_pe
+#/Host/aios/timestamp_monitor/hb_ce
+#/Host/aios/timestamp_monitor/hb_dl
+#/Host/aios/timestamp_monitor/hb_pe
+#/DL/aios/timestamp_monitor/hb_ce
+#/DL/aios/timestamp_monitor/hb_dl
+#/DL/aios/timestamp_monitor/hb_pe
+
+# teleop command
+/teleop/command
+
+#aifo
+/aifo/dst_coordi
+/aifo/new_job
+/aifo/rndf_file
+
+#teleop
+/aios/remote_handler/mqtt/to_client
+/aios/remote_handler/mqtt/from_client
+/aios/remote_handler/to_instruction
+/remoteops/outgoing_payload
+/remoteops/incoming_payload
+/aios/remote_handler/ego_state
+/aios/remote_handler/tl_state
+/aios/remote_handler/vehicle_control_mode
+/aios/remote_handler/linkup_status
+/aios/remote_handler/job_info
+/aios/preprocess/trajectory_polygon
+/aios/ehmi_handler/state
+/aisc/behaviour_summarizer/control_mode
+/aipe/lidar/hazard_object/markers
+/viz/aisc_hazard_objects/pointcloud
+
+#V2X topics
+
+
+# SRR2
+/rear_srr/can_tx
+/rear_srr/can_rx
+# Left Side
+/rear_srr/left_srr/as_tx/detections
+/rear_srr/left_srr/as_tx/radar_markers
+/rear_srr/left_srr/parsed_tx/srrdebug3
+/rear_srr/left_srr/parsed_tx/srrdebug4
+/rear_srr/left_srr/parsed_tx/srrdebug5
+/rear_srr/left_srr/parsed_tx/srr_feature_alert
+/rear_srr/left_srr/parsed_tx/srr_feature_sw_version
+/rear_srr/left_srr/parsed_tx/srr_status1
+/rear_srr/left_srr/parsed_tx/srr_status2
+/rear_srr/left_srr/parsed_tx/srr_status3
+/rear_srr/left_srr/parsed_tx/srr_status4
+/rear_srr/left_srr/parsed_tx/srr_status5
+/rear_srr/left_srr/parsed_tx/srr_track
+
+# Right Side
+/rear_srr/right_srr/as_tx/detections
+/rear_srr/right_srr/as_tx/radar_markers
+/rear_srr/right_srr/parsed_tx/srrdebug3
+/rear_srr/right_srr/parsed_tx/srrdebug4
+/rear_srr/right_srr/parsed_tx/srrdebug5
+/rear_srr/right_srr/parsed_tx/srr_feature_alert
+/rear_srr/right_srr/parsed_tx/srr_feature_sw_version
+/rear_srr/right_srr/parsed_tx/srr_status1
+/rear_srr/right_srr/parsed_tx/srr_status2
+/rear_srr/right_srr/parsed_tx/srr_status3
+/rear_srr/right_srr/parsed_tx/srr_status4
+/rear_srr/right_srr/parsed_tx/srr_status5
+/rear_srr/right_srr/parsed_tx/srr_track
+
+# CAS Investigation
+
+#aisd 
+/aisd/actions/aidc_diagnostic
+/aisd/actions/aide_diagnostic
+/aisd/actions/aide_diagnostic_new
+/aisd/actions/aipe_diagnostic
+/aisd/actions/aipe_diagnostic_new
+/aisd/actions/airs_sensor_nodes_diagnostic
+/aisd/actions/airs_sensor_nodes_diagnostic_new
+/aisd/actions/airs_system_diagnostic
+/aisd/actions/airs_system_diagnostic_new
+/aisd/actions/aisc_diagnostic
+/aisd/actions/aisc_diagnostic_new
+/aisd/actions/apm_core_diagnostic
+
+
+

@@ -1,0 +1,31 @@
+# Project specific Params
+alignment_control:
+  signal_red_min_x: -0.05
+  signal_red_max_x: 0.05
+  prealignment_red_min_x: -0.25
+  prealignment_red_max_x: 0.25
+  alignment_timeout_if_not_within_threshold: 15.0
+  alignment_timeout_if_within_threshold: 30.0
+  timeout_of_stop_to_mitigate_pos_jump: 2.0
+  alignment_max_counter: 3
+
+
+  # If set to true, alignment control will trigger standby to prevent/ minimise 
+  # overshoot while aligning.
+  # This checks the distance remaining. if the distance is less than the threshold,
+  # and APM speed goes beyond the configured speed, then standby will be triggered to
+  # slow APM to prevent overshoot.
+  speed_block_control:
+    required: true
+    # block_duration in secs to publish standby once condition met
+    block_duration: 1.0
+    # remaining distance for the condition to be activated
+    remain_dist: 0.4
+    # APM speed for the condition to be activated
+    APM_speed: 0.2
+    # APM speed to be considered as overspeed
+    APM_overspeed: 1.0
+    # Range to consider overspeed
+    overspeed_remain_dist: 1.0
+
+

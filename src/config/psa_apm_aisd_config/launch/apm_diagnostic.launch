@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="machine_id" default="Host" />
+  <arg name="launch_name" default="aisd_diagnostic" />
+  <arg name="bypass_config_file"
+    default="$(find apm_system_monitoring)/config/aios_actions_config.yaml" />
+  <arg name="sensor_bypass_config_file"
+    default="$(find apm_system_monitoring)/config/sensor_bypass_config.yaml" />
+
+
+  <!--****** Remote Setup ****** -->
+  <include file="$(find aios_config)/remote_env/launch/remote.launch">
+    <arg name="machine_id" value="$(arg machine_id)"/>
+    <arg name="launch_name" value="$(arg launch_name)"/>
+  </include>
+
+  <!-- ****************************************************** -->
+  <!-- This launch file launches the following launches/ nodes
+    1. Project core diagnostics
+    2. Project system monitoring
+    3. APM diagnostics and system monitoring
+    4. APM system actions
+  -->
+  <!-- ****************************************************** -->
+  <!-- core topic and nodes diagnostics -->
+  <include file="$(find aisd_diagnostic)/launch/aisd_diagnostic.launch">
+    <arg name="name_space" value="aisd/apm_diagnostic/core" />
+    <arg name="config_file"
+      value="$(find psa_apm_aisd_config)/config/diagnostics_config/aisd_diagnostic.yaml" />
+  </include>
+    <!-- core system monitor -->
+  <node name="psa_apm_system_monitoring" pkg="psa_apm_system_monitoring"
+    type="core_system_monitoring" output="log" />
+
+
+  <!-- ****************************************************** -->
+  <!-- Component diagnostics -->
+  <include file="$(find aisd_diagnostic)/launch/aisd_diagnostic.launch">
+    <arg name="name_space" value="aisd/apm_diagnostic/sensors" />
+    <arg name="config_file"
+      value="$(find psa_apm_aisd_config)/config/diagnostics_config/component_diagnostics_config/sensor.yaml" />
+  </include>
+
+  <include file="$(find aisd_diagnostic)/launch/aisd_diagnostic.launch">
+    <arg name="name_space" value="aisd/apm_diagnostic/airs_system" />
+    <arg name="config_file"
+      value="$(find psa_apm_aisd_config)/config/diagnostics_config/component_diagnostics_config/airs_system.yaml" />
+  </include>
+
+  <include file="$(find aisd_diagnostic)/launch/aisd_diagnostic.launch">
+    <arg name="name_space" value="aisd/apm_diagnostic/aide" />
+    <arg name="config_file"
+      value="$(find psa_apm_aisd_config)/config/diagnostics_config/component_diagnostics_config/aide.yaml" />
+  </include>
+
+  <include file="$(find aisd_diagnostic)/launch/aisd_diagnostic.launch">
+    <arg name="name_space" value="aisd/apm_diagnostic/aipe" />
+    <arg name="config_file"
+      value="$(find psa_apm_aisd_config)/config/diagnostics_config/component_diagnostics_config/aipe.yaml" />
+  </include>
+
+  <include file="$(find aisd_diagnostic)/launch/aisd_diagnostic.launch">
+    <arg name="name_space" value="aisd/apm_diagnostic/aisc" />
+    <arg name="config_file"
+      value="$(find psa_apm_aisd_config)/config/diagnostics_config/component_diagnostics_config/aisc.yaml" />
+  </include>
+
+  <include file="$(find aisd_diagnostic)/launch/aisd_diagnostic.launch">
+    <arg name="name_space" value="aisd/apm_diagnostic/aios" />
+    <arg name="config_file"
+      value="$(find psa_apm_aisd_config)/config/diagnostics_config/component_diagnostics_config/aios.yaml" />
+  </include>
+
+  <include file="$(find aisd_diagnostic)/launch/aisd_diagnostic.launch">
+    <arg name="name_space" value="aisd/apm_diagnostic/aidc" />
+    <arg name="config_file"
+      value="$(find psa_apm_aisd_config)/config/diagnostics_config/component_diagnostics_config/aidc.yaml" />
+  </include>
+
+
+  <!-- ****************************************************** -->
+  <!-- component system monitoring -->
+  <include file="$(find apm_system_monitoring)/launch/apm_system_monitoring.launch"/>
+  <!-- Sensor monitoring -->
+  <node name="airs_sensor_monitoring" pkg="apm_system_monitoring" type="airs_sensor_monitoring" output="log">
+    <rosparam command="load"  file="$(find psa_apm_aisd_config)/config/diagnostics_config/sensor_bypass_config.yaml" />
+  </node>
+  <!-- Actions -->
+  <node name="aios_actions_diagnostic" pkg="apm_system_monitoring" type="aios_actions_diagnostic" output="log">
+    <param name="gui_action_value" type="double" value="1" />
+    <rosparam command="load" file="$(find psa_apm_aisd_config)/config/diagnostics_config/aios_actions_config.yaml" />
+  </node>
+  <!-- ****************************************************** -->
+
+  <node name="aisd_bridge" pkg="aisd_bridge" type="aisd_bridge" output="log" />
+
+
+</launch>

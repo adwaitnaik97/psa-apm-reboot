@@ -1,0 +1,257 @@
+name : aide
+subs :
+- subs :
+  - name : AIDE Analytics
+    desc : AIDE Analytics Management
+    subs :
+    - name : Heatmap
+      desc : 
+      cmd  : roslaunch aide_apm_config aide_script_diag_heatmap.launch
+      param : heatmap
+
+
+  - name : AIDE Sensor Management
+    desc : AIDE Sensor Management
+    subs :
+    - name : Sensor Calibration
+      desc : 
+      subs :
+      - name : IMU Tracker
+        desc : Live imu heading offset update
+        cmd  : roslaunch aide_sensors imu_tracker.launch
+      - name : VMS Calibration
+        desc : Vehicle Motion Sensor (Steering/Wheel Encoder) offset update
+        cmd  : roslaunch aide_odometry_localization online_calibration.launch
+    - name : Sensor Noise Modelling
+      desc : 
+      subs :
+      - name : IMU GNSS Covariance Udate
+        desc : Covariance updater for aide related sensors
+        cmd  : roslaunch aide_sensors aide_sensors.launch
+  - name : Localization
+    desc : AIDE Localization
+    subs :
+    - name : Odometry Localization
+      desc : lidar_localizer desc sample
+      subs :
+      - name : Wheel Odometry
+        desc : 
+        cmd  : roslaunch aide_odometry_localization wheel_odometry.launch
+      - name : Lidar Odometry
+        desc : 
+        cmd  : 
+      - name : Vision Odometry
+        desc : 
+        cmd  : 
+
+    - name : Dead Reckoning
+      desc : 
+      subs :
+      - name : DR_IMU
+        desc : 
+        cmd  : roslaunch aide_odometry_localization filtered_odometry_localization.launch
+
+      - name : DR_No_IMU
+        desc : 
+        cmd  : 
+
+    - name : GNSS Localization
+      desc : 
+      subs :
+      - name : Navsat Transform
+        desc : 
+        cmd  : roslaunch aide_gnss_localization gnss_localization.launch
+      - name : bestutm Transform
+        desc : 
+        cmd  :
+
+    - name : Scan Matching Localization
+      desc : 
+      subs :
+      - name : HDL Localization
+        desc : 
+        cmd  : roslaunch aide_gnss_localization gnss_localization.launch
+
+      - name : NDT Matching
+        desc : 
+        cmd  :
+
+
+    - name : Filtered Localization
+      desc : 
+      subs :
+      - name : Filtered UKF Localization
+        desc : 
+        cmd  : roslaunch aide_localization aide_localization.launch
+
+  - name : AIDE Comms
+    desc : AIDE comms
+    subs :
+    - name : AIDE bridge
+      desc :
+      subs :
+      - name : AIDE bridge
+        desc :
+        cmd  : roslaunch aide_localization aide_bridge.launch
+
+  - name : Diagnostics
+    desc : 
+    subs :
+    - name : AIDE APM Diagnostics
+      desc : AIDE APM Diagnostics
+      subs :
+      - name :  Diagnostics - RAW
+        desc : 
+        cmd  : roslaunch aide_apm_diagnostic aide_apm_diagnostic.launch
+      - name :  Diagnostics - Parser
+        desc : 
+        cmd  : roslaunch aide_apm_diagnostic aide_apm_diagnostic_parser.launch
+    - name : Debugger
+      desc : 
+      subs :
+      - name : APM Kinematics Debugger
+        desc : 
+        cmd  : roslaunch aide_apm_diagnostic kinematics_debugger.launch
+
+
+- subs :
+  - name : Map Management
+    desc : 
+    subs :
+    - name : Scan Matching Mapping
+      desc : lidar_localizer desc sample
+      subs :
+      - name : HDL Graph Slam
+        desc : 
+        cmd  : roslaunch hdl_graph_slam aide_mapping.launch
+      - name : NDT Mapping
+        desc : 
+        cmd  : roslaunch lidar_localizer ndt_mapping.launch
+    - name : Mapping Helpers
+      desc : 
+      subs :
+      - name : Accuracy Monitor
+        desc : 
+        cmd  : roslaunch Mapping_Helpers Accuracy_Monitor.launch
+      - name : Graph Optimizer
+        desc : 
+        cmd  : roslaunch hdl_graph_slam graph_optimizer.launch
+    - name : Map Server
+      desc : 
+      subs :
+      - name : Global Map Server
+        desc : 
+        cmd  : roslaunch Mapping_Helpers Accuracy_Monitor.launch
+    - name : Map Segmentation
+      desc : 
+      subs :
+      - name : Segmentation
+        desc : 
+        cmd  : 
+    - name : Dynamic Environment Reconstruction
+      desc : 
+      subs :
+      - name : Yard Reconstruction
+        desc : 
+        cmd  : 
+buttons:
+  aide_sensors :
+    run : roslaunch aide_apm_config aide_script_sensors.launch
+  aide_localization :
+    run : roslaunch aide_apm_config aide_script_localization.launch
+  aide_diagnostics :
+    run : roslaunch aide_apm_config aide_script_diag.launch
+
+
+sys_gui:
+  dialog   : MyDialogParam
+  cpu_chks :
+    user_category : Migration Allowance
+    user_category_add : [ [ all ], 8 ]
+    flags         : [ nl ]
+
+Text: "this is dummy readme guide from aide YAMl which resides \n
+in the aide_config folder in aide repo. If this file is missing,\n
+ then this tab will not be created at runtime"
+
+params :
+
+  - name : heatmap
+    vars  :
+    - name      : heatmap_type
+      kind     : radio_box
+      choices  : [ 'precision_percent', 'gnss_qual', 'distance' ]
+      choices_type : str
+      choices_style: h
+      v        : 'precision_percent'
+      cmd_param :
+        dash        : ''
+        delim       : ':='
+    - name      : file_name
+      kind      : path
+      path_type : multi
+      v         : ''
+      cmd_param :
+        dash        : ''
+        delim       : ':='
+
+
+  - name  : rosbag_play
+    no_save_vars : [ clock, sim_time ]
+    vars  :
+    - name      : file
+      kind      : path
+      path_type : multibag
+      v         : ''
+      cmd_param :
+        must        : True
+        tail        : True
+        delim       : ''
+    - name      : rate
+      label     : 'Rate:'
+      v         : ''
+      cmd_param :
+        only_enable : True
+        dash        : '-'
+        var_name    : r
+        delim       : ' '
+    - name      : start
+      label     : 'Start Time (s):'
+      v         : 0
+      cmd_param :
+        only_enable : True
+        dash        : '--'
+        delim       : '='
+    - name      : repeat
+      label     : Repeat
+      kind      : checkbox
+      v         : False
+      cmd_param :
+        only_enable : True
+        dash        : '--'
+        var_name    : 'loop'
+    - name      : clock
+      label     : Clock
+      kind      : hide
+      v         : True
+      cmd_param :
+        only_enable : True
+        dash        : '--'
+    - name      : sim_time
+      label     : Sim Time
+      kind      : hide
+      v         : False
+      rosparam  : /use_sim_time
+  - name  : sys
+    vars  :
+    - name     : cpu_chks
+      desc     : cpu_chks desc sample
+      label    : CPU
+      kind     : checkboxes
+      item_n   : get_cpu_count()
+      v        : []
+    - name     : nice
+      desc     : nice desc sample
+      label    : 'nice:'
+      kind     : num
+      v        : 0

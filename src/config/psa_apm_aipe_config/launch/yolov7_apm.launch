@@ -1,0 +1,17 @@
+<launch>
+  <!-- if this is true, just run a test and then exit -->
+  <arg name="test_mode" default="False" />
+
+  <!-- show a window with the image used for inference and detection results drawn on -->
+  <arg name="show_inference" default="true" />
+
+  <arg name="config_file" default="$(find psa_apm_aipe_config)/cfg/yolov7.yaml" />
+
+  <node pkg="yolov7" name="yolov7" type="yolov7" output="screen" required="true">
+    <param name="onnx_filename" type="str" value="$(find aipe_config)/assets/yolov7/yolov7_0.onnx" />
+    <param name="test_image_path" type="str" value="/home/batuhan/BAGS/PSA/traffic_light/right_arrow_training/images/PSA_APM_8380_CAS_TC4-L0-S34_2021-11-23-16-12-47_1/1637655290260483168.jpg" />
+    <param name="test_mode" type="bool" value="$(arg test_mode)" />
+    <param name="show_inference" type="bool" value="$(arg show_inference)" />
+    <rosparam command="load" subst_value="True" file="$(arg config_file)" />
+  </node>
+</launch>

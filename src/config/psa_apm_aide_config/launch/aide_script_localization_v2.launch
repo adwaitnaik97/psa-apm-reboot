@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="aide_launcher" pkg="runtime_manager" type="aide_nodes_launch.sh" launch-prefix="bash" output="screen"/>
+</launch>

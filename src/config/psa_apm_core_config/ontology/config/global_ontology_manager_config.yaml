@@ -1,0 +1,30 @@
+aios/ontology:
+  input_files:
+    traffic_light_file: "$(find psa_apm_core_config)/ontology/config/traffic_lights.json"
+    zones_file: "$(find psa_apm_core_config)/ontology/config/zones.json"
+    junction_box_file: "$(find psa_apm_core_config)/ontology/junction_box/junction_box_wgs84_22_03_2023.csv"
+    aifo_coordinates_file: "$(find psa_apm_core_config)/ontology/aifo_coordinates/PSA_AIFO_Coordinates.csv"
+    aisc_pedestrain_box_file: "$(find psa_apm_core_config)/ontology/pedestrian_box/pedestrian_box_09_12_2022.csv"
+    aisc_lane_info_file: "$(find psa_apm_core_config)/ontology/lane_dictionary/Terminal_2_16_07_2024_wharf.csv"
+    roi_file: "$(find psa_apm_core_config)/point_cloud_filters/roi_boxes/roi_boxes.yaml"
+    blacklist_file: "$(find psa_apm_aipe_config)/cfg/blacklist_objects.yaml"
+    traffic_priority_type: 0
+
+
+  config:
+    display_mid_lane: false
+    display_network_same_lane_exit: false
+    display_filled_lanes: false
+    display_active_lane: false
+    display_junctions: true
+    display_pedestrian: true
+    display_junction_boundary: true
+    display_live_exits: false
+    display_lane_id: true
+    display_slots: false
+    display_slots_labels: false
+    display_junction_labels: true  
+    display_pedestrian: true
+    display_roi: true
+    display_lanechange_zone: true
+

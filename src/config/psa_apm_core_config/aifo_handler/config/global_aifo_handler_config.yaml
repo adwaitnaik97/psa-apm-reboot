@@ -1,0 +1,9 @@
+aios/aifo_handler:
+ config:
+  # Ensure correct v2x version is set for correct endpoints
+  base_url: "https://aifo.psa.aidrivers.ai/api/apm/"
+  rate: 1.0            
+  replace_x_req: true                                  
+  replace_x_str: '0'                                  
+  v2x_version: '2.0'                       
+  log_only: true        

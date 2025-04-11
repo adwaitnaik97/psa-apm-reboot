@@ -1,0 +1,32 @@
+aide2aidc_bridge_node:
+    config:
+        compute_yaw:
+            required: true
+            use_tf: true
+            # Default frame 
+            # 1 - GNSSLink, 2 - Baselink
+            default_frame: 1
+            dist_straight: 1.0
+            dist_turning: 1.0
+            continuous_model: true
+            imu_yaw_difference_threshold: 1.57079632679
+        
+        switch_mode:
+            # Allow hybrid mode to switch computed orientation and output pose between gnsslink and baselink
+            allow_hybrid_mode: false
+            # switch_on_taxi_mode: true
+            # duration for the taxi flag to be true before considering switching
+            # duration_before_switch: 5
+            # ramp rate to switch pose up from gnss frame to baselink/ ramp down from baselink to gnss. 
+            switch_ramp_up_rate: 0.1
+            #switch_ramp_down_rate: 0.1
+
+        filter:
+            required: false
+            # Type: 1 - Kalman filter , 2 - running Avg
+            type: 1
+            switch: false
+            process_noise: 0.5
+            sensor_noise: 32.0
+            estimated_error: 100.0
+            intial_value: 0.0

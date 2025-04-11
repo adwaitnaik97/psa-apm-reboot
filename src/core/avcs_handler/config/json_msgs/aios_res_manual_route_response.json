@@ -1,0 +1,14 @@
+{
+    "type": "manual_route_response",
+    "data":
+	{
+        "id": "job132414",
+        "current_route": [],
+        "dest_location": "parking_location_1",
+        "success": 1,
+        "rejection_code": "",
+        "cntr_location_on_apm": "1",
+        "cntr_size": "20"
+    }
+}
+

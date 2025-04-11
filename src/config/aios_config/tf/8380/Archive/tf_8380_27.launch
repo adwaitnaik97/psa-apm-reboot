@@ -1,0 +1,111 @@
+<!-- -->
+<!-- Lidar Caibration date :  2020/11/18 -->
+<launch>
+<arg name="localizer" default="robosense" />
+
+<arg name="bl_lidar_tf_x" default="0" />
+<arg name="bl_lidar_tf_y" default="0" />
+<arg name="bl_lidar_tf_z" default="0" />
+<arg name="bl_lidar_tf_roll" default="0" />
+<arg name="bl_lidar_tf_pitch" default="0" />
+<arg name="bl_lidar_tf_yaw" default="0" />
+
+
+<arg name="bl_gnss_tf_x" default="0" />
+<arg name="bl_gnss_tf_y" default="0.0" />
+<arg name="bl_gnss_tf_z" default="0" />
+<arg name="bl_gnss_tf_roll" default="0" />
+<arg name="bl_gnss_tf_pitch" default="0" />
+<arg name="bl_gnss_tf_yaw" default="0" />
+
+
+<arg name="bl_imu_tf_x" default="0" />
+<arg name="bl_imu_tf_y" default="0.0" />
+<arg name="bl_imu_tf_z" default="0" />
+<arg name="bl_imu_tf_roll" default="0" />
+<arg name="bl_imu_tf_pitch" default="0" />
+<arg name="bl_imu_tf_yaw" default="0" />
+
+<arg name="lidar_gnss_tf_x" default="0.0" />
+<arg name="lidar_gnss_tf_y" default="0.0" />
+<arg name="lidar_gnss_tf_z" default="0" />
+<arg name="lidar_gnss_tf_roll" default="0" />
+<arg name="lidar_gnss_tf_pitch" default="0" />
+<arg name="lidar_gnss_tf_yaw" default="0" />
+
+<rosparam param="localizer" subst_value="True">$(arg localizer)</rosparam>
+
+<rosparam param="tf_x" subst_value="True">$(arg bl_lidar_tf_x)</rosparam>
+<rosparam param="tf_y" subst_value="True">$(arg bl_lidar_tf_y)</rosparam>
+<rosparam param="tf_z" subst_value="True">$(arg bl_lidar_tf_z)</rosparam>
+<rosparam param="tf_roll" subst_value="True">$(arg bl_lidar_tf_roll)</rosparam>
+<rosparam param="tf_pitch" subst_value="True">$(arg bl_lidar_tf_pitch)</rosparam>
+<rosparam param="tf_yaw" subst_value="True">$(arg bl_lidar_tf_yaw)</rosparam>
+
+<rosparam param="tf_x_gnss" subst_value="True">$(arg bl_gnss_tf_x)</rosparam>
+<rosparam param="tf_y_gnss" subst_value="True">$(arg bl_gnss_tf_y)</rosparam>
+<rosparam param="tf_z_gnss" subst_value="True">$(arg bl_gnss_tf_z)</rosparam>
+<rosparam param="tf_roll_gnss" subst_value="True">$(arg bl_gnss_tf_roll)</rosparam>
+<rosparam param="tf_pitch_gnss" subst_value="True">$(arg bl_gnss_tf_pitch)</rosparam>
+<rosparam param="tf_yaw_gnss" subst_value="True">$(arg bl_gnss_tf_yaw)</rosparam>
+
+
+<rosparam param="tf_x_imu" subst_value="True">$(arg bl_imu_tf_x)</rosparam>
+<rosparam param="tf_y_imu" subst_value="True">$(arg bl_imu_tf_y)</rosparam>
+<rosparam param="tf_z_imu" subst_value="True">$(arg bl_imu_tf_z)</rosparam>
+<rosparam param="tf_roll_imu" subst_value="True">$(arg bl_imu_tf_roll)</rosparam>
+<rosparam param="tf_pitch_imu" subst_value="True">$(arg bl_imu_tf_pitch)</rosparam>
+<rosparam param="tf_yaw_imu" subst_value="True">$(arg bl_imu_tf_yaw)</rosparam>
+
+<rosparam param="tf_x_rs_gnss" subst_value="True">$(arg lidar_gnss_tf_x)</rosparam>
+<rosparam param="tf_y_rs_gnss" subst_value="True">$(arg lidar_gnss_tf_y)</rosparam>
+<rosparam param="tf_z_rs_gnss" subst_value="True">$(arg lidar_gnss_tf_z)</rosparam>
+<rosparam param="tf_roll_rs_gnss" subst_value="True">$(arg lidar_gnss_tf_roll)</rosparam>
+<rosparam param="tf_pitch_rs_gnss" subst_value="True">$(arg lidar_gnss_tf_pitch)</rosparam>
+<rosparam param="tf_yaw_rs_gnss" subst_value="True">$(arg lidar_gnss_tf_yaw)</rosparam>
+
+
+     
+<!-- ************************************************************* Measured TF ********************************************************************** --> 
+<!-- Radar tf -->                                                              <!--  x           y       z         y        p       r -->  
+  <node pkg="tf" type="static_transform_publisher" name="TF_SR_delphi"        args=" 0.78     0       -2.8225   0        0       0       /sensor_root /delphi    100"/>
+  <node pkg="tf" type="static_transform_publisher" name="TF_delphi_ESR"       args=" 0.00000  0        0        0        0       0       /delphi      /esr       100"/>   
+  <node pkg="tf" type="static_transform_publisher" name="TF_delphi_LEFT_SRR"  args="-0.91500  1.29800 -0.00015 -1.57000  0.00000 0.00000 /delphi      /left_srr  100" /> 
+  <node pkg="tf" type="static_transform_publisher" name="TF_delphi_RIGHT_SRR" args="-0.91500 -1.29800 -0.00015  1.57000 -0.00000 0.00000 /delphi      /right_srr 100" /> 
+
+
+<!-- ************************************************************* Calibrated TF ********************************************************************** -->
+<!-- Lidar tf --> 
+  <node pkg="tf" type="static_transform_publisher" name="TF_SR_robosense"     args="0.00000  0         0       -0.05        0        0       /sensor_root /robosense  100"/> 
+  <node pkg="tf" type="static_transform_publisher" name="TF_Robosense_RStc"   args="0        0         0       0.03416 -0.01170  0.0105  /robosense   /rs16_tc    100"/>
+  <node pkg="tf" type="static_transform_publisher" name="TF_Robosense_RStl"   args="-0.19418  1.351940 -0.15254 1.55560  1.09384 -0.06045 /robosense   /rs16_tl    100"/>  
+  <node pkg="tf" type="static_transform_publisher" name="TF_Robosense_RStr"   args="0.00110 -1.45120  -0.23390 1.63046  2.03950 -3.1204  /robosense   /rs16_tr    100"/> 
+  <node pkg="tf" type="static_transform_publisher" name="TF_Robosense_RSbr"   args="0.55551 -1.28403  -1.99710 1.54000  3.13562  3.14076 /robosense   /rs16_br    100"/>
+  <node pkg="tf" type="static_transform_publisher" name="TF_Robosense_RSbl"   args="0.49930  1.21350  -1.99710 1.58856 -0.00670 -0.004   /robosense   /rs16_bl    100"/>
+    
+<!-- Camera Lidar tf --> 
+  <node pkg="tf" type="static_transform_publisher" name="TF_SR_pgrey"      args=" 0.1600   0.1450  -0.08865 -1.6004   0.0000 -1.7670  /sensor_root /pgrey                  100"/> 
+  <node pkg="tf" type="static_transform_publisher" name="TF_camRS_cam_ftc" args=" 0        0        0        0        0       0       /pgrey       /cam_front_top_centre   100"/>
+  <node pkg="tf" type="static_transform_publisher" name="TF_camRS_cam_ftr" args=" 1.05428 -0.04221 -0.13976 -0.38030 -1.04771 0.20634 /pgrey       /cam_front_bottom_right 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="TF_camRS_cam_ftl" args="-0.28639 -0.03145  0.20951  0.28938  0.96827 0.12187 /pgrey       /cam_front_bottom_left  100"/>
+
+<!-- not in use tf -->
+<!-- <node pkg="tf" type="static_transform_publisher" name="TF_camRS_cam_rtr" args="0.5094 -1.1866 -2.6935 1.2108 3.1131 3.1259 /robosense /cam_rear_top_right 100"/>-->
+<!--  <node pkg="tf" type="static_transform_publisher" name="TF_camRS_cam_rtl" args="-0.0295 -1.2352 -0.2999 1.5542 2.0864 -3.1383 /robosense /cam_rear_top_left 100"/>-->
+<!--  <node pkg="tf" type="static_transform_publisher" name="TF_camRS_cam_fbc" args="0.5019 1.1478 -2.6467 -1.7300 -0.0400 -2.1600 /robosense /cam_front_bottom_centre 100"/> -->
+
+
+<!-- ************************************************************* Test TF ********************************************************************** -->
+<!-- GNSS Lidar tf --> 
+  <node pkg="tf" type="static_transform_publisher" name="TF_robosense_emlid" args="0.216327  0.578045 0    0.014138  0 0 /robosense /emlid 100"/>
+ 
+
+
+<!-- ************************************************************* Parametric TF ********************************************************************** -->
+<!-- Base_link tf -->
+  <node pkg="tf" type="static_transform_publisher" name="TF_bl_Robosense" args="$(arg bl_lidar_tf_x) $(arg bl_lidar_tf_y) $(arg bl_lidar_tf_z) $(arg bl_lidar_tf_yaw) $(arg bl_lidar_tf_pitch) $(arg bl_lidar_tf_roll) /base_link /sensor_root 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="TF_bl_nt" args="$(arg bl_gnss_tf_x) $(arg bl_gnss_tf_y) $(arg bl_gnss_tf_z) $(arg bl_gnss_tf_yaw) $(arg bl_gnss_tf_pitch) $(arg bl_gnss_tf_roll) /base_link /novatel 100"/> 
+   <node pkg="tf" type="static_transform_publisher" name="TF_bl_xs" args="$(arg bl_imu_tf_x) $(arg bl_imu_tf_y) $(arg bl_imu_tf_z) $(arg bl_imu_tf_yaw) $(arg bl_imu_tf_pitch) $(arg bl_imu_tf_roll) /base_link /xsens1 100"/>
+</launch>
+
+

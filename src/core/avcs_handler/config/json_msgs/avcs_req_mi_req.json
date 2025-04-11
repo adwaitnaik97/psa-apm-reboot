@@ -1,0 +1,23 @@
+{
+    "type": "apm_mi_request",
+    "data":
+        {
+            "id": "86722a5e-c",
+            "curr_block": "",
+            "curr_slot": "",
+            "curr_lane": "",
+            "curr_non_yard_location": "",
+            "mi_type_c": "",
+            "mi_console": "",
+            "console_id": "",
+            "mi_state_c": "",
+            "failure_status_i": "",
+            "failure_1_c": "",
+            "failure_2_c": "",
+            "failure_3_c": "",
+            "failure_4_c": "",
+            "failure_5_c": "",
+            "cntr_n": "",
+            "mi_ops_c": ""
+        }
+}

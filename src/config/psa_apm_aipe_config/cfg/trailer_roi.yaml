@@ -1,0 +1,40 @@
+trailer_localization:  
+  # Coordinates of varios ROIs on the trailer such as front left/right, top front/rear, etc.
+  # Coordinates must be provided on trailer localization node's input lidar frame
+
+  # ROI on the front bottom right of the trailer to detect the turns
+  roi0:
+    min_x: -4.5
+    max_x: -3
+    min_y: -2
+    max_y: -1
+    min_z: -3
+    max_z: -1.6
+    type: "front_bottom_right"
+  # ROI on the front bottom left of the trailer to detect the turns
+  roi1:
+    min_x: -4.5
+    max_x: -3
+    min_y: 0.85
+    max_y: 2
+    min_z: -3
+    max_z: -1.6
+    type: "front_bottom_left"
+  # ROI on the front top of the container to detect apm load
+  roi2:
+    min_x: -4
+    max_x: -1
+    min_y: -0.8
+    max_y: 0.8
+    min_z: 0.2
+    max_z: 0.7
+    type: "front_top_centre"
+  # ROI on the rear top of the container to detect apm load
+  roi3:
+    min_x: -10
+    max_x: -7
+    min_y: -0.8
+    max_y: 0.8
+    min_z: 0.2
+    max_z: 0.7
+    type: "rear_top_centre"

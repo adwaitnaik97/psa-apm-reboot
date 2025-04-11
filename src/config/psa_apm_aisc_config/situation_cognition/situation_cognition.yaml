@@ -1,0 +1,69 @@
+# General Parameters
+# Common to all or used only in main
+aisc_general_parameters:
+  threshold_time: 12.00 # General time to collission(TTC)
+  taxi_flag_required: true
+  taxi_flag_conditions:
+    use_aide_apm_lateral_offset: true
+    use_apm_heading_wrt_lane_heading: true
+    use_apm_and_trailer_orientation: false
+    use_lane_detection_for_taxi_flag: false
+    use_apm_on_current_lane_for_taxi_flag: true
+  # Reduce lane width (Bus-stop/yard/travelling-lane)
+  reduce_lane_width_for_yard_lanes: true
+  reduce_lane_width_for_bus_stop_lanes: true
+  bus_stop_lanes: ['9.1', '30.1']
+  bus_stop_lane_threshold_to_reduce: 0.6
+  travelling_lane_threshold_to_reduce: 2.0
+  travelling_lane_width_to_reduce: 1.0
+  yard_lane_width_to_reduce: 0.2
+  traffic_moving_on: "left"
+  # v2i - PSA
+  max_wait_for_v2i_to_publish: 800
+
+# RTG Hazard
+aisc_rtg_hazard:
+  filter_rtg_in_yard_lanes: false
+  threshold_height_to_consider_an_object_as_rtg: 7.0
+  rtg_threshold_x_max: 20.00
+
+# Trajectory Hazard
+aisc_trajectory_hazard:
+  trajectory_area_to_consider: 1.3 # The radius of area to consider around the trajectory
+  reduce_trajectory_distance_on_roundabout_lanes: false
+  roundabout_lanes: []
+  trajectory_distance_to_reduce_for_roundabout_lanes: 0.0 # 0.0 meter ahead of APM
+
+# Lane Hazard
+aisc_lane_hazard:
+  reduce_distance_considered_on_roundabout_lanes: false # Reduce the distance considered ahead of the APM at roundabout
+  length_to_be_reduced_from_lane_width: 0.5 # The length to be reduced from the actual lane_width
+
+# Junction Hazard
+aisc_junction_hazard:
+  consider_parallel_lane_not_as_haz: false # To not consider objects on parallel lane as hazardous
+
+# Veering Off Hazard
+aisc_veering_off_hazard:
+  object_threshold_velocity: 3.5 # The threshold velocity to consider the object
+  increase_lane_width_on_yard_lanes: false # To increase the lane_width of lanes when APM is on yard lane(created for ptp to consider RTG lane area)
+  lane_width_to_increase_on_yard_lanes: 2.0 # The lane_width to increase if increase_lane_width_on_yard_lanes os true
+  object_to_apm_distance_threshold_wharf: 80.0
+  wharf_navigation_object_orientation_threshold: 60.0
+
+aisc_trailer_hazard:
+  max_haz_distance_around_trailer: 1.5 # Hazardous distance on both sides and front of trailer(1m around except trailer back)
+
+aisc_reversing_object:
+  max_count_to_consider_obj_reversing: 6
+  max_window_size: 8
+
+aisc_spreader_hazard:
+  spreader_max_distance_x_to_consider: 40.00
+  spreader_min_height_ahead: 8.00
+  spreader_min_height_behind: 8.00
+  threshold_count_to_clear_spreader_dist_window: 9
+  max_z_filter_for_spreader: 9.0
+  min_z_filter_for_spreader: 1.2
+  max_height_z_to_consider_spreader: 8.0
+  min_height_z_to_consider_spreader: 1.7

@@ -1,0 +1,55 @@
+# topics
+input_topics_list: ['/camera_top_center_front/image_raw', '/camera_top_left_front/image_raw', '/camera_top_right_front/image_raw']
+output_topics_list: ['/aipe/camera_top_center_front/detections', '/aipe/camera_top_left_front/detections', '/aipe/camera_top_right_front/detections']
+
+# used for display and output msgs
+class_names: ['Car', 'Person', 'Truck', 'TL_red', 'TL_amber', 'TL_green', 'TL_right_arrow_green', 'TL_right_arrow_red', 'TL_side_red', 'TL_side_green', 'TL_CAS_down', 'TL_CAS_up', 'TL_CAS_red', 'TL_off', 'Lane_marking_left', 'Lane_marking_right', 'Lane_marking_ahead', 'Lane_marking_left_and_ahead', 'Lane_marking_right_and_ahead', 'Lane_marking_stop', 'Lane_marking_strips', 'Lane_marking_slow', 'Lane_marking_hump', 'Lane_marking_code', 'Cone', 'Lane_marking_right_left_ahead', 'Lane_marking_right_left', 'RTG', 'TL_right_arrow_amber']
+
+# run a test and then immediately exit?
+# uncomment to force option, otherwise will be set by launchfile / CLI argument
+# test_mode: false
+
+# what precision should the TRT engine run in?
+# must be one of: 'int32', 'float16'
+# note that 'float16' requires an Nvidia RTX GPU ie. 20XX+
+precision_mode: 'int32'
+
+# filter detections below this confidence (0.0 -> 1.0)
+confidence_threshold: 0.05
+
+# use to show/suppress visualisation of detections
+# uncomment to force option, otherwise will be set by launchfile / CLI argument
+# show_inference: true
+
+# how is the raw image transformed to target dims? Must be one of:
+# stretch - directly resize to target dims - does not preserve aspect ratio
+# crop - crop image to a square and then resize to target dims
+# letterbox - add black border to image to make a square, then resize to target dims
+resize_mode: 'stretch'
+
+# Filter parameters
+occlusion_confidence_filter: false;
+interclass_occlusion_filter: false;
+
+# If a detection is within this number of pixels of an x/y edge, it won't be marked as confident
+edge_confidence_filter: false
+edge_filter_conf_x: 20
+edge_filter_conf_y: 20
+
+# exclude detections that are within these pixel margins
+# of the edge of the inference image
+# set to less than zero to not exclude at all
+# (0 will still remove detections that go off-image)
+edge_filter_x: -1
+edge_filter_y: -1
+
+# exclude detections where the ratio of width:height is greater than this
+ratio_filter: false;
+max_ratio_w_h: 99
+
+# inter-class overlap filtering
+# any classes in this list will suppress other classes
+# if overlap > no_overlap_IoU_
+# not yet implemented
+overlap_classes: ["none"]
+interclass_overlap_IoU: 0.3

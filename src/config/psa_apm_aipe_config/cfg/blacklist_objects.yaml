@@ -1,0 +1,293 @@
+lidar_detection_filter:  
+  # x and y coordinates of global coordinates and distance threshold in meters
+
+  # TP1
+  point1:
+    x: 365414.617
+    y: 140553.168
+    distance_threshold: 1.9
+
+  # TP5 END
+  point2:
+    x: 365554.314
+    y: 140781.886
+    distance_threshold: 1.9
+
+  # TA END
+  point3:
+    x: 365442.153
+    y: 140546.914
+    distance_threshold: 1.9
+
+  # TN-BLOCK-START
+  point4:
+    x: 365409.618
+    y: 140530.925
+    distance_threshold: 1.9
+
+  # TB START
+  point5:
+    x: 365430.994
+    y: 140521.920
+    distance_threshold: 1.9
+
+  # TB END NO SIGN POST
+
+  # TC-BLOCK-START
+  point6:
+    x: 365278.163
+    y: 140265.615
+    distance_threshold: 1.9
+  
+  # TC END
+  point7:
+    x: 365137.082
+    y: 140036.373
+    distance_threshold: 1.9
+
+  # TC END -- Signage board
+  point8:
+    x:  365137.9364472825
+    y:  140031.8934664025
+    distance_threshold: 1.9
+
+  # CJ1 -- Traffic light pole 1
+  point9:
+    x:  365554.626
+    y:  140784.35
+    distance_threshold: 1.9
+
+  # CJ1 -- Traffic light pole 2
+  point10:
+    x:  365580.73
+    y:  140768.92
+    distance_threshold: 1.9
+
+  # CJ1 -- Traffic light pole 3
+  point11:
+    x:  365590.21
+    y:  140786.54
+    distance_threshold: 1.9
+
+  # CJ1 -- Traffic light pole 4
+  point12:
+    x:  365566.06
+    y:  140801.12
+    distance_threshold: 1.9
+
+  # CJ2 -- Traffic light pole 1
+  point13:
+    x:  365411.11
+    y:  140533.85
+    distance_threshold: 1.9
+
+  # CJ2 -- Traffic light pole 2
+  point14:
+    x:  365428.19
+    y:  140523.42
+    distance_threshold: 1.9
+
+  # CJ2 -- Traffic light pole 3
+  point15:
+    x:  365437.95
+    y:  140539.64
+    distance_threshold: 1.9
+
+  # CJ2 -- Traffic light pole 4
+  point16:
+    x:  365420.64
+    y:  140550.08
+    distance_threshold: 1.9
+
+  # CJ3 -- Traffic light pole 1
+  point17:
+    x:  365256.22
+    y:  140280.95
+    distance_threshold: 1.9
+
+  # CJ3 -- Traffic light pole 2
+  point18:
+    x:  365266.65
+    y:  140273.44
+    distance_threshold: 1.9
+
+  # CJ3 -- Traffic light pole 3
+  point19:
+    x:  365284.54
+    y:  140283.32
+    distance_threshold: 1.9
+
+  # CJ3 -- Traffic light pole 4
+  point20:
+    x:  365268.24
+    y:  140297.24
+    distance_threshold: 1.9
+
+  # CJ4 -- Traffic light pole 1
+  point21:
+    x:  365109.29
+    y:  140027.81
+    distance_threshold: 1.9
+
+  # CJ4 -- Traffic light pole 2
+  point22:
+    x:  365126.09
+    y:  140017.85
+    distance_threshold: 1.9
+
+  # CJ4 -- Traffic light pole 3
+  point23:
+    x:  365135.22
+    y:  140033.22
+    distance_threshold: 1.9
+
+  # CJ4 -- Traffic light pole 4
+  point24:
+    x:  365118.42
+    y:  140043.28
+    distance_threshold: 1.9
+
+  # TJ8 -- Traffic light pole 1
+  point25:
+    x:  365105.06
+    y:  140715.57
+    distance_threshold: 1.9
+
+  # TJ8 -- Traffic light pole 2
+  point26:
+    x:  365078.67
+    y:  140732.20
+    distance_threshold: 1.9
+
+  # TJ8 -- Traffic light pole 3
+  point27:
+    x:  365088.49
+    y:  140749.12
+    distance_threshold: 1.9
+
+  # TJ8 -- Traffic light pole 4
+  point28:
+    x:  365094.61
+    y:  140745.37
+    distance_threshold: 1.9
+
+  # TJ8 -- Traffic light pole 5
+  point29:
+    x:  365110.15
+    y:  140736.02
+    distance_threshold: 1.9
+
+  # TC START-- TFL pole
+  point30:
+    x: 365275.030999852
+    y: 140267.50966789882
+    distance_threshold: 1.9
+
+  # Traffic lights in ppt15- pole1
+  point31:
+    x: 364661.4502
+    y: 139278.6045
+    distance_threshold: 1.9
+
+  # Traffic lights in ppt15- pole2
+  point32:
+    x: 364678.4245
+    y: 139268.6725
+    distance_threshold: 1.9
+
+  # Traffic lights in ppt15- pole3
+  point33:
+    x: 364687.7701
+    y: 139283.9429
+    distance_threshold: 1.9
+
+  # Traffic lights in ppt15- pole4
+  point34:
+    x: 364670.7958
+    y: 139294.0462
+    distance_threshold: 1.9
+
+  # Traffic lights in ppt14- pole1
+  point35:
+    x: 364810.9819
+    y: 139528.466
+    distance_threshold: 1.9
+
+  # Traffic lights in ppt14- pole2
+  point36:
+    x: 364827.9561
+    y: 139518.3233
+    distance_threshold: 1.9
+
+  # Traffic lights in ppt14- pole3
+  point37:
+    x: 364836.4529
+    y: 139533.9236
+    distance_threshold: 1.9
+
+  # Traffic lights in ppt14- pole4
+  point38:
+    x: 364820.3275
+    y: 139543.9473
+    distance_threshold: 1.9
+
+  # Traffic lights in ppt13- pole1
+  point39:
+    x: 364959.6644
+    y: 139778.0512
+    distance_threshold: 1.9
+
+  # Traffic lights in ppt13- pole2
+  point40:
+    x: 364976.6386
+    y: 139767.9348
+    distance_threshold: 1.9
+
+  # Traffic lights in ppt13- pole3
+  point41:
+    x: 364985.9843
+    y: 139783.5478
+    distance_threshold: 1.9
+
+  # Traffic lights in ppt13- pole4
+  point42:
+    x: 364969.0099
+    y: 139793.4006
+    distance_threshold: 1.9
+
+  # Tree 1 on lane 171.1 (This object should be removed later)
+  point43:
+    x: 364916.03125
+    y: 139701.421875
+    distance_threshold: 1.9
+
+  # Tree 2 on lane 171.1 (This object should be removed later)
+  # point44:
+  #   x: 364923.96875
+  #   y: 139714.390625
+  #   distance_threshold: 0.1
+
+  # Tree 3 on lane 171.1 (This object should be removed later)
+  point45:
+    x: 364926.46875
+    y: 139719.59375
+    distance_threshold: 1.9
+
+  # Tree 4 on lane 171.1 (This object should be removed later)
+  point46:
+    x: 364931.96875
+    y: 139728.546875
+    distance_threshold: 1.9
+
+  # Tree 5 on lane 171.1 (This object should be removed later)
+  point47:
+    x: 364938.125
+    y: 139738.453125
+    distance_threshold: 1.9
+
+  # Tree 6 on lane 171.1 (This object should be removed later)
+  point48:
+    x: 364949.28125
+    y: 139757.359375
+    distance_threshold: 1.9
+

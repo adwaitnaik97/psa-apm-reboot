@@ -1,0 +1,51 @@
+<launch>
+
+  <arg name="simulation" default="true" />
+
+  <include file="$(find psa_apm_sensor_config)/lidar/lidar_apm.launch">
+    <arg name="lidar_id" value="rs16_br" />
+    <arg name="simulation" default="$(arg simulation)" />
+  </include>
+  <include file="$(find psa_apm_sensor_config)/lidar/lidar_apm.launch">
+    <arg name="lidar_id" value="rs16_tr" />
+    <arg name="simulation" default="$(arg simulation)" />
+  </include>
+  <include file="$(find psa_apm_sensor_config)/lidar/lidar_apm.launch">
+    <arg name="lidar_id" value="rs16_tc" />
+    <arg name="simulation" default="$(arg simulation)" />
+  </include>
+  <include file="$(find psa_apm_sensor_config)/lidar/lidar_apm.launch">
+    <arg name="lidar_id" value="rs16_tl" />
+    <arg name="simulation" default="$(arg simulation)" />
+  </include>
+  <include file="$(find psa_apm_sensor_config)/lidar/lidar_apm.launch">
+    <arg name="lidar_id" value="rs16_bl" />
+    <arg name="simulation" default="$(arg simulation)" />
+  </include>
+  <!-- Updated list -->
+  <include file="$(find psa_apm_sensor_config)/lidar/lidar_apm.launch">
+    <arg name="lidar_id" value="lidar_bottom_right" />
+    <arg name="simulation" default="$(arg simulation)" />
+  </include>
+  <include file="$(find psa_apm_sensor_config)/lidar/lidar_apm.launch">
+    <arg name="lidar_id" value="lidar_top_right" />
+    <arg name="simulation" default="$(arg simulation)" />
+  </include>
+  <include file="$(find psa_apm_sensor_config)/lidar/lidar_apm.launch">
+    <arg name="lidar_id" value="lidar_top_center" />
+    <arg name="simulation" default="$(arg simulation)" />
+  </include>
+  <include file="$(find psa_apm_sensor_config)/lidar/lidar_apm.launch">
+    <arg name="lidar_id" value="lidar_top_left" />
+    <arg name="simulation" default="$(arg simulation)" />
+  </include>
+  <include file="$(find psa_apm_sensor_config)/lidar/lidar_apm.launch">
+    <arg name="lidar_id" value="lidar_bottom_left" />
+    <arg name="simulation" default="$(arg simulation)" />
+  </include>
+  <include file="$(find psa_apm_sensor_config)/lidar/lidar_apm.launch">
+    <arg name="lidar_id" value="lidar_top_center_vertical" />
+    <arg name="simulation" default="$(arg simulation)" />
+  </include>
+
+</launch>

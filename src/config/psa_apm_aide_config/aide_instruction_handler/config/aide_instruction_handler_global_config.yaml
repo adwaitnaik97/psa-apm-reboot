@@ -1,0 +1,7 @@
+# Published topics
+aide/pose_override:
+    config:
+        covariance_x: 0.0000001
+        covariance_y: 0.0000001
+        covariance_theta: 0.0000001
+

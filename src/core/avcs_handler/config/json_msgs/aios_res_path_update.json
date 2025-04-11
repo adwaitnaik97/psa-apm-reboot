@@ -1,0 +1,13 @@
+{
+    "type": "path_update_response",
+    "data":
+    {
+        "id": "WFMOAPM833011092023135500",
+        "success": 1,
+        "rejection_code": "",
+        "current_route": [],
+        "dest_location": "TB3_lane_11_slot_21",
+        "destination_name": "P,PQC922                 _Waiting Area TB3 Lane 11 Slot 32",
+        "affected_by_road_blocks": 1
+    }
+}

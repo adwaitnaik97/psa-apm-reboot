@@ -1,0 +1,7 @@
+{
+    "type": "power_on_request",
+    "data":
+        { 
+            "software_version": "3.6.1"
+        }
+}

@@ -1,0 +1,153 @@
+# input:
+#   database_name: name of the data base
+#   non_synchronized:
+#     collection:
+#       - name: name otopic_the collection
+#         topic_name: name of the topic
+#         rate: number of data record per second
+#         csv_export: The nested csv export information 
+#           csv_header: The header that is added into the top of the csv file. Each - will be a next line; ',' will be the next box.
+#           trim_field: If set to true the csv exported will have the top naming the fields, but only the last values after the slashes.
+#           omit_fields: Set 'switch' whether to remove a particular field in the list.
+#         periodic: option to export csv periodically. Default to false.
+#           switch: set to true to export csv periodically.
+#           determination_method: either "file_size"(by MB) or "data_count"(number of data recorded in a single csv (1000 data points/csv for example))
+#           data_count_threshold: number of data points in a csv(use only if determination_method is "data_count")
+#           file_size_estimate: Use an estimated method for the file size. Flase right now causes the node to crash. Set to true always.
+#           file_size_threshold: file size in MB(used only if determination_method is "file_size").
+#           file_size_check_threshold: How often to check the file size in terms of data count, IF THE SIZE IS NOT ESTIMATED. To be implemented.
+# synchronized: synchronized topics with similar fields - Has not been implimented yet
+#output:
+#  status_topic: Topic name for database logging.
+#  use_default_dump_path: The default dump path is $(find database_logging)/dump. If the user wishes to change the path, change the parameter
+#                         to false, then input the ABSOLUTE path to the next parameter.
+#                         Set to false without any path will save the file in ~/.ros
+#  dump_path: ""
+
+input:
+  database_name: psa_apm_datalog
+  non_synchronized:
+    collections:
+      - name: airs_engine
+        topic_name: /airs/bridge_status
+        rate: 5.0
+        csv_export:
+          csv_header:
+            - airs_engine
+          trim_field: false
+          omit_fields:
+            switch: false 
+            list:
+              - _id
+          periodic:
+            switch: false
+            determination_method: data_count
+            data_count_threshold: 1000 #Number of entries
+            file_size_estimate: true 
+            file_size_threshold: 0.2 #in Mb
+            file_size_check_threshold: 0.0
+      - name: aide_engine
+        topic_name: /aide/bridge_status
+        rate: 5.0
+        csv_export:
+          csv_header:
+            - aide_engine
+          trim_field: false
+          omit_fields:
+            switch: false 
+            list:
+              - _id
+          periodic:
+            switch: false
+            determination_method: data_count
+            data_count_threshold: 1000 #Number of entries
+            file_size_estimate: true 
+            file_size_threshold: 0.2 #in Mb
+            file_size_check_threshold: 0.0
+      - name: aisc_engine
+        topic_name: /aisc/bridge_status
+        rate: 5.0
+        csv_export:
+          csv_header:
+            - aisc_engine
+          trim_field: false
+          omit_fields:
+            switch: false 
+            list:
+              - _id
+          periodic:
+            switch: false
+            determination_method: data_count
+            data_count_threshold: 1000 #Number of entries
+            file_size_estimate: true 
+            file_size_threshold: 0.2 #in Mb
+            file_size_check_threshold: 0.0
+      # - name: aipe_engine
+      #   topic_name: /aipe/bridge_status
+      #   rate: 5.0
+      #   csv_export:
+      #     csv_header:
+      #       - aipe_engine
+      #     trim_field: false
+      #     omit_fields:
+      #       switch: false 
+      #       list:
+      #         - _id
+      #     periodic:
+      #       switch: false
+      #       determination_method: data_count
+      #       data_count_threshold: 1000 #Number of entries
+      #       file_size_estimate: true 
+      #       file_size_threshold: 0.2 #in Mb
+      #       file_size_check_threshold: 0.0
+      - name: aidc_engine
+        topic_name: /aidc/bridge_status
+        rate: 5.0
+        csv_export:
+          csv_header:
+            - aidc_engine
+          trim_field: false
+          omit_fields:
+            switch: false 
+            list:
+              - _id
+          periodic:
+            switch: false
+            determination_method: data_count
+            data_count_threshold: 1000 #Number of entries
+            file_size_estimate: true 
+            file_size_threshold: 0.2 #in Mb
+            file_size_check_threshold: 0.0
+      - name: aios_engine
+        topic_name: /aios/bridge_status
+        rate: 5.0
+        csv_export:
+          csv_header:
+            - aios_engine
+          trim_field: false
+          omit_fields:
+            switch: false 
+            list:
+              - _id
+          periodic:
+            switch: false
+            determination_method: data_count
+            data_count_threshold: 1000 #Number of entries
+            file_size_estimate: true 
+            file_size_threshold: 0.2 #in Mb
+            file_size_check_threshold: 0.0
+
+  synchronized:
+    - topic_name:
+        - /rename2/aide/info/gnss_management
+        - /rename2/aide/info/gnss_management
+      rate: 5 #per seconds
+      collection: /aide/info/gnss_management
+
+output:
+  status_topic: database/status
+  #The default dump path is $(find database_logging)/dump. If the user wishes to change the path, change the parameter
+  #to false, then input the ABSOLUTE path to the next parameter.
+  #Set to false without any path will save the file in ~/.ros
+  use_default_dump_path: false
+  dump_path: ""

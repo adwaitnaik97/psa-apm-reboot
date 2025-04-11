@@ -1,0 +1,138 @@
+# This is a generic system monitoring node. This yaml is the configurations for the nodes and topics that needs to be monitored.
+# This node can monitor the nodes and topics, define whether the nodes and topics are currently working or not.
+# The node also output an action value (std_msgs::Float32) to determine what kind of action we want to be carried out, if there are
+# abnormalities in the components.
+# There are a set of other nodes that do the monitoring. This node mainly works to unify the input information, output the determined actions
+# and perform logics.
+# nodes: The information about the nodes that need to be monitored.
+#   topic_name: The topic that is the input of the monitored list.
+#   control_loop_rate: I am not sure what this is but it is always set to 5
+#   output_topic: I am not sure what this is either
+#   list: The list of the nodes that needs to be monitored.
+#     - {id: number_by_order, name: name_of_the_node}. The id is not used in computaiton, but it is convenient for checking.
+# topics: The information about the nodes that need to be monitored.
+#   topic_name: The topic that is the input of the monitored list.
+#   control_loop_rate: I am not sure what this is but it is always set to 5
+#   output_topic: I am not sure what this is either
+#   list: The list of the nodes that needs to be monitored.
+#     -  {id: number_by_order, name: name_of_the_node, timeout_sec: how_long_since_the_topic_last_published_to_be_considered_timed_out,
+#        check_frequency_sec: how_often_the_topic_needs_to_be_checked}
+# message_field: This is to declare the message fields that is used to perform logics. This message field has to output as a boolean value.
+#  - {id: number_by_order, name: unique_name_for_this_message_field , topic: topic_name, field: full_flatten_out_field}
+#
+# computation: The group of information to perform logics
+#   action: The group of information for which action to be published
+#     default: The default action if there is no issues with the nodes
+#     list: The list of information about the action. Only one action logic can be true at a time. 
+#           If MORE THAN ONE action logic is true, that means there are something wrong with the node, and the action 0 will be published 
+#     - name: The name of the derived logic that will determine the action_value below. If the logic determined is true, the action_value below will be 
+#             published
+#       action_value: The value that will be published if the logic determined by the name above is true.
+#   logic_list: The list of information to perform logics. Each entry can perform either && or || . To have both && and || in the same logic, 
+#               please use another to merge. For example logic 0 does &&, logic 2 does || , logic 3 does "logic 1 && logic 2".
+#   - id: The id in ordered number. This is not used in logics, but would be useful for debugging.
+#     name: The unique identification name.
+#     relationship: "or" or "and". The relationships between the values in the list.
+#     list: The list of the logics that needs to be performed. Note that the logics needs to be done in order.
+#     - type: The type of the input. Can be "topic", "node", "message_field" or "derived". "derived" is one of the topics
+#       name: Name of the input. Use the "name:" field in the yaml.
+#       negate: "true" or "false". Determine whether the logic of the input needs to be negated or not.
+# output: The information of the output 
+#   system_monitoring_topic: The topic name for the ouput of the system monitoring, including the results of all the logics.
+#   action_topic: The topic name for the ouput of the action.
+
+#Check if they are running or not
+nodes:
+  control_loop_rate: 5
+  topic_name: /aisd/apm_diagnostic/aisc/nodes
+  output_topic: nodes
+  list:
+    - {id: 0, name: /aisc_lane_info}
+    - {id: 1, name: /aisc_main}
+
+
+#Check if they are being advertised or not
+topics:
+  control_loop_rate: 5
+  topic_name: /aisd/apm_diagnostic/aisc/topics
+  output_topic: topics
+  list:
+    - {id: 0, name: /aisc/situation_cognition/result, timeout_sec: 10.0, check_frequency_sec: 1.0}
+    - {id: 1, name: /aisc/situation_cognition/lane_info, timeout_sec: 10.0, check_frequency_sec: 1.0}
+    - {id: 2, name: /aisc/situation_cognition/taxi_flag, timeout_sec: 10.0, check_frequency_sec: 1.0}
+    - {id: 3, name: /aisc/situation_cognition/l1_l0_int, timeout_sec: 10.0, check_frequency_sec: 1.0}
+    - {id: 4, name: /aisc/situation_cognition/trailer_hazard, timeout_sec: 10.0, check_frequency_sec: 1.0}
+
+message_field:
+  - {id: 0, name: inyard_condition , topic: /aide_status/apmstatus, field: /zone_inyard, type: bool}
+
+computation:
+  action:
+    default: 3
+    list:
+    - name: aisd_action_0
+      action_value: 0
+      
+  logic_list:
+  - id: 0
+    name: aisd_action_0
+    relationship: or
+    list:
+    - type: node
+      name: /aisc_lane_info
+      
+    - type: node
+      name: /aisc_main
+      
+    - type: topic
+      name: /aisc/situation_cognition/result
+      
+    - type: topic
+      name: /aisc/situation_cognition/lane_info
+      
+
+output: 
+  system_monitoring_topic: "/aisd/system_monitoring/aisc_result_new"
+  action_topic: "/aisd/actions/aisc_diagnostic_new"
+
+aisd_rviz_plugins:
+  - name: aisc_lane_info
+    field:
+      - source: /aisc_lane_info
+        type: node
+        error_message: "Error"
+      - source: /aisc/situation_cognition/lane_info
+        type: topic 
+        error_message: "Time Out"
+  - name: aisc_main
+    field:
+      - source: /aisc_main
+        type: node
+        error_message: "Error"
+      - source: /aisc/situation_cognition/result
+        type: topic
+        error_message: "Time Out"
+  - name: taxi_flag
+    field:
+      - source: /aisc_main
+        type: node
+        error_message: "Error"
+      - source: /aisc/situation_cognition/taxi_flag
+        type: topic
+        error_message: "Time Out"
+  - name: l1_l0_int
+    field:
+      - source: /aisc_main
+        type: node
+        error_message: "Error"
+      - source: /aisc/situation_cognition/l1_l0_int
+        type: topic
+        error_message: "Time Out"
+  - name: trailer_hazard
+    field:
+      - source: /aisc_main
+        type: node
+        error_message: "Error"
+      - source: /aide_status/apmstatus
+        type: topic
+        error_message: "Time Out"

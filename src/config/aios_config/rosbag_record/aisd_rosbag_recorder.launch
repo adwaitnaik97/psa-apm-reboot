@@ -1,0 +1,36 @@
+<!-- This launch records the topics specified in topic.txt to a rosbag or series of rosbags (size capped at 3GB by default so that they can fit on fat32 USB drives). uses no compression and a largish chunksize for quick saving and indexing of very large streams of data -->
+
+<launch>
+  <!--The AIOS_ID will be set on bashrc by default on the platform i.e PSA_APM_8380-->
+  <arg name="aios_id" default="$(optenv AIOS_ID AIOS_ID)"/>
+
+  <!--path tho topic.txt -->
+  <arg name="topic_list_file" default="$(find aios_config)/rosbag_record/topics.txt" />
+
+  <!--The scenario_id will be set from rosparam if scenario_from_rosparam is true, otherwise set the scenario_id-->
+  <arg name="scenario_from_rosparam" default="true"/>
+  <arg name="scenario_id" default="AIRS_Lidar_Testing"/><!--Set scenario_from_rosparam false to get scenario_id from here-->
+
+  <arg name="user" default="$(optenv USER)"/>
+
+  <!--The absolute path to the directory where rosbags and snapshots will be saved-->
+  <arg name="output_dir" default="/home/$(arg user)/bags/" />
+
+  <!--The prefix of the rosbag / snapshot names - put the project code / site code here-->
+  <arg name="output_prefix" default="$(arg aios_id)_$(arg scenario_id)" /><!--Set scenario_from_rosparam false to get output_prefix from here-->
+  
+  <!--The maximum size in MB of the rosbags that are output -->
+  <arg name="max_rosbag_size" default="3072" />
+
+
+  <include file="$(find aisd_rosbag_recorder)/launch/aisd_rosbag_recorder.launch">
+    <arg name="output_dir" value="$(arg output_dir)"/>
+    <arg name="output_prefix" value="$(arg output_prefix)"/>
+    <arg name="max_rosbag_size" value="$(arg max_rosbag_size)"/>
+    <arg name="scenario_from_rosparam" value="$(arg scenario_from_rosparam)"/>
+    <arg name="aios_id" value="$(arg aios_id)"/>
+    <arg name="topic_list_file" value="$(arg topic_list_file)"/>
+  </include>
+
+
+</launch>

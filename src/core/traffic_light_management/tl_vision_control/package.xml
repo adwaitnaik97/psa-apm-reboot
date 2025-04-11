@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>tl_vision_control</name>
+    <version>0.0.1</version>
+    <description>Traffic light junction control node</description>
+    <maintainer email="batuhan@aidrivers.ai">Batuhan Baskurt</maintainer>
+    <license>TODO</license>
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <depend>cv_bridge</depend>
+    <depend>image_transport</depend>
+    <depend>roscpp</depend>
+    <depend>tf</depend>
+    <depend>sensor_msgs</depend>
+    <depend>aipe_msgs</depend>
+    <depend>aisc_msgs</depend>
+    <depend>aios_apm_msgs</depend>
+    <depend>aifo_client</depend>
+    <depend>airs_msgs</depend>
+    <depend>rosunit</depend>
+    <depend>jsk_recognition_utils</depend>
+    <depend>eigen_conversions</depend>
+    <depend>tf_conversions</depend>
+    <depend>jsk_topic_tools</depend>
+    <depend>image_geometry</depend>
+    <depend>visualization_msgs</depend>
+    <depend>sensor_fusion</depend>
+    <depend>traffic_light_common</depend>
+    <depend>aipe_utils</depend>
+
+</package>

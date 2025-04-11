@@ -1,0 +1,11 @@
+gnss_preprocessor:
+    gnss_info:
+        north_ref_heading_offset: 0.0
+
+ekf_node:
+  filter_params:
+    process_noise_heading: 0.001
+
+aide_handler:
+  low_speed_lateral_offset_threshold: 0.05
+  risk_zone_duration_threshold: 5.0

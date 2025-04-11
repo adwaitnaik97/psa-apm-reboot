@@ -1,0 +1,165 @@
+#Check if they are running or not
+nodes:
+  control_loop_rate: 5
+  output_topic: /aisd/apm_diagnostic/aidc/nodes 
+  list:
+    - {id: 0, name: /topic_subscriber_apmstatus}
+    - {id: 1, name: /topic_subscriber_control}
+    - {id: 2, name: /topic_subscriber_routepath}
+    - {id: 3, name: /topic_subscriber_runbehvelpathiteratetrack}
+    - {id: 4, name: /topic_subscriber_cas_control}
+    - {id: 5, name: /global_planning_standalone_subscriber}
+    
+
+
+#Check if they are being advertised or not
+topics:
+  control_loop_rate: 5
+  output_topic: /aisd/apm_diagnostic/aidc/topics
+  list:
+    - {node_id: 1, id: 0, name: /aidc/control/ctrl_cmd, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 1, id: 1, name: /aidc/control/ctrl_cmd_unitys, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 1, id: 2, name: /aidc/control/gear_int, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 1, id: 3, name: /aidc/control/compute_yaw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 4, name: /aidc/route_path/trajectory_velocity, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 5, name: /aidc/behaviour/behaviour_indx, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 6, name: /aidc/behaviour/proposed_velocity, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 7, name: /aidc/run_path/trajectory, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 8, name: /aidc/run_path/trajectory_rolled, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 9, name: /aidc/run_iterator/current_track, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 10, name: /aidc/run_iterator/iterate_track_index, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 11, name: /aidc/run_iterator/bay_track_int, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 12, name: /aidc/run_iterator/current_track_index, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 13, name: /aidc/run_iterator/beh_string, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 14, name: /aidc/control/ctrl_cmd, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 15, name: /aidc/control/ctrl_cmd_unity, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 16, name: /aidc/run_path/bool_stop_perp_distance, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 17, name: /aidc/run_iterator/light/indicator, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 18, name: /aidc/run_iterator/turn/indicator, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 19, name: /aidc/run_iterator/light/hazard, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 20, name: /aidc/run_iterator/horn, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 21, name: /aidc/e_stop, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 22, name: /aidc/run_path/max_steer, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 23, name: /aidc/control/lateral_offset, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 24, name: /aidc/control/track_yaw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 25, name: /aidc/control/heading_error, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 26, name: /aidc/lane_merge_hazard_required, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 4, id: 27, name: /aidc/control/ctrl_cmd, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 4, id: 28, name: /aidc/control/ctrl_cmd_unity, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 4, id: 29, name: /aidc/control/gear_int, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 4, id: 30, name: /aifo/bool_final_adjustment, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 31, name: /aidc/apm_status/status, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 32, name: /aidc/apm_status/feedback/velocity, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 33, name: /aidc/apm_status/feedback/steering, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 34, name: /aidc/apm_status/feedback/behaviour_indx, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 2, id: 35, name: /aidc/route_path/track_indx_list, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 2, id: 36, name: /aidc/route_path/segment_indx_list, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 2, id: 37, name: /aidc/route_path/wpd_indx_list, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 2, id: 38, name: /aidc/route_path/bool_route, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 2, id: 39, name: /aidc/route_path/bool_road_block, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 2, id: 40, name: /aidc/route_path/manual_route_int, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 2, id: 41, name: /aidc/route_path/bool_manual_route, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 2, id: 42, name: /aidc/global_path/trajectory_, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 2, id: 43, name: /aidc/route_path/wpd_velocity_list, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 2, id: 44, name: /aidc/route_path/trajectory_velocity, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 5, id: 45, name: /aidc/route_path/track_indx_list_, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 5, id: 46, name: /aidc/route_path/segment_indx_list_, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 5, id: 47, name: /aidc/route_path/wpd_indx_list_, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 5, id: 48, name: /aidc/route_path/bool_route_, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 5, id: 49, name: /aidc/route_path/bool_road_block, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 5, id: 50, name: /aidc/global_path/trajectory, timeout_sec: 5.0, check_frequency_sec: 1.0}
+
+
+
+
+
+
+message_field:
+  - {id: 0, name: inyard_condition , topic: /aide_status/apmstatus, field: /zone_inyard, type: bool}
+  - {id: 1, name: apm_status_timeout , topic: /aisd/system_monitoring/aidc_result, field: /apm_status_timeout, type: bool}
+  - {id: 2, name: track_indx_list_timeout , topic: /aisd/system_monitoring/aidc_result, field: /track_indx_list_timeout, type: bool}
+  - {id: 3, name: trajectory_timeout , topic: /aisd/system_monitoring/aidc_result, field: /trajectory_timeout, type: bool}
+  - {id: 4, name: behaviour_indx_timeout , topic: /aisd/system_monitoring/aidc_result, field: /behaviour_indx_timeout, type: bool}
+
+
+
+computation:
+  action:
+    default: 3
+    list:
+    - name: aisd_action_0
+      action_value: 0
+      
+  logic_list:
+  - id: 0
+    name: aisd_action_0
+    relationship: and
+    list:
+    - type: node
+      name: /topic_subscriber_apmstatus
+
+    - type: node
+      name: /topic_subscriber_runbehvelpathiteratetrack
+
+    - type: node
+      name: /topic_subscriber_cas_control
+    
+    - type: node
+      name: /topic_subscriber_routepath
+
+    - type: node
+      name: /global_planning_standalone_subscriber
+      
+    - type: node
+      name: /topic_subscriber_control
+      
+    - type: topic
+      name: /aidc/run_path/trajectory
+
+    - type: topic
+      name: /aidc/control/ctrl_cmd
+      
+
+output: 
+  system_monitoring_topic: "/aisd/system_monitoring/aidc_result_new"
+  action_topic: "/aisd/actions/aidc_diagnostic_new_topic"
+
+aisd_rviz_plugins:
+  - name: runbehvelpathiteratetrack
+    field:
+      - source: /topic_subscriber_runbehvelpathiteratetrack
+        type: node
+        error_message: "Error"
+      - source: /aidc/run_path/trajectory
+        type: topic 
+        error_message: "Time Out"
+  - name: cas_control
+    field:
+      - source: /topic_subscriber_cas_control
+        type: node
+        error_message: "Error"
+      - source: /aidc/control/ctrl_cmd
+        type: topic
+        error_message: "Time Out"
+  - name: routepath
+    field:
+      - source: /topic_subscriber_routepath
+        type: node
+        error_message: "Error"
+      - source: /aidc/route_path/track_indx_list
+        type: topic
+        error_message: "Time Out"
+  - name: global_planning_standalone
+    field:
+      - source: /global_planning_standalone_subscriber
+        type: node
+        error_message: "Error"
+
+  # - name: control
+  #   field:
+  #     - source: /topic_subscriber_control
+  #       type: node
+  #       error_message: "Error"
+  #     - source: /aidc/control/ctrl_cmd_unity
+  #       type: topic
+  #       error_message: "Time Out"

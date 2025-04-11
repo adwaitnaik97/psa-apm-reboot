@@ -1,0 +1,16 @@
+aide/preprocess:
+    input:
+        airs:         
+            configuration:
+                gear_availibility: true
+                steer_availibility: true
+                obd_speed_availibility: true
+
+    config:
+        # speed, gnss
+        idle_determination_method: speed
+        speed_thresh: 0.1
+        turn_left_steer_thresh: -2.0
+        turn_right_steer_thresh: 2.0
+        gnss_position_moving_thresh: 0.005
+

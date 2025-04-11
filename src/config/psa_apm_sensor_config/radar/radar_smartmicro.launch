@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="psa_apm_sensor_config" type="ubuntu20_docker_run.sh" name="bash_radar_ubuntu20_docker" output="screen" />
+</launch>

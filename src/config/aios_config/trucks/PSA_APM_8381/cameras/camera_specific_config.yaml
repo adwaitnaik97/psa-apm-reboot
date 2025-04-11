@@ -1,0 +1,8 @@
+# camera-specific config for 8381
+# config here will override shared config
+camera_top_center_front/camera_driver_nodelet:
+  serial: 19120926
+camera_top_left_front/camera_driver_nodelet:
+  serial: 19095440
+camera_top_right_front/camera_driver_nodelet:
+  serial: 18481923

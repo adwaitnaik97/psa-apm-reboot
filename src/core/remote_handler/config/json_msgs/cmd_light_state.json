@@ -1,0 +1,5 @@
+{
+  "toMqttTopicName": "",
+  "fromMqttTopicName": "cmd_light_state",
+  "state": 0
+}   

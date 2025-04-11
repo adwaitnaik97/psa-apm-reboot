@@ -1,0 +1,13 @@
+<launch>
+  <!--****** Ros Console Config ****** -->
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}" />
+
+  
+   <node pkg="remote_handler" type="pcd_publisher" name="pcd_publisher" output="screen">
+      <param name="pcd_file_path" value="/home/largo/pcd/bunny.pcd"/>
+      <param name="pcd_pub_topic" value="/vertical_points"/>
+      <param name="pcd_frame_id" value="base_link"/>
+      <param name="pub_frequency" type="double" value="1.0"/>
+   </node>
+</launch>
+ 

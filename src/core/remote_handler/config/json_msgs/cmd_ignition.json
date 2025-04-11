@@ -1,0 +1,5 @@
+{
+  "toMqttTopicName": "",
+  "fromMqttTopicName": "cmd_ignition",
+  "state": false
+}   

@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<launch>
+
+
+  <arg name="machine_id" default="Host" />
+  <arg name="launch_name" default="situation_cognition" />
+
+  <group if="$(eval arg('machine_id') =='DL')">
+  	<arg name="launch_remote" default="true" />
+  	<arg name="user" default="$(optenv AIOS_DATALOGGER_USER aidrivers)" />
+  	<arg name="env_path" default="$(find aios_config)/remote_env/dl_env.sh" />
+	<arg name="machine_ip_address" default="$(optenv AIOS_DATALOGGER_IP 172.16.1.30)" />
+	<machine name="$(arg machine_id)" address="$(arg machine_ip_address)" user="$(arg user)" env-loader="$(arg env_path)" default="$(arg launch_remote)"> </machine>
+  </group>
+  <group if="$(eval arg('machine_id') =='CE')">
+  	<arg name="launch_remote" default="true" />
+  	<arg name="user" default="$(optenv AIOS_CONTROL_ENGINE_USER aidrivers)" />
+  	<arg name="env_path" default="$(find aios_config)/remote_env/ce_env.sh" />
+	<arg name="machine_ip_address" default="$(optenv AIOS_CONTROL_ENGINE_IP 172.16.1.10)" />
+	<machine name="$(arg machine_id)" address="$(arg machine_ip_address)" user="$(arg user)" env-loader="$(arg env_path)" default="$(arg launch_remote)"> </machine>
+  </group>
+  <group if="$(eval arg('machine_id') =='PE')">
+  	<arg name="launch_remote" default="true" />
+  	<arg name="user" default="$(optenv AIOS_PERCEPTION_ENGINE_USER aidrivers)" />
+  	<arg name="env_path" default="$(find aios_config)/remote_env/pe_env.sh" />
+	<arg name="machine_ip_address" default="$(optenv AIOS_PERCEPTION_ENGINE_IP 172.16.1.20)" />
+	<machine name="$(arg machine_id)" address="$(arg machine_ip_address)" user="$(arg user)" env-loader="$(arg env_path)" default="$(arg launch_remote)"> </machine>
+  </group>
+
+
+
+  <rosparam param="/aios/machine/$(arg launch_name)" subst_value="True">$(arg machine_id)</rosparam>
+
+	<!--arg name="rndf_file" default="$(find aios_config)/rndf/psa_st2/rndf_psa_st2_wgs84_v15.rndf"/-->
+	<arg name="junction_box_csv" default="$(find psa_apm_core_config)/ontology/junction_box/junction_box_wgs84_22_03_2023.csv"/>
+	<arg name="lane_info_csv" default="$(find psa_apm_core_config)/ontology/lane_dictionary/Terminal_2_16_07_2024_wharf.csv"/>
+	<arg name="pedestrian_box_csv" default="$(find psa_apm_core_config)/ontology/pedestrian_box/pedestrian_box_09_12_2022.csv"/>
+	
+	<!--param name="rndf_file" value="$(arg rndf_file)"/-->
+	<param name="lane_info_csv" value="$(arg lane_info_csv)"/>
+	<param name="pedestrian_box_csv" value="$(arg pedestrian_box_csv)"/>
+	<param name="junction_box_csv" value="$(arg junction_box_csv)"/>
+
+	<rosparam command="load" file="$(find psa_apm_aisc_config)/situation_cognition/situation_cognition.yaml" />
+	
+	<node pkg="situation_cognition" name="aisc_lane_info" type="situation_cognition_lane_info_publisher.py" respawn="true" respawn_delay="2.0" output="screen"/>
+	<node pkg="situation_cognition" name="aisc_main" type="situation_cognition_node" output="screen"/>
+	<node pkg="situation_cognition" name="aisc_bridge_node" type="situation_cognition_bridge_node" output="screen"/>
+	<node pkg="situation_cognition" name="aisc_pre_processing_node" type="situation_cognition_pre_processing_node" respawn="true" respawn_delay="2.0" output="screen"/>
+	<node pkg="situation_cognition" name="aisc_reversing_node" type="situation_cognition_reversing_object_identification_node" output="screen"/>
+	<!-- <node pkg="situation_cognition" name="aisc_rtg_hazard" type="situation_cognition_rtg_hazard_node" output="screen"/> -->
+	<!-- <node pkg="situation_cognition" name="aisc_pre_processor" type="situation_cognition_pre_processing.py" output="screen"/> -->
+	<!-- <node pkg="situation_cognition" name="aisc_overtake_hazard" type="situation_cognition_overtake_haz_node" output="screen"/> -->
+	<!-- <node pkg="situation_cognition" name="aisc_trajectory_hazard" type="situation_cognition_trajectory_haz_node" output="screen"/> -->
+	<!-- <node pkg="situation_cognition" name="aisc_management_node" type="situation_cognition_management_node" output="screen"/> -->
+	<!-- <node pkg="situation_cognition" name="aisc_decoupled_bridge_node" type="situation_cognition_decoupled_bridge_node" output="screen"/> -->
+
+	<arg name="namespace" default="/aisc/situation_cognition"/>
+	<node pkg="detected_objects_visualizer" type="visualize_detected_objects" name="ukf_track_visualization_aisc"
+		output="screen" ns="$(arg namespace)">
+		<param name="objects_src_topic" value="/hazard_object"/>
+	</node>
+
+	<include file="$(find aisc_diagnostics)/launch/aisc_diagnostics.launch" />
+
+	<include file="$(find aisc_management_node)/launch/aisc_management_node.launch" />
+
+	<include file="$(find aios_horn)/launch/aios_horn.launch" />
+
+</launch>

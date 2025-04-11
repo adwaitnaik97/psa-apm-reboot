@@ -1,0 +1,10 @@
+{
+    "type": "manual_route_confirmation",
+    "data":
+	{
+	    "id": "86722a5e-c",
+        "current_route": [[1.23, 2.34], [3.45, 4.56]],
+        "dest_location": "place3",
+        "status":1
+	}
+}

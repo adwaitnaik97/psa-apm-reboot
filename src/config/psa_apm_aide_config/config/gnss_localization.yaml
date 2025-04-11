@@ -1,0 +1,9 @@
+topic:
+    input:
+        plc: "/airs/plc/critical_fbk/reg_37"
+
+parameters:
+    compute_yaw_and_imu_difference_threshold: 1.57079632679
+    heading_log_stdev_threshold: 0.006
+    heading_log_current_distance_threshold: 1.0
+    look_ahead_distance: 3.0

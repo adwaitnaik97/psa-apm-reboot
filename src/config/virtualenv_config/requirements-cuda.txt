@@ -1,0 +1,2 @@
+pycuda==2019.1.2
+decorator==4.4.2

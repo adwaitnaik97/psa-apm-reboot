@@ -1,0 +1,8 @@
+{
+    "toMqttTopicName": "ping",
+    "fromMqttTopicName": "ping",
+    "sender": "",
+    "receiver": "",
+    "seq": 0,
+    "requestLatency": 0
+}   

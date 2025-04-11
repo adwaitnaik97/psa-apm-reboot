@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<launch>
+
+<arg name="imu_preprocessing_debug" default="False"/>
+<arg name="gnss_preprocessing_debug" default="False"/>
+<arg name="lidar_preprocessing_debug" default="False"/>
+<arg name="apm_preprocessing_debug" default="False"/>
+<arg name="plane_filter_debug" default="False"/>
+<arg name="imu_management_debug" default="False"/>
+<arg name="imu_tracker_debug" default="False"/>
+<arg name="gnss_management_debug" default="False"/>
+<arg name="project_global_preprocess_config_file_path" default="$(find psa_apm_aide_config)/config/aide_preprocess_global_config.yaml" />
+
+<include file="$(find psa_apm_aide_config)/launch/imu_preprocessing.launch">
+	<arg name="aide_debug" value="$(arg imu_preprocessing_debug)"/>
+</include>
+
+<include file="$(find psa_apm_aide_config)/launch/gnss_preprocessing.launch" >
+	<arg name="aide_debug" value="$(arg gnss_preprocessing_debug)"/>
+</include>
+
+<include file="$(find imu_management)/launch/imu_management.launch" >
+	<arg name="aide_debug" value="$(arg imu_management_debug)"/>
+</include>
+
+<include file="$(find imu_tracker)/launch/imu_tracker2.launch">
+	<arg name="aide_debug" value="$(arg imu_tracker_debug)"/>
+</include>
+
+
+<include file="$(find psa_apm_aide_config)/launch/gnss_management.launch" >
+	<arg name="aide_debug" value="$(arg gnss_management_debug)"/>
+</include>
+
+<include file="$(find apm_preprocessing)/launch/apm_preprocessing.launch" >
+	<arg name="aide_debug" value="$(arg apm_preprocessing_debug)"/>
+</include>
+
+<include file="$(find plane_filter)/launch/plane_filter.launch" >
+	<arg name="aide_debug" value="$(arg plane_filter_debug)"/>
+</include>
+
+<include file="$(find lidar_preprocessing)/launch/lidar_preprocessing.launch">
+	<arg name="aide_debug" value="$(arg lidar_preprocessing_debug)"/>
+</include>
+
+
+<include file="$(find aide_preprocess)/launch/aide_preprocess.launch" >
+	<arg name="aide_debug" value="$(arg apm_preprocessing_debug)"/>
+	<arg name="global_config_file_path" value="$(arg project_global_preprocess_config_file_path)"/>
+</include>
+
+</launch>

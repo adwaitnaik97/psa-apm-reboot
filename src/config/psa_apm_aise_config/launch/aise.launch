@@ -1,0 +1,5 @@
+<launch>
+
+    <node pkg="psa_apm_aise_config" type="aise_digital_env.sh" name="aise_digital_env" output="screen"/>
+
+</launch>

@@ -1,0 +1,46 @@
+<!-- -->
+<launch>
+
+    <arg name="rslidar_id" default="$(env AIOS_RS16_TOP_RIGHT_ID)"/>
+    <arg name="frame_id" default="$(env AIOS_RS16_TOP_RIGHT_FRAME_ID)"/>
+    <!--Horizontal angle resolution should be either 0.2(default) or 0.18 for rs16 or rs32"/-->
+    <arg name="horizontal_angle_res" default="0.18"/>
+    <arg name="device_ip" default="$(env AIOS_RS16_TOP_RIGHT_IP)"/>
+    <arg name="msop_port" default="$(env AIOS_RS16_TOP_RIGHT_MSOP)"/>
+    <arg name="difop_port" default="$(env AIOS_RS16_TOP_RIGHT_DIFOP)"/>
+    <arg name="serial" default="$(env AIOS_RS16_TOP_RIGHT_SN)"/>
+    <arg name="calibration_path" default="$(env AIOS_RS16_TOP_RIGHT_CALIB_PATH)"/>
+    <arg name="manager" default="rslidar_nodelet_manager"/>
+    <arg name="model" default="RS16"/>
+
+    <!-- if set, don't launch the driver nodelet -->
+    <arg name="simulation" default="false" />
+
+<group ns="$(arg rslidar_id)" >
+    <!-- start nodelet manager -->
+    <node pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager"/>
+
+    <!-- load driver nodelet into it -->
+    <node pkg="nodelet" type="nodelet" name="$(arg manager)_driver"
+          args="load rslidar_driver/DriverNodelet $(arg manager)" output="screen"
+          unless="$(arg simulation)" >
+        <param name="model" value="$(arg model)"/>
+        <param name="device_ip" value="$(arg device_ip)"/>
+        <param name="msop_port" value="$(arg msop_port)"/>
+        <param name="difop_port" value="$(arg difop_port)"/>
+        <param name="frame_id" value="$(arg frame_id)"/>
+        <param name="horizontal_angle_res" value="$(arg horizontal_angle_res)"/>
+    </node>
+
+    <node pkg="nodelet" type="nodelet" name="$(arg manager)_cloud"
+          args="load rslidar_pointcloud/CloudNodelet $(arg manager)" output="screen">
+        <param name="model" value="$(arg model)"/>
+        <param name="curves_path" value="$(find rslidar_pointcloud)/data/rs_lidar_16/curves.csv"/>
+        <param name="angle_path" value="$(find rslidar_pointcloud)/data/rs_lidar_16/angle.csv"/>
+        <param name="channel_path" value="$(find rslidar_pointcloud)/data/rs_lidar_16/ChannelNum.csv"/>
+
+    </node>
+
+</group>
+
+</launch>

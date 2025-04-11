@@ -1,0 +1,17 @@
+generic_box_filter_node:
+  pointcloud_intopic: "/points_raw"
+  pointcloud_outtopic: "/generic_box_filter/outputpc_overwrite/lidar_rain_detection"
+  box_boundaries: "[[[-2.50, 2.50],[-2.50,2.50],[0.0, 1.0]]]" 
+
+publisher:
+  rate: 1.0  
+  roi_pointcloud_topic: "/viz/aipe/lidar/heavy_rain_detection_roi" 
+  outopic: "/aipe/lidar/heavy_rain_detection"
+
+statistic:
+  min_cloudcrop_size: 4            # Size of point cloud is created by rain drop please do not change it.
+  buffer_size: 100                 # Size of the buffer for storing recent detections (bf_size 100 = 10sec takes time to fill up buffer COZ callback 5hz) 
+  required_true_count: 10          # The number of consecutive true results to trigger heavy rain detection
+
+terminal_info:
+  print: false      # if True  publisher_roi_pointcloud_topic is published and generates CSV in .ros for cropped point cloud

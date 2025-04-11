@@ -1,0 +1,11 @@
+{
+    "type": "job_instruction_response",
+    "data":
+	{
+        "id": "86722a5e-c",
+        "current_route": [],
+        "dest_location": "",
+        "success": 1,
+        "rejection_code": ""
+    }
+}

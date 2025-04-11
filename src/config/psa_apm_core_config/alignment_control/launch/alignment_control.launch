@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="project_global_config_file_path" default="$(find psa_apm_core_config)/alignment_control/config/global_alignment_control_config.yaml" />
+
+  <include file="$(find alignment_control)/launch/alignment_control.launch">
+    <arg name="global_config_file_path" value="$(arg project_global_config_file_path)"/>
+  </include>
+
+</launch>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!--****** Ros Param Config ****** -->
+  <arg name="config_file_path" default="$(find psa_apm_airs_config)/config/psa_apm_airs_bridge_config.yaml" />
+  <rosparam command="load" file="$(arg config_file_path)"/>
+
+  <!--****** Ros Console Config ****** -->
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find psa_apm_airs_config)/config/airs_rosconsole.conf"/>
+
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+  <!--****** Node Launch ****** -->
+  <group ns="airs">
+    <node pkg="airs_bridge" type="airs_bridge" name="airs_bridge_node" />
+  </group>
+  <include file="$(find cas_investigation)/launch/cas_investigation.launch" />
+</launch>
+

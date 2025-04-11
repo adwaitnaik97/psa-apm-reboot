@@ -1,0 +1,12 @@
+{
+    "type": "refuel_response",
+    "data":
+	{
+        "id": "job132414",
+        "current_route": [],
+        "dest_location": "refueling_lane_1_1",
+        "success": 1,
+        "rejection_code": "",
+        "affected_by_road_blocks": 0
+    }
+}

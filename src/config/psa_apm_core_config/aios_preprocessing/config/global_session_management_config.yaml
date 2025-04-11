@@ -1,0 +1,67 @@
+aios/session:
+  config:
+    manual_path_verify_timeout_seconds: 120
+    path_accept_model: 2
+    prev_block_entry_slot_start: 1
+    prev_block_entry_slot_end: 5
+    direct_chassis_turn_slot_start: 6
+    direct_chassis_turn_slot_end: 10
+    direct_chassis2chassis_exit_slot_start: 30
+    direct_chassis2chassis_exit_slot_end: 40
+    chassis2chassis_allowed: false
+
+    navigate_on_slot_verification: true
+    navigate_on_coordinate_enable: true
+    allow_reverse_to_front_dock: false
+    fine_alignment_required: true
+    prealign_required: false
+
+
+    prealign_wharfside_required: false
+    feature_align_required: true
+    feature_align_qcrane_req: true
+    feature_align_rtg_req: false
+
+    prealign_required_load: false
+    prealign_required_offload: false
+    prealign_required_refuel: false
+    prealign_required_standby: false
+    prealign_required_maint: false
+    prealign_required_park: false
+
+    feature_align_required_load: true
+    feature_align_required_offload: true
+    feature_align_required_refuel: false
+    feature_align_required_standby: false
+    feature_align_required_maintenance: false
+    feature_align_required_park: false
+
+
+    # Prealignment model
+    # 1 - Existing with baselink and fixed distance to gnss
+    # 2 - Use GNSS pose directly
+    # 3 - Use GNSS pose with additional pose defined by additionalOffset_from_FRTrailerRef and additionalOffset_from_BKTrailerRef
+    # 4 - Use GNSS pose with container detection offset (includes additional offset as above)
+    # 5 - Use GNSS pose of raw position. NOTE Not completed/tested
+    prealignment_model: 1
+
+    # additional offset required from reference points trailer for Front 
+    additionalOffset_from_FRTrailerRef: 0.0
+    # additional offset required from reference points trailer for Rear
+    additionalOffset_from_BKTrailerRef: 0.0
+
+    # Distance of lidar to gnss
+    dist_lidar2gnss: 0.3
+    # Distance of gnss to fr reference pose on trailer
+    dist_gnss2FRtrailerRef: 2.54
+    # Distance of gnss to rear reference pose on trailer
+    dist_gnss2BKtrailerRef: 9.13
+    #Threshold from referance point to accept lidar detected container
+    container_offset_threshold: 1.0
+
+    # Required only for model 5
+    fr_offset_from_rawDest: 3.70
+    bk_offset_from_rawDest: 9.29
+
+    accept_job_via_instructions: false
+

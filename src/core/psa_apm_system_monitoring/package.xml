@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>psa_apm_system_monitoring</name>
+  <version>0.0.0</version>
+  <description>The psa_apm_system_monitoring package</description>
+
+  <maintainer email="mahindan@aidrivers.ai">mahi</maintainer>
+
+  <license>AIOS</license>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>ros_type_introspection</build_depend>
+  <build_depend>topic_tools</build_depend>
+  <build_depend>novatel_gps_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>message_filters</build_depend>
+  <build_depend>apm_diagnostic_msgs</build_depend>
+  <build_depend>diagnostic_msgs</build_depend>
+  <build_depend>tf2_ros</build_depend>
+  <build_depend>tf2_geometry_msgs</build_depend>
+  <build_depend>airs_msgs</build_depend>
+  <build_depend>aipe_msgs</build_depend>
+  <build_depend>aisc_msgs</build_depend>
+  <build_depend>aidc_msgs</build_depend>
+
+
+  <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <build_export_depend>ros_type_introspection</build_export_depend>
+  <build_export_depend>topic_tools</build_export_depend>
+  <build_export_depend>novatel_gps_msgs</build_export_depend>
+  <build_export_depend>nav_msgs</build_export_depend>
+  <build_export_depend>message_filters</build_export_depend>
+  <build_export_depend>apm_diagnostic_msgs</build_export_depend>
+  <build_export_depend>diagnostic_msgs</build_export_depend>
+  <build_export_depend>tf2_ros</build_export_depend>
+  <build_export_depend>tf2_geometry_msgs</build_export_depend>
+  <build_export_depend>airs_msgs</build_export_depend>
+  <build_export_depend>aipe_msgs</build_export_depend>
+  <build_export_depend>aisc_msgs</build_export_depend>
+  <build_export_depend>aidc_msgs</build_export_depend>
+
+
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>ros_type_introspection</exec_depend>
+  <exec_depend>topic_tools</exec_depend>
+  <exec_depend>novatel_gps_msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>message_filters</exec_depend>
+  <exec_depend>apm_diagnostic_msgs</exec_depend>
+  <exec_depend>diagnostic_msgs</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>tf2_geometry_msgs</exec_depend>
+  <exec_depend>airs_msgs</exec_depend>
+  <exec_depend>aipe_msgs</exec_depend>
+  <exec_depend>aisc_msgs</exec_depend>
+  <exec_depend>aidc_msgs</exec_depend>
+
+
+
+</package>

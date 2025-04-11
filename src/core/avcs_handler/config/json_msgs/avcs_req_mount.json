@@ -1,0 +1,33 @@
+{
+    "type":"mount_instruction",
+    "data":{
+        "id":"MOAPM833021022023132412",
+        "timestamp":1676957345613,
+        "operational_type":"IY",
+        "job_type":"O",
+        "operational_group":"IYO50OO01",
+        "cntr_number":"TGHU 3411403 ",
+        "cntr_size":"20",
+        "cntr_weight":25000,
+        "cntr_category":"GP ",
+        "cntr_type":"GP",
+        "cntr_status":"F",
+        "dg_group":"",
+        "imo_class":"",
+        "reefer_temperature":"",
+        "cntr_location_on_apm":1,
+        "source_location":"",
+        "dest_location":"",
+        "offload_sequence":"00",
+        "cone":0,
+        "operational_qc_sequence":0,
+        "operational_job_sequence":0,
+        "trailer_position":" ",
+        "weight_class":"U",
+        "urgent":"N",
+        "dg":"N",
+        "plug_required":"N",
+        "lift_type":1,
+        "message":""
+    }
+}

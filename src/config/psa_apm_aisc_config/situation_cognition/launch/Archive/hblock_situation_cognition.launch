@@ -1,0 +1,25 @@
+<launch>
+	<arg name="rndf_file" default="$(find aios_config)/rndf/psa_st1/Hblockrndf120421.rndf"/>
+	<arg name="junction_box_csv" default="$(find situation_cognition)/csv_files/h_block_junction_box.csv"/>
+	<arg name="lane_info_csv" default="$(find situation_cognition)/csv_files/h_block_lane_info_test.csv"/>
+	<arg name="pedestrian_box_csv" default="$(find situation_cognition)/csv_files/h_block_pedestrian_box.csv"/>
+	
+	<param name="rndf_file" value="$(arg rndf_file)"/>
+	<param name="lane_info_csv" value="$(arg lane_info_csv)"/>
+	<param name="pedestrian_box_csv" value="$(arg pedestrian_box_csv)"/>
+	<param name="junction_box_csv" value="$(arg junction_box_csv)"/>
+
+	<rosparam command="load" file="$(find situation_cognition)/config/situation_cognition.yaml" />
+
+	<arg name="namespace" default="/aisc/situation_cognition"/>
+	<!--node pkg="detected_objects_visualizer" type="visualize_detected_objects" name="ukf_track_visualization_aisc"
+        output="screen" ns="$(arg namespace)">
+        <param name="objects_src_topic" value="/object_in_front"/>
+  	</node-->
+	
+	<node pkg="situation_cognition" name="aisc_lane_info" type="situation_cognition_lane_info_publisher.py" output="screen"/>
+	<node pkg="situation_cognition" name="aisc_main" type="situation_cognition_node" output="screen"/>
+
+	<include file="$(find jsk_visualiser)/launch/jsk_visualiser.launch" />
+	
+</launch>

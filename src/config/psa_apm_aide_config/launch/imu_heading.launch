@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+
+<group ns="imu">
+   <node pkg="robot_localization" type="ukf_localization_node" name="imu_filtered" output="log">
+      <rosparam command="load" file="$(find psa_apm_aide_config)/config/imu_config.yaml" />
+      <remap from="odometry/filtered" to="filtered/"/>
+  </node>
+</group>
+</launch>

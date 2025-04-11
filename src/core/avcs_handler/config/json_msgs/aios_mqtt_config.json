@@ -1,0 +1,29 @@
+{
+    "type": "configuration",
+    "client_id": "APM8381",
+    "address": "127.0.0.1:1883",
+    "sub_topic": [
+        {
+            "name": "/APM8381/from_avcs",
+            "publish_to": "/aios/avcs_handler/mqtt/from_client"
+        },
+        {
+            "name": "/map/wgs84",
+            "publish_to": "/aios/avcs_handler/mqtt/from_client/block"
+        },
+        {
+            "name": "/map/WGS84",
+            "publish_to": "/aios/avcs_handler/mqtt/from_client/blockt"
+        },
+        {
+            "name": "/map/blocks",
+            "publish_to": "/aios/avcs_handler/mqtt/from_client/block"
+        }
+    ],
+    "pub_topic": [
+        {
+            "name": "/APM8381/to_avcs",
+            "get_from": "/aios/avcs_handler/mqtt/to_client"
+        }
+    ]
+}

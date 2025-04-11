@@ -1,0 +1,38 @@
+lane_detection_clrnet:
+  #onnx_filename: "$(find aipe_config)/assets/clrnet/clrnet_apm_v5.onnx" the substitutions don't work when the launch file is included in some other launch file, don't know why?
+  #test_image_path: "$(find lane_detection_clrnet)/test/1657262301834647509.jpg"
+  input_topic: "/camera_top_center_front/image_rect_color"
+  output_topic: "/aipe/lane_detections/2d"
+  show_inference: True
+  test_mode: False
+  confidence_threshold: 0.01
+lane_projection:
+  output_topic: "/aipe/lane_detection_fnet_3D"
+  detection_topic: "/aipe/lane_detection_fnet"
+  points_raw_topic: "/points_raw"
+  taxi_flag_topic: "/aipe/preprocessing/taxi_flag"
+  chassis_lane_topic: "/aipe/preprocessing/chassis_lane"
+  steering_topic: "/aipe/adas_steering"
+  top_centre_camera_info_topic: "/camera_top_center_front/camera_info"
+  distance_threshold: 10
+  offset_distance: 50
+  max_slope: 0.5
+  offset_bias: 0.0
+lane_projector:  # config for lane_projector_tf
+  input_topic: "/aipe/lane_detections/2d"
+  bbox_visualisation_topic: "/aipe/lane_detections/bboxes"
+  output_topic: "/aipe/lane_detections/3d"
+  cam_info_topic: "/camera_top_center_front/camera_info"
+  ground_frame: "ground_approx"  # frame in which the X/Y axes run along the surface of the ground
+  output_frame: "ground_approx"
+  front_displacement: 2  # how far ahead to project before moving left/right to centre of lane
+  display: True
+  output_label: "LaneLine"
+lane_pointer:
+  input_topic: "/aipe/lane_detections/3d"
+  lateral_offset_topic: "/aipe/lane_projection/offset"
+  lane_orientation_topic: "/aipe/lane_projection/lane_center_angle"
+  lateral_offset_bias: 0
+  lane_orientation_bias: 0
+  ref_frame: "ground_approx"
+  display: True

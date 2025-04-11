@@ -1,0 +1,68 @@
+<launch>
+
+  <!-- suppress detections below this level of confidence -->
+  <arg name="obj_threshold" default="0.3" />
+
+  <!-- if detections overlap with an IoU greater than nms_threshold, merge them into one -->
+  <arg name="nms_threshold" default="0.2" />
+
+  <!-- display what the network sees? -->
+  <arg name="show_topic" default="false" />
+
+  <!-- engine cfg -->
+  <arg name="onnx_file" default="$(find scaled_yolo)/weights/apm/yolov4-p5-apm-test-1.onnx"/>
+  <arg name="engine_file" default="$(find scaled_yolo)/weights/apm/yolov4-p5-apm-test-1.trt"/>
+  <arg name="labels_file" default="$(find scaled_yolo)/weights/apm/apm.names"/>
+
+  <!-- dims of inference tensor -->
+  <arg name="width" default="672" />
+  <arg name="height" default="672" />
+  <arg name="channels" default="3" />
+  <arg name="batch_size" default="1" />
+
+  <!-- interpolation method to be used for resizing images -->
+  <!-- INTER_AREA or INTER_LINEAR -->
+  <arg name="interp_method" default="INTER_AREA" />
+
+  <!-- if roi is set, crop to the given pixel values -->
+  <arg name="roi" default="false" />
+  <arg name="roi_x" default="0" />
+  <arg name="roi_y" default="0" />
+  <arg name="roi_w" default="0" />
+  <arg name="roi_h" default="0" />
+
+  <!-- topics to subscribe to for images -->
+  <arg name="fbl" default="false" />
+  <arg name="fbc" default="false" />
+  <arg name="fbr" default="false" />
+  <arg name="ftc" default="true" />
+  <arg name="rtl" default="false" />
+  <arg name="rtr" default="false" />
+
+  <arg name="my_arg" default="WRONG" />
+
+  <arg name="image_topics" default="$(eval ' '.join(['/camera_top_left_front/image_raw' if arg('fbl') else '', '/cam_front_bottom_centre/image_raw' if arg('fbc') else '', '/camera_top_right_front/image_raw' if arg('fbr') else '', '/camera_top_center_front/image_raw' if arg('ftc') else '', '/cam_rear_top_left/image_raw' if arg('rtl') else '', '/cam_rear_top_right/image_raw' if arg('rtr') else '']))" />
+
+  <arg name="det_topics" default="$(eval ' '.join(['/aipe/camera_top_left_front/detections' if arg('fbl') else '', '/aipe/cam_front_bottom_centre/detections' if arg('fbc') else '', '/aipe/camera_top_right_front/detections' if arg('fbr') else '', '/aipe/camera_top_center_front/detections' if arg('ftc') else '', '/aipe/cam_rear_top_left/detections' if arg('rtl') else '', '/aipe/cam_rear_top_right/detections' if arg('rtr') else '']))" />
+
+  <node pkg="scaled_yolo" name="scaled_yolo_apm" type="scaled_yolo" output="screen" 
+    required="true" ns="aipe" launch-prefix="bash -c 'sleep 2; $0 $@' ">
+
+    <rosparam command="load" subst_value="True" file="$(find psa_apm_aipe_config)/cfg/yolo_apm.yaml" />
+
+    <rosparam param="strides">
+      [8, 16, 32]
+    </rosparam>
+    <rosparam param="num_anchors">
+      [4, 4, 4]
+    </rosparam>
+
+    <rosparam param="anchors">
+     [13,17,  31,25,  24,51, 61,45,
+      48,102,  119,96, 97,189, 217,184,
+      171,384, 324,451, 616,618, 800,800]
+    </rosparam>
+
+  </node>
+
+</launch>

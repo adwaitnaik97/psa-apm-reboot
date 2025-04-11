@@ -1,0 +1,14 @@
+{
+    "type": "dock_position",
+    "data":
+        {
+            "id": "MO06062022124500",
+		    "terminal": "P",
+		    "block": "TP4",
+		    "slot": 11,
+		    "operational_group": "",
+		    "chassis_lane": 1,
+		    "activity": 3,
+		    "cntr_location_on_apm": 1
+        }
+}

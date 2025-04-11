@@ -1,0 +1,22 @@
+{
+    "type": "maintenance",
+    "data":
+	{
+	    "id": "job132414",
+	    "dest_locations": "maintenance_bay_slot_1",
+	    "map_version": "v1",
+	    "route_dag": [{
+			    "name": "place1",
+			    "pose": {}
+		    },
+		    {
+			    "name": "place2",
+			    "pose": {}
+		    },
+		    {
+			    "name": "place3",
+			    "pose": {}
+		    }
+	    ]
+	}
+}

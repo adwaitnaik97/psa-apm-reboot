@@ -1,0 +1,11 @@
+{
+    "type": "manual_route_confirmation_response",
+    "data":
+	{
+        "id":"job132414",
+        "dest_location": "TB3_lane_11_slot_21",
+        "success":1,
+        "rejection_code": ""
+    }
+}
+

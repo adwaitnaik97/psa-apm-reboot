@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+  <!--****** Ros Console Config ****** -->
+ <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+
+  <arg name="aide_debug" default="False"/>
+  <arg name="xterm_req" default="" if="$(eval aide_debug==False)" /> 
+  <arg name="xterm_req" default="xterm -e" if="$(eval aide_debug==True)" /> 
+
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aide_apm_config)/config/apm_rosconsole_debug.conf" if="$(eval aide_debug)"/>
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aide_apm_config)/config/apm_rosconsole.conf" unless="$(eval aide_debug)"/>
+
+  <!--****** Node Launch ****** -->
+  <group ns="aide" >
+    <node pkg="gnss_management" type="gnss_management_node" name="gnss_management_node" launch-prefix="$(arg xterm_req)">
+      <rosparam command="load" file="$(find psa_apm_aide_config)/config/gnss_management.yaml" />
+      <rosparam command="load" file="$(find gnss_management)/config/gnss_management_local.yaml" />
+    </node>
+  </group>
+</launch>

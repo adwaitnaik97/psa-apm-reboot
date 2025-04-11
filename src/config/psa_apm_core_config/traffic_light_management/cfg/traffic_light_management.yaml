@@ -1,0 +1,35 @@
+v2i_control:
+  lane_src_topic: "/aidc/run_iterator/current_track_index"
+  light_indicator_src_topic: "/aidc/run_iterator/light/indicator"
+  v2i_topic: "/aios/v2i_handler/info"
+  tl_v2i_topic: "/aipe/tl_signal/v2i"
+  v2i_max_dist_to_junction: 100
+  v2i_time_buffer: 1000
+  v2i_dictionary: "traffic_light_management/cfg/v2i.json"
+  direction_map: "traffic_light_management/cfg/direction_map.yaml"
+  output_frame_id: "lidar_link"
+  junction_id_topic: "/aipe/junction_id"
+  odom_topic: "/aide/odometry/filtered/utm/baselink"
+
+tl_vision_control:
+  fused_objects: "/aipe/fused/tracked_objects"
+  classifications_fbc_topic: "/aipe/camera_top_center_front/classifications"
+  classifications_fbl_topic: "/aipe/camera_top_left_front/classifications"
+  classifications_fbr_topic: "/aipe/camera_top_right_front/classifications"
+  apm_speed_src: "/airs/plc/critical_fbk/reg_37"
+  hazard_topic: "/aisc/situation_cognition/result"
+  trip_job_topic: "/aifo/trip_job/status"
+  apm_status_topic: "/aidc/apm_status/status"
+  tl_cas_topic: "/aipe/tl_signal/cas"
+  tl_junction_topic: "/aipe/tl_signal/junction"
+  lanes_file: "traffic_light_management/cfg/lanes.json"
+  overlap_threshold: 0.1
+  virtual_poles: "true"
+  flickering_duration: 10
+  red_tolerance: 3
+  max_CAS_duration: 50000000
+  turn_right_wait_time: 20
+  precision_alignment_thresh: 10
+
+junction_id_publisher:
+  traffic_lights_file: "traffic_light_management/cfg/traffic_lights.json"

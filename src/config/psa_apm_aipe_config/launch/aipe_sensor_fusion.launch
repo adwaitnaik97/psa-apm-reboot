@@ -1,0 +1,15 @@
+<launch>
+
+  <arg name="config_file_path" default="$(find psa_apm_aipe_config)/cfg/psa_apm_aipe_config.yaml" />
+  <rosparam command="load" file="$(arg config_file_path)" />
+
+  <!-- Sensor fusion -->
+  <include file="$(find sensor_fusion)/launch/sensor_fusion.launch" >
+        <arg name="config_file" value="$(arg config_file_path)" />
+  </include>
+
+  <!-- Traffic light control -->
+  <include file="$(find tl_vision_control)/launch/tl_vision_control.launch" >
+  </include>
+
+</launch>

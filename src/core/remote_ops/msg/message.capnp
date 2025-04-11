@@ -1,0 +1,1 @@
+@0xa7c93d908ecfcc38;struct Message {  timestamp @0 :UInt64;  version @1 :UInt16;  type @2 :Text;  payload @3 :Data;  uncompressedPayloadSize @4: UInt64;}

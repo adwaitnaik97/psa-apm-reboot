@@ -1,0 +1,68 @@
+<launch>
+
+  <!-- suppress detections below this level of confidence -->
+  <arg name="obj_threshold" default="0.4" />
+
+  <!-- index of topic to show in a cv window -->
+  <!-- indexes start from 0,  put "-1" to show nothing -->
+  <arg name="show_topic" default="-1" />
+
+  <!-- dims of inference tensor -->
+  <!-- don't change these! -->
+  <arg name="width" default="256" />
+  <arg name="height" default="256" />
+  <arg name="channels" default="3" />
+  <arg name="batch_size" default="2" />
+
+  <!-- engine cfg -->
+  <arg name="onnx_file" default="$(find classifier)/weights/apm/tf_6-$(arg batch_size).onnx"/>
+  <arg name="engine_file" default="$(find classifier)/weights/apm/tf_6-$(arg batch_size).trt"/>
+  <arg name="labels_file" default="$(find classifier)/weights/apm/tf_6.list"/>
+
+  <!-- interpolation method to be used for resizing images -->
+  <!-- INTER_AREA or INTER_LINEAR -->
+  <arg name="interp_method" default="INTER_AREA" />
+
+  <!-- topics to subscribe to for images -->
+  <arg name="fbl" default="false" />
+  <arg name="fbc" default="false" />
+  <arg name="fbr" default="false" />
+  <arg name="ftc" default="true" />
+  <arg name="rtl" default="false" />
+  <arg name="rtr" default="false" />
+  <arg name="image_topics" default="$(eval ' '.join(['/camera_top_left_front/image_raw' if arg('fbl') else '', '/cam_front_bottom_centre/image_raw' if arg('fbc') else '', '/camera_top_right_front/image_raw' if arg('fbr') else '', '/camera_top_center_front/image_raw' if arg('ftc') else '', '/cam_rear_top_left/image_raw' if arg('rtl') else '', '/cam_rear_top_right/image_raw' if arg('rtr') else '']))" />
+  <arg name="det_topics" default="$(eval ' '.join(['camera_top_left_front/detections' if arg('fbl') else '', 'cam_front_bottom_centre/detections' if arg('fbc') else '', 'camera_top_right_front/detections' if arg('fbr') else '', 'camera_top_center_front/detections' if arg('ftc') else '', 'cam_rear_top_left/detections' if arg('rtl') else '', 'cam_rear_top_right/detections' if arg('rtr') else '']))" />
+
+  <node pkg="classifier" name="trafficlight_classifier" type="classifier" output="screen" respawn="true" ns="aipe"
+    launch-prefix="bash -c 'sleep 3; $0 $@' ">
+
+    <rosparam command="load" subst_value="True" file="$(find psa_apm_aipe_config)/cfg/trafficlight_classifier.yaml" />
+
+    <!--
+    <param name="show_topic" type="int" value="$(arg show_topic)" />
+    <param name="interp_method" type="str" value="$(arg interp_method)" />
+    <param name="obj_threshold" type="double" value="$(arg obj_threshold)" />
+
+    <param name="image_topics" type="str" value="$(arg image_topics)" />
+    <param name="det_topics" type="str" value="$(arg det_topics)" />
+
+    <param name="width" type="int" value="$(arg width)" />
+    <param name="height" type="int" value="$(arg height)" />
+    <param name="channels" type="int" value="$(arg channels)" />
+    <param name="batch_size" type="int" value="$(arg batch_size)" />
+
+    <param name="classifier_class" type="str" value="Traffic_light" />
+    <param name="norm_R_mean" type="double" value="0.485" />
+    <param name="norm_G_mean" type="double" value="0.456" />
+    <param name="norm_B_mean" type="double" value="0.406" />
+    <param name="norm_R_std" type="double" value="0.229" />
+    <param name="norm_G_std" type="double" value="0.224" />
+    <param name="norm_B_std" type="double" value="0.225" />
+    <param name="onnx_file" type="str" value="$(arg onnx_file)" />
+    <param name="engine_file" type="str" value="$(arg engine_file)" />
+    <param name="labels_file" type="str" value="$(arg labels_file)" />
+    -->
+
+  </node>
+
+</launch>

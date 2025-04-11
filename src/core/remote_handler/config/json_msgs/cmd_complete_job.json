@@ -1,0 +1,5 @@
+{
+  "toMqttTopicName": "",
+  "fromMqttTopicName": "cmd_complete_job",
+  "state": false
+}   

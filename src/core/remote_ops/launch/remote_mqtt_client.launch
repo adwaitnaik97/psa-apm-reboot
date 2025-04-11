@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+  <!--****** Ros Console Config ****** -->
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+  <arg name="config_file" default="$(find remote_ops)/config/remote_mqtt_client_config.yaml"/>
+  <rosparam command="load" file="$(arg config_file)"/>
+
+  <!--****** Node Launch ****** -->
+  <node pkg = "remote_ops" type ="remote_mqtt_client" name = "remote_mqtt_client" output="screen"/>
+</launch>

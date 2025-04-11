@@ -1,0 +1,28 @@
+{
+    "toMqttTopicName": "linkup",
+    "fromMqttTopicName": "linkup",
+    "ConsoleViewType": {
+        "control": 0,
+        "view": 1
+    },
+    "ConsoleMode": {
+        "test":0,
+        "production":1
+    },
+
+    "LinkUpResult": {
+
+        "notApplicable": 0,
+        "success": 1,
+        "failNotInValidState" : 2,
+        "failAlreadyControlled" : 3,
+        "failNotExpectingLinkup" : 4
+    },
+
+    "consoleId": "",
+    "vehicleId": "",
+    "viewType": 0,
+    "consoleMode": 0,
+    "result": 0,
+    "resultText": ""
+}   

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="qc_localization_global_config_file_path" default="$(find psa_apm_aipe_config)/qcrane_localization/config/global_qcrane_localization.yaml" />
+
+  <include file="$(find lidar_qcrane_localisation)/launch/lidar_qcrane_localisation.launch">
+    <arg name="global_config_file_path" value="$(arg qc_localization_global_config_file_path)"/>
+  </include>
+
+</launch>

@@ -1,0 +1,31 @@
+#*array of string*
+#If the IMU tructure parameter to provide:
+#The topic name
+#Data type of the message. The data type is either geometr_msgs::Quaternion(input as geometry_msgs) or sensor_msgs::Imu (input as sensor_msgs)
+#Whether north reference heading is requested.
+#IMU output convention. NED or ENU.
+#IMU orientation wrt vehicle (yaw, pitch, roll)
+#Up to 9 inputs.
+imu_input:
+    list:
+       # - {topic: "/imu/data", data_type: "sensor_msgs", is_northref_correction_req: false, imu_convention: "ENU", imu_orientation_wrt_vehicle: [0.0 ,0.0 ,0.0]}
+#- {topic: /HGuide/Std/Imu, data_type: sensor_msgs , is_northref_correction_req: true, imu_convention: ENU}
+       - {topic: "/imu/filtered", data_type: "nav_msgs", is_northref_correction_req: true, imu_convention: "ENU", imu_orientation_wrt_vehicle: [0.0, 0.0, 180.0]}
+#*string*
+#To change the frame id of the IMU to a standard value that is available in the tf tree.
+imu_frame_id: imu_link
+publish_2d_grounding_msg: false
+kill_imu_tracker: false
+#*degree*
+#How much we need to rotate the IMU input so that the orientation is aligned to the vehicle.
+#Should be able to address using the tf.
+#imu_orientation_wrt_vehicle: [180, 0, 0] #Roll Pitch Yaw
+
+#*string*
+#The topic name for getting the north referenced heading for IMU initialization.
+northref_heading_input_topic: /aide_info/northref/heading
+
+#*Boolean*
+#Parameter to turn on the 2D grounding message
+#Will be removed and
+wheel_encoder_available: true 

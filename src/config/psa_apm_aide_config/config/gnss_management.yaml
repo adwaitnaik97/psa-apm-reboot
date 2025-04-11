@@ -1,0 +1,39 @@
+topic:
+    input:
+        {
+        gnss_qual: "/gpgga",
+        plc: "/airs/plc/critical_fbk/reg_37"
+        }
+logic_parameters:
+    percentage_tolerance_increase: 0.2
+    unreliable:
+        {
+        stdev_in_yard: 0.15,
+        stdev_out_yard: 0.25
+        }
+    overconfident:
+        #Condition 1
+        moving_bad_gnss:
+            {
+            x_scale: 0.025,
+            y_scale: 0.01
+            }
+        #Condition 2
+        stationary:
+            {
+            longitudinal: 0.5,
+            lateral: 0.15,
+            distance: 0.3
+            }
+        #Condition 3
+        moving_good_gnss:
+            {
+            x_scale: 0.3,
+            y_flat: 0.1
+            }
+        #Condition 4
+        acceptable_position_jump:
+            {
+            x: 2.0,
+            y: 0.15
+            }

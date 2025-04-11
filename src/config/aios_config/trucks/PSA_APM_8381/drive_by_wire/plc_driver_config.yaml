@@ -1,0 +1,3 @@
+airs/plc:
+  pcan_device: "PCAN_DEVICE_USB"
+  pcan_baud_rate: 1

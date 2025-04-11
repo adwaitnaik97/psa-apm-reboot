@@ -1,0 +1,6 @@
+{
+    "type": "power_off_request",
+    "data":
+	    { 
+	    }
+}

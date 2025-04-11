@@ -1,0 +1,60 @@
+<launch>
+
+  <!-- args settable from CLI/GUI -->
+  <!-- camera_name can be one of:
+       camera_top_center_front, camera_top_left_front, camera_top_right_front -->
+  <arg name="camera_name" default="camera_top_center_front" />
+  <arg name="respawn" default="false" />
+  <arg name="debug" default="false" />
+  <arg name="simulation" default="false" />
+  <arg name="play_camera_info" default="true" />
+
+  <!-- AIOS_ID, eg. PSA_APM_8380, PSA_APM_8381
+       Only needed if using live camera or reproducing camera_info msgs
+       Set by default using the the $AIOS_ID env variable, can be optionally supplied/overridden by launch argument
+       if neither $AIOS_ID is set in the env OR supplied as an argument, will be set to AIOS_ID_NOT_SET -->
+  <arg name="aios_id" default="$(optenv AIOS_ID AIOS_ID_NOT_SET)"/>
+
+  <!-- debug flags -->
+  <arg     if="$(arg debug)" name="launch_prefix" value="gdb -ex run --args" />
+  <arg unless="$(arg debug)" name="launch_prefix" value="bash -c 'sleep 3; $0 $@'"  />
+
+  <!-- intrinsic camera calibration -->
+  <arg name="camera_calib_path" value="$(find aios_config)/trucks/$(arg aios_id)/cameras/calibration/$(arg camera_name).yaml" if="$(eval play_camera_info or not simulation)"/>
+
+  <!-- Load shared PTP arena camera configuration -->
+  <rosparam command="load" file="$(find psa_apm_sensor_config)/cameras/config/camera_shared_config_lucid.yaml" ns="$(arg camera_name)" />
+
+  <!-- load camera-specific configurations eg. Device IDs -->
+  <rosparam command="load" file="$(find aios_config)/trucks/$(arg aios_id)/cameras/config/$(arg camera_name).yaml" />
+
+
+  <!-- ArenaAPI to set binning to 2 -->
+  <!-- <node name="set_bin" pkg="psa_apm_sensor_config" type="Cpp_Acquisition_SensorBinning" args="$(arg camera_name)" ns="$(arg camera_name)"  output="screen"/> -->
+
+
+  <!-- camera driver node -->
+  <node name="$(arg camera_name)" pkg="arena_camera" type="arena_camera_node" output="screen"
+        respawn="$(arg respawn)" launch-prefix="$(arg launch_prefix)" unless="$(arg simulation)">
+    <!-- Frame matches topic name -->
+    <param name="camera_frame" type="string" value="$(arg camera_name)"/>
+
+    <!-- Intrinsic camera calibration for this camera, for producing camera_info -->
+    <param name="camera_info_url" type="string" value="file://$(arg camera_calib_path)"/>
+  </node>
+
+  <!-- nodes for simulation, ie. rosbag -->
+  <group if="$(arg simulation)" ns="$(arg camera_name)">
+    <!-- publish camera_info -->
+    <node pkg="cam_info_publisher" name="camera_info_pub" type="cam_info_publisher" output="screen">
+      <rosparam file="$(arg camera_calib_path)" />
+    </node>
+    <!-- decompress images (from bag file) -->
+    <node name="republish_$(arg camera_name)" type="republish" pkg="image_transport" output="screen"
+          args="compressed in:=image_raw raw out:=image_raw"/>
+  </group>
+
+  <!-- image_proc for image rectification -->
+  <node name="image_proc" pkg="image_proc" type="image_proc" ns="$(arg camera_name)"/>
+
+</launch>

@@ -1,0 +1,9 @@
+{
+    "type":"stop_response",
+    "data":
+    {
+        "id":"56fe0ae6-ba77-433c-a2c5-aedf324c04eb",
+        "success":1,
+        "rejection_code": ""
+    }
+}

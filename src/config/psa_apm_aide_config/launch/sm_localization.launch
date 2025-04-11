@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!--****** Ros Console Config ****** -->
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+
+  <arg name="aide_debug" default="False"/>
+  <arg name="xterm_req" default="" if="$(eval aide_debug==False)" /> 
+  <arg name="xterm_req" default="xterm -T scan_matching_nodelet -e" if="$(eval aide_debug==True)" /> 
+  <arg name="print" default="log" if="$(eval aide_debug==False)" /> 
+  <arg name="print" default="screen" if="$(eval aide_debug==True)" /> 
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aide_apm_config)/config/apm_rosconsole_debug.conf" if="$(eval aide_debug)"/>
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aide_apm_config)/config/apm_rosconsole.conf" unless="$(eval aide_debug)"/>
+
+
+  <!-- arguments -->
+  <arg name="nodelet_manager" default="sm_nodelet_manager" />
+
+  <!-- Set the topic name of the input point cloud -->
+  <arg name="points_topic" default="/lidar_top_center/rslidar_points" />
+  <!-- <arg name="points_topic" default="/points_raw" /> -->
+  <!-- <arg name="points_topic" default="/filtered_raw_points" /> -->
+  
+  <!-- input clouds are transformed in odom_child_frame, and then localization is performed in that frame -->
+  <!-- this is useful to match the LIDAR and IMU coordinate systems -->
+  <arg name="odom_child_frame_id" default="base_link" />
+  <!-- <arg name="odom_child_frame_id" default="lidar_link" /> -->
+  
+  <!-- if "specify_init_pose" is true, pose estimator will be initialized with the set params in the localization nodelet below -->
+  <!-- otherwise, you need to input an initial pose with "2D Pose Estimate" on rviz", or use AIDE Localization for the init pose -->
+  <arg name="specify_init_pose" default="false" />
+  <!-- AIDE related arguments -->
+  <!-- if "use_aide_init_pose" is true, the init pose is taken from AIDE Localization  -->
+  <arg name="use_aide_init_pose" default="true" />
+  <!-- if "use_aide_as_guess_pose" is true, the odometry guess pose is taken from AIDE Localization  -->
+  <!-- Note that, to  use AIDE Odometry as guess pose, the argument "enable_robot_odometry_prediction" must also be true -->
+  <arg name="use_aide_as_guess_pose" default="true" />
+
+  <arg name="terminal_long" default="true" />
+
+  <arg name="aide_odom_topic" default="/aide/odometry/filtered/aidemap/baselink" />
+  
+
+
+  <!-- Setting Ros Params -->
+  <!-- <param name="/use_sim_time" value="true" /> -->
+
+  <!-- optional arguments -->
+  <arg name="use_imu" default="false" />
+  <arg name="invert_imu_acc" default="false" />
+  <arg name="invert_imu_gyro" default="false" />
+  <arg name="use_global_localization" default="true" />
+  <arg name="imu_topic" default="/imu/data" />
+  <arg name="enable_robot_odometry_prediction" value="true" />
+  <!-- <arg name="robot_odom_frame_id" value="aide_map" /> -->
+  <arg name="robot_odom_frame_id" value="aide_map" />
+  <!-- <arg name="robot_odom_frame_id" value="r_map" /> -->
+  <arg name="plot_estimation_errors" value="false" />
+
+
+  <arg name="dataset" default="PSA" />
+  <arg name="sequence" default="TB3L00" />
+
+
+  <!-- transformation between lidar and base_link -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="lidar2base_publisher" args="0 0 0 0 0 0 base_link lidar_link 10" /> -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="psa2sm_publisher" args="0 0 0 0 0 0 aide_map map 10"/> -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="utm_to_lane_heading_frame_A" args="365583.839, 140166.735, 0.000 0.000, 0.000, 0.8696535, -0.4936626 /utm /lane_heading_frame_A"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="utm_to_lane_heading_frame_B" args="365583.839, 140166.735, 0.000 0.000, 0.000, 0.9639706, 0.2660089 /utm /lane_heading_frame_B"/>
+  
+  <!-- <node pkg="scan_matching_tools" type="filter_aipe_detected_object" name="filter_aipe_detected_object"/> -->
+  
+
+  <include file="$(find hdl_global_localization)/launch/hdl_global_localization.launch" if="$(arg use_global_localization)" />
+  <node pkg="nodelet" type="nodelet" name="$(arg nodelet_manager)" args="manager" output="$(arg print)" launch-prefix="$(arg xterm_req)"/>
+
+  <!-- <arg name="scan_matching_output_topic" default="/aide/odometry/sm/map/baselink"/> -->
+  <!-- <arg name="scan_matching_output_topic" default="/aide/odometry/filtered/aidemap/baselink"/> -->
+  <arg name="scan_matching_output_topic" default="/scan_matching_odom"/>
+  <!-- <arg name="scan_matching_output_topic" default="/odom"/> -->
+
+
+
+  <!-- prefiltering_nodelet -->
+  <node pkg="nodelet" type="nodelet" name="prefiltering_nodelet" args="load hdl_localization/PrefilteringNodelet $(arg nodelet_manager)" output="$(arg print)">
+  <!-- <node pkg="nodelet" type="prefiltering_nodelet" name="prefiltering_nodelet" args="load hdl_localization/PrefilteringNodelet $(arg nodelet_manager)" output="screen" launch-prefix="$(arg xterm_req)"> -->
+      <remap from="/velodyne_points" to="$(arg points_topic)" />
+      <remap from="/imu/data" to="$(arg imu_topic)" />
+      <param name="deskewing" value="true" />
+      <param name="scan_period" value="0.1" />
+      <param name="base_link_frame" value="base_link" />
+      <param name="use_distance_filter" value="true" />
+      <param name="filter_back" value="false" />
+      <param name="distance_near_thresh" value="5" />
+      <!-- <param name="distance_far_thresh" value="200.0" /> -->
+      <param name="distance_far_thresh" value="100.0" />
+      <param name="downsample_method" value="VOXELGRID" />
+      <param name="downsample_resolution" value="0.2" />
+      <param name="outlier_removal_method" value="RADIUS" />
+      <param name="statistical_mean_k" value="30" />
+      <param name="statistical_stddev" value="1.2" />
+      <param name="radius_radius" value="0.5" />
+      <param name="radius_min_neighbors" value="2" />
+  </node>
+
+
+
+  <!-- hdl_localization_nodelet -->
+  <node pkg="nodelet" type="nodelet" name="hdl_localization_nodelet" args="load hdl_localization/HdlLocalizationNodelet $(arg nodelet_manager)" output="$(arg print)">
+      <remap from="/velodyne_points" to="/filtered_points" />?
+      <remap from="/aide_odom_topic" to="$(arg aide_odom_topic)" />
+      <remap from="/gpsimu_driver/imu_data" to="$(arg imu_topic)" />
+      <remap from="/odom" to="$(arg scan_matching_output_topic)"/>
+      <!-- <remap from="/globalmap" to="/globalmap_lane_frame"/> -->
+      <!-- <remap from="map" to="aide_map"/> -->
+      <param name="terminal_long" value="$(arg terminal_long)" />
+      <!-- odometry frame_id -->
+      <param name="odom_child_frame_id" value="$(arg odom_child_frame_id)" />
+      <!-- imu settings -->
+      <!-- during "cool_time", imu inputs are ignored -->
+      <param name="use_imu" value="$(arg use_imu)" />
+      <param name="cool_time_duration" value="2.0" />
+      
+      <!-- robot odometry-based prediction -->
+      <param name="enable_robot_odometry_prediction" value="$(arg enable_robot_odometry_prediction)" />
+      <param name="robot_odom_frame_id" value="$(arg robot_odom_frame_id)" />
+
+
+      <!-- scan matching params -->
+      <!-- ICP, GICP, NDT, GICP_OMP, NDT_OMP, NDT_CUDA_P2D, NDT_CUDA_D2D, FAST_GICP(recommended), or FAST_VGICP -->
+      <!-- if NDT is slow for your PC, try DIRECT1 serach method, which is a bit unstable but extremely fast -->
+      <!-- <param name="reg_method" value="NDT_OMP" /> -->
+
+      <!-- reg_method: NDT_CUDA_P2D is a method that uses CUDA acceleration for point-to-point registration using Normal Distributions Transform (NDT).
+      This method is suitable for large datasets and provides accurate registration. -->
+      <!-- https://pointclouds.org/documentation/tutorials/normal_distributions_transform.html -->
+      <param name="reg_method" value="NDT_CUDA_P2D" />
+      <!-- reg_nn_search_method: DIRECT7 is a nearest neighbor search method that uses the k-d tree algorithm.
+      This method is suitable for datasets with moderate size and provides accurate results. -->
+      <param name="reg_nn_search_method" value="DIRECT7" />
+      <!-- ndt_neighbor_search_radius: This parameter determines the radius of the search space for the nearest neighbor search.
+      A larger radius increases the likelihood of finding correspondences, but also increases the computational time.  -->
+      <param name="ndt_neighbor_search_radius" value="10.0" />
+      <!-- reg_resolution: This parameter determines the resolution of the NDT grid used for registration.
+      the Resolution parameter defines the voxel resolution of the internal NDT grid structure.
+      This structure is easily searchable and each voxel contain the statistical data, mean, covariance, etc., associated with the points it contains.
+      The statistical data is used to model the cloud as a set of multivariate Gaussian distributions and allows us to calculate and optimize
+      the probability of the existence of points at any position within the voxel. This parameter is the most scale dependent.
+      It needs to be large enough for each voxel to contain at least 6 points but small enough to uniquely describe the environment.
+      A smaller value leads to a more accurate registration, but also increases computational time. -->
+      <param name="reg_resolution" value="1.4" />
+      <!-- downsample_resolution: This parameter determines the resolution of the point cloud after downsampling.
+      A smaller value leads to a more accurate registration, but also increases computational time.  -->
+      <param name="downsample_resolution" value="0.2" />
+      <!-- NOT NDT SPECIFIC //////////////////////////////////////////////////////////////////////////////////// -->
+      <!-- reg_num_threads: This parameter determines the number of threads used for registration.
+      A value of 0 means the method will automatically use the maximum number of available threads. -->
+      <param name="reg_num_threads" value="0" />
+      <!-- reg_transformation_epsilon: This parameter determines the convergence criterion for the optimization algorithm.
+      The Transformation Epsilon parameter defines minimum, allowable, incremental change of the transformation vector,
+      [x, y, z, roll, pitch, yaw] in meters and radians respectively. Once the incremental change dips below this threshold, the alignment terminates.
+      The Step Size parameter defines the maximum step length allowed by the More-Thuente line search.
+      This line search algorithm determines the best step length below this maximum value, shrinking the step length as you near the optimal solution.
+      Larger maximum step lengths will be able to clear greater distances in fewer iterations but run the risk of overshooting
+      and ending up in an undesirable local minimum. A smaller value leads to a more accurate registration, but also increases computational time.  -->
+      <param name="reg_transformation_epsilon" value="0.1"/>
+      <!-- reg_maximum_iterations: This parameter determines the maximum number of iterations for the optimization algorithm.
+      A larger value increases the likelihood of finding the optimal solution, but also increases computational time.  -->
+      <param name="reg_maximum_iterations" value="512"/>
+      <!-- reg_max_correspondence_distance: This parameter determines the maximum distance between correspondences.
+      A larger value allows for more mismatches, but also increases the likelihood of incorrect correspondences.  -->
+      <param name="reg_max_correspondence_distance" value="0.5"/>
+      <!-- reg_max_optimizer_iterations: This parameter determines the maximum number of iterations for the optimization algorithm.
+      A larger value increases the likelihood of finding the optimal solution, but also increases computational time.  -->
+      <param name="reg_max_optimizer_iterations" value="120"/>
+      <!-- reg_use_reciprocal_correspondences: This parameter determines whether to use reciprocal correspondences,
+      which are correspondences that are found in both point clouds. Using reciprocal correspondences improves the accuracy of the registration
+      but also increases the computational time. -->
+      <param name="reg_use_reciprocal_correspondences" value="false"/>
+      <!-- reg_correspondence_randomness: This parameter determines the randomness in selecting correspondences.
+      A larger value increases the likelihood of finding correspondences, but also increases the likelihood of incorrect correspondences.  -->
+      <param name="reg_correspondence_randomness" value="20"/>
+
+
+
+      <param name="use_aide_odometry" value="true"/>
+      <param name="use_PointMatcher" value="true" />
+      <param name="path_to_icp_yaml" value="$(find hdl_localization)/config/PointMatcher_config.yaml"/>
+      <param name="path_to_filter_yaml" value="$(find hdl_localization)/config/filter_config.yaml"/>
+
+      <param name="use_aide_init_pose" value="$(arg use_aide_init_pose)" />
+      
+      <param name="specify_init_pose" value="$(arg specify_init_pose)" />
+      <param name="init_pos_x" value="0.0" />
+      <param name="init_pos_y" value="0.0" />
+      <param name="init_pos_z" value="0.0" />
+      <param name="init_ori_w" value="1.0" />
+      <param name="init_ori_x" value="0.0" />
+      <param name="init_ori_y" value="0.0" />
+      <param name="init_ori_z" value="0.0" />
+
+      <param name="use_aide_as_guess_pose" value="$(arg use_aide_as_guess_pose)" />
+
+      <param name="use_global_localization" value="$(arg use_global_localization)" />
+  </node>
+
+
+  <!-- ROS Nodes to record Published Odometries into bagfiles -->
+  <!-- Please edit the following paths to match local folder structures -->
+  <arg name="aide_odom_bag_name" default="$(arg dataset)_$(arg sequence)_aide_odom" />
+  <arg name="hdl_odom_bag_name" default="$(arg dataset)_$(arg sequence)_hdl_odom" />
+  <arg name="gnss_odom_bag_name" default="$(arg dataset)_$(arg sequence)_gnss_odom" />
+  <node pkg="rosbag" type="record" name="rosbag_record_aide_odom" args="record -O /home/ahmed/catkin_ws/src/data/results/$(arg dataset)/$(arg sequence)/localization/$(arg aide_odom_bag_name) /aide/odometry/filtered/aidemap/baselink"/>   
+  <!-- <node pkg="rosbag" type="record" name="rosbag_record_hdl_odom" args="record -O /home/ahmed/catkin_ws/src/data/results/$(arg dataset)/$(arg sequence)/localization/$(arg hdl_odom_bag_name) /scan_matching_odom_TP_TQ"/>    -->
+  <node pkg="rosbag" type="record" name="rosbag_record_gnss_odom" args="record -O /home/ahmed/catkin_ws/src/data/results/$(arg dataset)/$(arg sequence)/localization/$(arg gnss_odom_bag_name) /aide/odometry/gl/no_heading"/>   
+ 
+
+</launch>  

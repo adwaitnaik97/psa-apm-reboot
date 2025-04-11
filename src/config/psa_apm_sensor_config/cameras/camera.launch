@@ -1,0 +1,54 @@
+<launch>
+  <!-- Settable in GUI -->
+  <!-- Is this a simulation (ie. bag file) or with a live camera? If simulation, driver node won't be lauched -->
+  <arg name="simulation" default="false" />
+
+  <!-- Camera name, one of: camera_top_center_front, camera_top_left_front, camera_top_right_front -->
+  <arg name="camera_name" default="camera_top_center_front"/>
+
+  <!-- AIOS_ID, eg. PSA_APM_8380, PSA_APM_8381
+       Only needed if using live camera or reproducing camera_info msgs
+       Set by default using the the $AIOS_ID env variable, can be optionally supplied/overridden by launch argument
+       if neither $AIOS_ID is set in the env OR supplied as an argument, will be set to AIOS_ID_NOT_SET -->
+  <arg name="aios_id" default="$(optenv AIOS_ID AIOS_ID_NOT_SET)"/>
+
+  <!-- set to play camera_info with simulations useful if camera_info not available in bag file, requires aios_id to be provided -->
+  <arg name="play_camera_info" default="false" />
+  <arg name="camera_calib_path" value="$(find aios_config)/trucks/$(arg aios_id)/cameras/calibration/$(arg camera_name).yaml" if="$(eval play_camera_info or not simulation)"/>
+
+  <!-- load camera driver config -->
+  <group unless="$(arg simulation)">
+    <rosparam command="load" subst_value="True" file="$(find psa_apm_sensor_config)/cameras/config/camera_shared_config.yaml" ns="$(arg camera_name)"/>
+    <rosparam command="load" subst_value="True" file="$(find aios_config)/trucks/$(arg aios_id)/cameras/camera_specific_config.yaml"/>
+  </group>
+
+  <!-- launch driver nodelets -->
+  <group ns="$(arg camera_name)" unless="$(arg simulation)">
+    <node pkg="nodelet" type="nodelet" name="camera_nodelet_manager" args="manager" respawn="true"/>
+    <node pkg="nodelet" type="nodelet" name="camera_driver_nodelet"
+          args="load pointgrey_camera_driver/PointGreyCameraNodelet camera_nodelet_manager" respawn="true" output="screen">
+      <param name="frame_id" value="$(arg camera_name)"/>
+      <param name="camera_info_url" value="file://$(arg camera_calib_path)"/>
+    </node>
+    <node pkg="nodelet" type="nodelet" name="camera_debayer" args="load image_proc/debayer camera_nodelet_manager" respawn="true" output="screen"/>
+  </group>
+
+  <!-- if a simulation ie. from a bag file, with no physical camera launch decompression and camera info nodes -->
+  <group ns="$(arg camera_name)" if="$(arg simulation)">
+    <node name="republish_camera" type="republish" pkg="image_transport" output="screen" args="compressed in:=image_raw raw out:=image_raw" />
+    <!-- play camera_info -->
+    <node pkg="cam_info_publisher" name="camera_info_pub" type="cam_info_publisher" output="screen" if="$(arg play_camera_info)">
+      <rosparam file="$(arg camera_calib_path)" />
+    </node>
+  </group>
+
+  <!-- image rectification, gives image_rect_color from image_raw -->
+  <node name="image_proc" pkg="image_proc" type="image_proc" ns="$(arg camera_name)"/>
+
+  <!-- compression configuration -->
+  <rosparam param="disable_pub_plugins" ns="$(arg camera_name)/image_raw">
+    - 'image_transport/compressedDepth'
+    - 'image_transport/theora'
+  </rosparam>
+  <rosparam ns="$(arg camera_name)/image_raw/compressed" param="jpeg_quality" > 93 </rosparam>
+</launch>

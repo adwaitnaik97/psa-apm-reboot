@@ -1,0 +1,115 @@
+<launch>
+
+  <arg name="machine_id" default="Host" />
+  <arg name="launch_name" default="pointcloud_manager" />
+
+  <group if="$(eval arg('machine_id') =='DL')">
+  	<arg name="launch_remote" default="true" />
+  	<arg name="user" default="$(optenv AIOS_DATALOGGER_USER aidrivers)" />
+  	<arg name="env_path" default="$(find aios_config)/remote_env/dl_env.sh" />
+	<arg name="machine_ip_address" default="$(optenv AIOS_DATALOGGER_IP 172.16.1.30)" />
+	<machine name="$(arg machine_id)" address="$(arg machine_ip_address)" user="$(arg user)" env-loader="$(arg env_path)" default="$(arg launch_remote)"> </machine>
+  </group>
+  <group if="$(eval arg('machine_id') =='CE')">
+  	<arg name="launch_remote" default="true" />
+  	<arg name="user" default="$(optenv AIOS_CONTROL_ENGINE_USER aidrivers)" />
+  	<arg name="env_path" default="$(find aios_config)/remote_env/ce_env.sh" />
+	<arg name="machine_ip_address" default="$(optenv AIOS_CONTROL_ENGINE_IP 172.16.1.10)" />
+	<machine name="$(arg machine_id)" address="$(arg machine_ip_address)" user="$(arg user)" env-loader="$(arg env_path)" default="$(arg launch_remote)"> </machine>
+  </group>
+  <group if="$(eval arg('machine_id') =='PE')">
+  	<arg name="launch_remote" default="true" />
+  	<arg name="user" default="$(optenv AIOS_PERCEPTION_ENGINE_USER aidrivers)" />
+  	<arg name="env_path" default="$(find aios_config)/remote_env/pe_env.sh" />
+	<arg name="machine_ip_address" default="$(optenv AIOS_PERCEPTION_ENGINE_IP 172.16.1.20)" />
+	<machine name="$(arg machine_id)" address="$(arg machine_ip_address)" user="$(arg user)" env-loader="$(arg env_path)" default="$(arg launch_remote)"> </machine>
+  </group>
+
+  <rosparam param="/aios/machine/$(arg launch_name)" subst_value="True">$(arg machine_id)</rosparam>
+
+
+  <arg name="node_start_delay" default="1.0" />
+  <!-- Config files -->
+  <arg name="config_file_path" default="$(find psa_apm_aipe_config)/cfg/psa_apm_aipe_config.yaml" />
+  <arg name="blacklist_objects_path" default="$(find psa_apm_aipe_config)/cfg/blacklist_objects.yaml" />
+  <arg name="whitelist_objects_path" default="$(find psa_apm_aipe_config)/cfg/vision2lidar_whitelist_objects.yaml" />
+  <arg name="trailer_rois_path" default="$(find psa_apm_aipe_config)/cfg/trailer_roi.yaml" />
+
+  <rosparam command="load" file="$(arg config_file_path)" />
+
+  <!-- AIPE preprocessing -->
+  <include file="$(find component_preprocessing)/launch/aipe_preprocessing.launch" />
+
+  <!-- AIPE bridge -->
+  <include file="$(find aipe_bridge)/launch/aipe_bridge.launch" >
+        <arg name="config_file" value="$(arg config_file_path)" />
+  </include>
+
+  <!-- Nodelet points filtering -->
+  <node pkg="nodelet" type="nodelet" name="pcl_manager"
+    args="manager" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " />
+
+  <!-- Box filter -->
+  <node pkg="nodelet" type="nodelet" name="box_filter_nodelet"
+        args="load box_filter_nodelet/BoxFilterNodelet pcl_manager" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' ">
+  </node>
+
+  <!-- Voxel grid filter -->
+  <node pkg="nodelet" type="nodelet" name="voxel_grid_filter"
+        args="load pcl/VoxelGrid pcl_manager" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' ">
+    <remap from="~input" to="/aipe/lidar/box_filter_points" />
+    <remap from="~output" to="/aipe/lidar/voxel_grid_points" />
+    <rosparam>   
+      input_frame: lidar_link
+      filter_limit_min: -200
+      filter_limit_max: 200
+      filter_limit_negative: False
+      output_frame: lidar_link
+    </rosparam>
+  </node>
+
+  <!-- ROI filter -->
+  <rosparam command="load" file="$(find psa_apm_core_config)/point_cloud_filters/roi_boxes/roi_boxes.yaml" />
+  <rosparam command="load" file="$(find psa_apm_core_config)/point_cloud_filters/roi_boxes/roi_boxes_wharf.yaml" />
+  <node pkg="nodelet" type="nodelet" name="roi_filter_nodelet"
+        args="load point_cloud_filters/ROIFilterNodelet pcl_manager" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' ">
+  </node>
+
+  <!-- RANSAC ground removal filter -->
+  <node pkg="nodelet" type="nodelet" name="ransac_ground_removal_nodelet"
+        args="load point_cloud_filters/RansacGroundRemovalNodelet pcl_manager" output="screen" >
+  </node>
+
+  <!-- Dynamic reconfigure manager for point cloud filters -->
+  <include file="$(find pointcloud_manager)/launch/pointcloud_filters_configure.launch" />
+
+  <!-- Euclidean clustering -->
+  <include file="$(find lidar_euclidean_cluster_detect)/launch/euclidean_cluster_detect_ransac_ground_no_roi.launch">
+    <arg name="config_file" value="$(arg config_file_path)" />
+    <arg name="blacklist_file" value="$(arg blacklist_objects_path)" />
+    <arg name="whitelist_file" value="$(arg whitelist_objects_path)" />
+  </include>
+
+  <!-- Cluster merger -->
+  <include file="$(find cluster_merger)/launch/cluster_merger.launch">
+     <arg name="config_file" value="$(arg config_file_path)" />
+  </include>
+
+  <!-- Radar ROI filter (Uses same roi_boxes with roi_filter) -->
+  <include file="$(find radar_roi_filter)/launch/radar_roi_filter.launch" >
+      <arg name="config_file" value="$(arg config_file_path)" />
+  </include>
+
+  <!-- Trailer Localization -->
+  <include file="$(find trailer_localization)/launch/trailer_localization.launch" >
+      <arg name="config_file" value="$(arg config_file_path)" />
+      <arg name="roi_file" value="$(arg trailer_rois_path)" />
+  </include>
+
+  <!-- IMM UKF Tracker -->
+  <include file="$(find imm_ukf_pda_track)/launch/imm_ukf_pda_track.launch" />
+
+  <!-- QC localization -->
+  <include file="$(find psa_apm_aipe_config)/qcrane_localization/launch/qcrane_localization.launch" />
+
+</launch>

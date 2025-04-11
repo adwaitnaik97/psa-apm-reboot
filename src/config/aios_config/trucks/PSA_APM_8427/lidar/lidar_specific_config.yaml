@@ -1,0 +1,71 @@
+rs16_br/rslidar_driver_nodelet:
+  device_ip: "172.20.2.102"
+  serial: "1007BD0C0032"
+  msop_port: 6702
+  difop_port: 7702
+  frame_id: "rs16_br"
+  horizontal_angle_res: 0.2
+rs16_tr/rslidar_driver_nodelet:
+  device_ip: "172.20.2.104"
+  serial: "161191403370"
+  msop_port: 6704
+  difop_port: 7704
+  frame_id: "rs16_tr"
+  horizontal_angle_res: 0.2
+rs16_tc/rslidar_driver_nodelet:
+  device_ip: "172.20.2.103"
+  serial: "161191402907"
+  msop_port: 6703
+  difop_port: 7703
+  frame_id: "rs16_tc"
+  horizontal_angle_res: 0.18
+rs16_tl/rslidar_driver_nodelet:
+  device_ip: "172.20.2.101"
+  serial: "161191403035"
+  msop_port: 6701
+  difop_port: 7701
+  frame_id: "rs16_tl"
+  horizontal_angle_res: 0.18
+rs16_bl/rslidar_driver_nodelet:
+  device_ip: "172.20.2.105"
+  serial: "1600B0EBE5C1"
+  msop_port: 6705
+  difop_port: 7705
+  frame_id: "rs16_bl"
+  horizontal_angle_res: 0.18
+# Updated config
+lidar_bottom_right/rslidar_driver_nodelet:
+  device_ip: "172.20.2.102"
+  serial: "1007BD0C0032"
+  msop_port: 6702
+  difop_port: 7702
+  frame_id: "lidar_bottom_right"
+  horizontal_angle_res: 0.2
+lidar_top_right/rslidar_driver_nodelet:
+  device_ip: "172.20.2.104"
+  serial: "161191403370"
+  msop_port: 6704
+  difop_port: 7704
+  frame_id: "lidar_top_right"
+  horizontal_angle_res: 0.2
+lidar_top_center/rslidar_driver_nodelet:
+  device_ip: "172.20.2.103"
+  serial: "161191402907"
+  msop_port: 6703
+  difop_port: 7703
+  frame_id: "lidar_top_center"
+  horizontal_angle_res: 0.18
+lidar_top_left/rslidar_driver_nodelet:
+  device_ip: "172.20.2.101"
+  serial: "161191403035"
+  msop_port: 6701
+  difop_port: 7701
+  frame_id: "lidar_top_left"
+  horizontal_angle_res: 0.18
+lidar_bottom_left/rslidar_driver_nodelet:
+  device_ip: "172.20.2.105"
+  serial: "1600B0EBE5C1"
+  msop_port: 6705
+  difop_port: 7705
+  frame_id: "lidar_bottom_left"
+  horizontal_angle_res: 0.18

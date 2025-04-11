@@ -1,0 +1,636 @@
+# This is a generic system monitoring node. This yaml is the configurations for the nodes and topics that needs to be monitored.
+# This node can monitor the nodes and topics, define whether the nodes and topics are currently working or not.
+# The node also output an action value (std_msgs::Float32) to determine what kind of action we want to be carried out, if there are
+# abnormalities in the components.
+# There are a set of other nodes that do the monitoring. This node mainly works to unify the input information, output the determined actions
+# and perform logics.
+# nodes: The information about the nodes that need to be monitored.
+#   topic_name: The topic that is the input of the monitored list.
+#   control_loop_rate: I am not sure what this is but it is always set to 5
+#   output_topic: I am not sure what this is either
+#   list: The list of the nodes that needs to be monitored.
+#     - {id: number_by_order, name: name_of_the_node}. The id is not used in computaiton, but it is convenient for checking.
+# topics: The information about the nodes that need to be monitored.
+#   topic_name: The topic that is the input of the monitored list.
+#   control_loop_rate: I am not sure what this is but it is always set to 5
+#   output_topic: I am not sure what this is either
+#   list: The list of the nodes that needs to be monitored.
+#     -  {id: number_by_order, name: name_of_the_node, timeout_sec: how_long_since_the_topic_last_published_to_be_considered_timed_out,
+#        check_frequency_sec: how_often_the_topic_needs_to_be_checked}
+# message_field: This is to declare the message fields that is used to perform logics. This message field has to output as a boolean value.
+#  - {id: number_by_order, name: unique_name_for_this_message_field , topic: topic_name, field: full_flatten_out_field}
+#
+# computation: The group of information to perform logics
+#   action: The group of information for which action to be published
+#     default: The default action if there is no issues with the nodes
+#     list: The list of information about the action. Only one action logic can be true at a time. 
+#           If MORE THAN ONE action logic is true, that means there are something wrong with the node, and the action 0 will be published 
+#     - name: The name of the derived logic that will determine the action_value below. If the logic determined is true, the action_value below will be 
+#             published
+#       action_value: The value that will be published if the logic determined by the name above is true.
+#   logic_list: The list of information to perform logics. Each entry can perform either && or || . To have both && and || in the same logic, 
+#               please use another to merge. For example logic 0 does &&, logic 2 does || , logic 3 does "logic 1 && logic 2".
+#   - id: The id in ordered number. This is not used in logics, but would be useful for debugging.
+#     name: The unique identification name.
+#     relationship: "or" or "and". The relationships between the values in the list.
+#     list: The list of the logics that needs to be performed. Note that the logics needs to be done in order.
+#     - type: The type of the input. Can be "topic", "node", "message_field" or "derived". "derived" is one of the topics
+#       name: Name of the input. Use the "name:" field in the yaml.
+#       negate: "true" or "false". Determine whether the logic of the input needs to be negated or not.
+# output: The information of the output 
+#   system_monitoring_topic: The topic name for the ouput of the system monitoring, including the results of all the logics.
+#   action_topic: The topic name for the ouput of the action.
+
+#Check if they are running or not
+nodes:
+  control_loop_rate: 5
+  topic_name: /aisd/apm_diagnostic/aipe/nodes
+  output_topic: nodes
+  list:
+    - {id: 0, name: /points_concat_filter}
+    - {id: 1, name: /box_filter_nodelet}
+    - {id: 2, name: /voxel_grid_filter}
+    - {id: 3, name: /roi_filter_nodelet}
+    - {id: 4, name: /ransac_ground_removal_nodelet}
+    - {id: 5, name: /lidar_euclidean_cluster_detect}
+    - {id: 6, name: /aipe/scaled_yolo_apm}
+    - {id: 7, name: /aipe/trafficlight_classifier}
+    - {id: 8, name: /sensor_fusion_01}
+    - {id: 9, name: /tl_vision_control}
+    - {id: 10, name: /lane_detection_clrnet}
+    - {id: 11, name: /imm_ukf_pda_01}
+    - {id: 12, name: /lane_projector}
+    - {id: 13, name: /lidar_detection_filter}
+    - {id: 14, name: /trailer_localization_01}
+    - {id: 15, name: /aipe_bridge}
+    - {id: 16, name: /aipe_preprocessing}
+
+#Check if they are being advertised or not
+topics:
+  control_loop_rate: 5
+  topic_name: /aisd/apm_diagnostic/aipe/topics
+  output_topic: topics
+  list:
+    - {node_id: 0, id: 0, name: /points_raw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 1, id: 1, name: /aipe/lidar/box_filter_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 2, id: 2, name: /aipe/lidar/voxel_grid_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 3, id: 3, name: /aipe/lidar/roi_filter_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 4, id: 4, name: /aipe/lidar/ground_filter_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 5, id: 5, name: /aipe/lidar/detected_objects, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 6, id: 6, name: /aipe/camera_top_center_front/detections, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 6, id: 7, name: /aipe/camera_top_left_front/detections, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 6, id: 8, name: /aipe/camera_top_right_front/detections, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 6, id: 9, name: /aipe/camera_top_left_rear/detections, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 6, id: 10, name: /aipe/camera_rear_top_right/detections, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 7, id: 11, name: /aipe/camera_top_center_front/classifications, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 7, id: 12, name: /aipe/camera_top_left_front/classifications, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 7, id: 13, name: /aipe/camera_top_right_front/classifications, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 8, id: 14, name: /aipe/fused/tracked_objects, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 9, id: 15, name: /aipe/tl_signal/junction, timeout_sec: 11.0, check_frequency_sec: 1.0}
+    - {node_id: 10, id: 16, name: /aipe/lane_detections/2d, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 11, id: 17, name: /aipe/lidar/tracked_objects, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 18, name: /aipe/lane_projection/lane_center_angle, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 13, id: 19, name: /aipe/lidar/detected_objects_filtered, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 14, id: 20, name: /aipe/trailer_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 16, id: 21, name: /aipe/preprocessing/apm_speed, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 16, id: 22, name: /aipe/preprocessing/chassis_lane, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 16, id: 23, name: /aipe/preprocessing/inside_bay, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 16, id: 24, name: /aipe/preprocessing/inside_observation_area, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 16, id: 25, name: /aipe/preprocessing/inside_workshop, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 16, id: 26, name: /aipe/preprocessing/odometry/filtered/utm/baselink, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 16, id: 27, name: /aipe/preprocessing/pose/filtered/utm/lidarlink, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 16, id: 28, name: /aipe/preprocessing/taxi_flag, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 15, id: 29, name: /aipe/bridge_status, timeout_sec: 5.0, check_frequency_sec: 1.0}
+
+message_field:
+  - {id: 0, name: v2i_error , topic: /aisd/system_monitoring/core_result, field: /v2i_error, type: bool}
+  - {id: 1, name: v2i_timeout , topic: /aisd/system_monitoring/core_result, field: /v2i_timeout, type: bool}
+  - {id: 2, name: v2e_error , topic: /aisd/system_monitoring/core_result, field: /v2e_error, type: bool}
+  - {id: 3, name: v2e_timeout , topic: /aisd/system_monitoring/core_result, field: /v2e_timeout, type: bool}
+  - {id: 4, name: apm_status , topic: /aidc/apm_status/status, field: /data, type: number, compare_value: 18, comparison: equal}
+  - {id: 5, name: in_tl_zone , topic: /aisc/situation_cognition/in_traffic_light_zone, field: /data, type: bool}
+
+output:
+  system_monitoring_topic: "/aisd/system_monitoring/aipe_result_new"
+  action_topic: "/aisd/actions/aipe_diagnostic_new"
+
+computation:
+  action:
+    default: 3
+    list:
+    - name: aisd_action_0
+      action_value: 0
+    - name: aisd_action_1
+      action_value: 1
+      
+  logic_list:
+  - id: 0
+    name: v2i_available
+    relationship: and
+    list:
+    - type: message_field
+      name: v2i_error
+      negate: true
+    - type: message_field
+      name: v2i_timeout
+      negate: true
+  - id: 1
+    name: v2e_available
+    relationship: and
+    list:
+    - type: message_field
+      name: v2e_error
+      negate: true
+    - type: message_field
+      name: v2e_timeout
+      negate: true
+  - id: 2
+    name: box_filter_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/lidar/box_filter_points
+      
+    - type: node
+      name: /box_filter_nodelet
+      
+  - id: 3
+    name: voxel_filter_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/lidar/voxel_grid_points
+      
+    - type: node
+      name: /voxel_grid_filter
+      
+  - id: 4
+    name: roi_filter_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/lidar/roi_filter_points
+      
+    - type: node
+      name: /roi_filter_nodelet
+      
+  - id: 5
+    name: ground_filtering_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/lidar/ground_filter_points
+      
+    - type: node
+      name: /ransac_ground_removal_nodelet
+      
+  - id: 6
+    name: clustering_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/lidar/detected_objects
+      
+    - type: node
+      name: /lidar_euclidean_cluster_detect
+      
+  - id: 7
+    name: lidar_tracking_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/lidar/tracked_objects
+      
+    - type: node
+      name: /imm_ukf_pda_01
+      
+  - id: 8
+    name: points_raw_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /points_raw
+      
+    - type: node
+      name: /points_concat_filter
+      
+  - id: 9
+    name: vision_detection_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/camera_top_center_front/detections
+      
+    - type: node
+      name: /aipe/scaled_yolo_apm
+      
+  - id: 10
+    name: vision_classification_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/camera_top_center_front/classifications
+      
+    - type: node
+      name: /aipe/trafficlight_classifier
+      
+  - id: 11
+    name: sensor_fusion_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/fused/tracked_objects
+      
+    - type: node
+      name: /sensor_fusion_01
+      
+  - id: 12
+    name: tl_junction_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/tl_signal/junction
+      
+    - type: node
+      name: /tl_vision_control
+      
+  - id: 13
+    name: lane_detection_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/lane_detections/2d
+      
+    - type: node
+      name: /lane_detection_clrnet
+      
+  - id: 14
+    name: lane_projection_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/lane_projection/lane_center_angle
+      
+    - type: node
+      name: /lane_projector
+      
+  - id: 15
+    name: lidar_detection_filter_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/lidar/detected_objects_filtered
+      
+    - type: node
+      name: /lidar_detection_filter
+      
+  - id: 16
+    name: trailer_localization_failed
+    relationship: or
+    list:
+    - type: topic
+      name: /aipe/trailer_points
+      
+    - type: node
+      name: /trailer_localization_01
+      
+  - id: 17
+    name: aipe_preprocessing_failed
+    relationship: or
+    list:
+    - type: node
+      name: /aipe_preprocessing
+      
+    - type: topic
+      name: /aipe/preprocessing/inside_bay
+      
+    - type: topic
+      name: /aipe/preprocessing/odometry/filtered/utm/baselink
+      
+    - type: topic
+      name: /aipe/preprocessing/pose/filtered/utm/lidarlink
+      
+    - type: topic
+      name: /aipe/preprocessing/taxi_flag
+      
+  - id: 18
+    name: aisd_action_0
+    relationship: or
+    list:
+    - type: derived
+      name: box_filter_failed
+      
+    - type: derived
+      name: voxel_filter_failed
+      
+    - type: derived
+      name: roi_filter_failed
+      
+    - type: derived
+      name: ground_filtering_failed
+      
+    - type: derived
+      name: clustering_failed
+      
+    - type: derived
+      name: lidar_tracking_failed
+      
+    - type: derived
+      name: points_raw_failed
+      
+    - type: derived
+      name: lidar_detection_filter_failed
+      
+    - type: derived
+      name: voxel_filter_failed
+      
+  - id: 19
+    name: v2i_error_derived
+    relationship: or
+    list:
+    - type: message_field
+      name: v2i_error
+      
+  - id: 20
+    name: v2i_timeout_derived
+    relationship: or
+    list:
+    - type: message_field
+      name: v2i_timeout
+      
+  - id: 21
+    name: v2e_error_derived
+    relationship: or
+    list:
+    - type: message_field
+      name: v2e_error
+      
+  - id: 22
+    name: v2e_timeout_derived
+    relationship: or
+    list:
+    - type: message_field
+      name: v2e_timeout
+      
+  - id: 23
+    name: aisd_action_1_component_1
+    relationship: or
+    list:
+    - type: derived
+      name: tl_junction_failed
+      
+    - type: derived
+      name: sensor_fusion_failed
+      
+    - type: derived
+      name: vision_classification_failed
+      
+    - type: derived
+      name: vision_detection_failed
+      
+  - id: 24
+    name: aisd_action_1_component_2_1
+    relationship: and
+    list:
+    - type: message_field
+      name: in_tl_zone
+      
+    - type: derived
+      name: v2i_available
+      negate: true
+    - type: derived
+      name: aisd_action_1_component_1
+      
+  - id: 25
+    name: aisd_action_1_component_2_2
+    relationship: and
+    list:
+    - type: message_field
+      name: apm_status
+      
+    - type: derived
+      name: v2e_available
+      negate: true
+    - type: derived
+      name: aisd_action_1_component_1
+      
+  - id: 26
+    name: aisd_action_1
+    relationship: or
+    list:
+    - type: derived
+      name: aisd_action_1_component_2_1
+      
+    - type: derived
+      name: aisd_action_1_component_2_2
+      
+      
+aisd_rviz_plugins:
+  - name: points_raw
+    field:
+      - source: /points_concat_filter
+        type: node
+        error_message: "Error"
+      - source: /points_raw
+        type: topic 
+        error_message: "Time Out"
+  - name: box_filtering
+    field:
+      - source: /box_filter_nodelet
+        type: node
+        error_message: "Error"
+      - source: /aipe/lidar/box_filter_points
+        type: topic
+        error_message: "Time Out"
+  - name: voxel_filtering
+    field:
+      - source: /voxel_grid_filter
+        type: node
+        error_message: "Error"
+      - source: /aipe/lidar/voxel_grid_points
+        type: topic
+        error_message: "Time Out"
+  - name: roi_filtering
+    field:
+      - source: /roi_filter_nodelet
+        type: node
+        error_message: "Error"
+      - source: /aipe/lidar/roi_filter_points
+        type: topic
+        error_message: "Time Out"
+  - name: ground_filtering
+    field:
+      - source: /ransac_ground_removal_nodelet
+        type: node
+        error_message: "Error"
+      - source: /aipe/lidar/ground_filter_points
+        type: topic
+        error_message: "Time Out"
+  - name: clustering
+    field:
+      - source: /lidar_euclidean_cluster_detect
+        type: node
+        error_message: "Error"
+      - source: /aipe/lidar/detected_objects
+        type: topic
+        error_message: "Time Out"
+  - name: lidar_detection_filter
+    field:
+      - source: /lidar_detection_filter
+        type: node
+        error_message: "Error"
+      - source: /aipe/lidar/detected_objects_filtered
+        type: topic
+        error_message: "Time Out"
+  - name: trailer_localization
+    field:
+      - source: /trailer_localization_01
+        type: node
+        error_message: "Error"
+      - source: /aipe/trailer_points
+        type: topic
+        error_message: "Time Out"
+  - name: lidar_tracking
+    field:
+      - source: /imm_ukf_pda_01
+        type: node
+        error_message: "Error"
+      - source: /aipe/lidar/tracked_objects
+        type: topic
+        error_message: "Time Out"
+  - name: vision_detection
+    field:
+      - source: /aipe/scaled_yolo_apm
+        type: node
+        error_message: "Error"
+      - source: /aipe/camera_top_center_front/detections
+        type: topic
+        error_message: "Time Out"
+  - name: vision_classification
+    field:
+      - source: /aipe/trafficlight_classifier
+        type: node
+        error_message: "Error"
+      - source: /aipe/camera_top_center_front/classifications
+        type: topic
+        error_message: "Time Out"
+  - name: sensor_fusion
+    field:
+      - source: /sensor_fusion_01
+        type: node
+        error_message: "Error"
+      - source: /aipe/fused/tracked_objects
+        type: topic
+        error_message: "Time Out"
+  - name: tl_junction
+    field:
+      - source: /tl_vision_control
+        type: node
+        error_message: "Error"
+      - source: /aipe/tl_signal/junction
+        type: topic
+        error_message: "Time Out"
+  - name: lane_detection
+    field:
+      - source: /lane_detection_clrnet
+        type: node
+        error_message: "Error"
+      - source: /aipe/lane_detections/2d
+        type: topic
+        error_message: "Time Out"
+  - name: lane_projection
+    field:
+      - source: /lane_projector
+        type: node
+        error_message: "Error"
+      - source: /aipe/lane_projection/lane_center_angle
+        type: topic
+        error_message: "Time Out"
+  - name: aipe_preprocessing_apm_speed
+    field:
+      - source: /aipe_preprocessing
+        type: node
+        error_message: "Error"
+      - source: /aipe/preprocessing/apm_speed
+        type: topic
+        error_message: "Time Out"
+  - name: aipe_preprocessing_chassis_lane
+    field:
+      - source: /aipe_preprocessing
+        type: node
+        error_message: "Error"
+      - source: /aipe/preprocessing/chassis_lane
+        type: topic
+        error_message: "Time Out"
+  - name: aipe_preprocessing_inside_bay
+    field:
+      - source: /aipe_preprocessing
+        type: node
+        error_message: "Error"
+      - source: /aipe/preprocessing/inside_bay
+        type: topic
+        error_message: "Time Out"
+  - name: aipe_preprocessing_inside_junction
+    field:
+      - source: /aipe_preprocessing
+        type: node
+        error_message: "Error"
+      - source: /aipe/preprocessing/inside_observation_area
+        type: topic
+        error_message: "Time Out"
+  - name: aipe_preprocessing_inside_workshop
+    field:
+      - source: /aipe_preprocessing
+        type: node
+        error_message: "Error"
+      - source: /aipe/preprocessing/inside_workshop
+        type: topic
+        error_message: "Time Out"
+  - name: aipe_preprocessing_apm_global_position
+    field:
+      - source: /aipe_preprocessing
+        type: node
+        error_message: "Error"
+      - source: /aipe/preprocessing/odometry/filtered/utm/baselink
+        type: topic
+        error_message: "Time Out"
+  - name: aipe_preprocessing_apm_local_position
+    field:
+      - source: /aipe_preprocessing
+        type: node
+        error_message: "Error"
+      - source: /aipe/preprocessing/pose/filtered/utm/lidarlink
+        type: topic
+        error_message: "Time Out"
+  - name: aipe_preprocessing_taxi_flag
+    field:
+      - source: /aipe_preprocessing
+        type: node
+        error_message: "Error"
+      - source: /aipe/preprocessing/taxi_flag
+        type: topic
+        error_message: "Time Out"
+  - name: v2i_client
+    field:
+      - source: v2i_error_derived
+        type: derived
+        error_message: "Error"
+      - source: v2i_timeout_derived
+        type: derived
+        error_message: "Time Out"
+  - name: v2e_client
+    field:
+      - source: v2e_error_derived
+        type: derived
+        error_message: "Error"
+      - source: v2e_timeout_derived
+        type: derived
+        error_message: "Time Out"
+  - name: aipe_bridge
+    field:
+      - source: /aipe_bridge
+        type: node
+        error_message: "Error"
+      - source: /aipe/bridge_status
+        type: topic
+        error_message: "Time Out"

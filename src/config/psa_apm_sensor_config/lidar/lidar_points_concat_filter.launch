@@ -1,0 +1,24 @@
+<launch>
+  <arg name="output_frame_id" default="lidar_link" />
+  <arg name="lidar_timeout_secs" default="2.0" />
+  <arg name="self_diagnostics" default="true" />
+  <arg name="output_topic" default="/points_raw" />
+
+  <!-- node for joining together individual lidar pointclouds into joint pointcloud using new sensor architecture -->
+  <node pkg="points_preprocessor" type="points_concat_filter" name="points_concat_filter" output="screen">
+    <param name="input_topics" value="[/lidar_top_center/rslidar_points, lidar_bottom_left/rslidar_points, lidar_bottom_right/rslidar_points, lidar_rear/rslidar_points, lidar_top_center_vertical/rslidar_points]" />
+    <param name="output_frame_id" value="$(arg output_frame_id)" />
+    <param name="lidar_timeout_secs" value="$(arg lidar_timeout_secs)" />
+    <param name="self_diagnostics" value="$(arg self_diagnostics)" />
+    <remap from="/points_concat" to="$(arg output_topic)" />
+  </node>
+
+  <!-- node for joining together individual lidar pointclouds into joint pointcloud using old sensor architecture -->
+  <!-- <node pkg="points_preprocessor" type="points_concat_filter" name="points_concat_filter_old" output="screen">
+    <param name="input_topics" value="[/rs16_tc/rslidar_points, /rs16_br/rslidar_points, /rs16_bl/rslidar_points, /rs16_tl/rslidar_points, /rs16_tr/rslidar_points]"/>
+    <param name="output_frame_id" value="$(arg output_frame_id)" />
+    <param name="lidar_timeout_secs" value="$(arg lidar_timeout_secs)" />
+    <param name="self_diagnostics" value="$(arg self_diagnostics)" />
+    <remap from="/points_concat" to="$(arg output_topic)" />
+  </node> -->
+</launch>

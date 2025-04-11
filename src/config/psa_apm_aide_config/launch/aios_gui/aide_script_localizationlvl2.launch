@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="scan_matching_debug" default="False"/>
+  <arg name="gl_sm_switch_debug" default="False" />
+  <arg name="scan_matching_management_debug" default="False" />
+
+  <include file="$(find aide_localization)/launch/sm_ukf.launch" />
+
+  <include file="$(find psa_apm_aide_config)/launch/sm_localization.launch">
+    <arg name="aide_debug" value="$(arg scan_matching_debug)"/>
+  </include>
+
+  <include file="$(find aide_localization)/launch/gl_sm_switch_2.launch" >
+    <arg name="aide_debug" value="$(arg gl_sm_switch_debug)"/>
+  </include>
+
+  <include file="$(find scan_matching_management)/launch/scan_matching_management.launch" >
+    <arg name="aide_debug" value="$(arg scan_matching_management_debug)"/>
+  </include>
+
+
+  <include file="$(find psa_apm_aide_config)/launch/map_server.launch" >
+    <arg name="mapserver_debug" value="$(arg scan_matching_management_debug)"/>
+  </include>
+
+
+  <!-- Comment out the following if not using simple scan matching -->
+
+
+  <!-- <arg name="simple_scan_matching_debug" default="False"/> -->
+  <!-- <arg name="map_generator_debug" default="False"/> -->
+
+  <!--
+
+  <include file="$(find simple_scan_matching)/launch/simple_scan_matching.launch" >
+    <arg name="aide_debug" value="$(arg simple_scan_matching_debug)"/>
+  </include>
+
+
+  <include file="$(find map_generator)/launch/map_generator.launch" >
+    <arg name="aide_debug" value="$(arg map_generator_debug)"/>
+  </include>
+
+  -->
+
+</launch>

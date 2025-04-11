@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+
+	<!--****** Ros Console Config ****** -->
+	<env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+
+	<arg name="mapserver_debug" default="False"/>
+	
+	<arg name="xterm_req" default="" if="$(eval mapserver_debug==False)" /> 
+	<arg name="xterm_req" default="xterm -e" if="$(eval mapserver_debug==True)" /> 
+	<arg name="print" default="log" if="$(eval mapserver_debug==False)" /> 
+	<arg name="print" default="screen" if="$(eval mapserver_debug==True)" /> 
+
+	<env name="ROSCONSOLE_CONFIG_FILE" value="$(find aide_apm_config)/config/apm_rosconsole_debug.conf" if="$(eval mapserver_debug)"/>
+
+	<env name="ROSCONSOLE_CONFIG_FILE" value="$(find aide_apm_config)/config/apm_rosconsole.conf" unless="$(eval mapserver_debug)"/>
+
+
+
+    <arg name="package_name" default="map_server" />
+
+    <arg name="pcdset_frame_b_path" default="$(find psa_apm_aide_config)/map/tiles/PSA_APM-ST2-1C-psa_map-v2-TPTQ.2021.10.13.pcd" />
+    <arg name="pcdset_frame_a_path" default="$(find psa_apm_aide_config)/map/tiles/PSA_APM-ST2-1C-psa_map-v2-TBTC.2021.10.13.pcd" />
+
+	<node pkg="map_server" type="map_server" name="$(arg package_name)" output="$(arg print)" launch-prefix="$(arg xterm_req)">
+		<param name="pcdset_frame_a_path" type="str" value="$(arg pcdset_frame_a_path)" />
+		<param name="pcdset_frame_b_path" type="str" value="$(arg pcdset_frame_b_path)" />
+	</node>
+
+</launch>
+

@@ -1,0 +1,140 @@
+<!-- -->
+<launch>
+<!--********************************* Robot Description Revisioning **********************************-->
+<arg name="tf_file_name" 		        default="tf_8426" />	<!-- <Should match the file name> -->
+<arg name="design_version" 			default="4" />		<!-- <Sensor (Dual GNSS Config> -->
+<arg name="retrofit_revision" 			default="0.0" />	<!-- <***ToBe Revised.*** Sensor Replacement>.<Sensor adjustments>  -->
+
+<rosparam param="tf/info/file_name" subst_value="True">$(arg tf_file_name)</rosparam>
+<!--**************************************************************************************************-->
+
+<!--** baselink to sensor root (TC Lidar translation) **-->
+<arg name="bl_sr_tf_x" default="4.065 " />
+<arg name="bl_sr_tf_y" default="-0.02" />
+<arg name="bl_sr_tf_z" default="2.975" />
+<arg name="bl_sr_tf_roll" default="0" />
+<arg name="bl_sr_tf_pitch" default="0" />
+<arg name="bl_sr_tf_yaw" default="0.00" />
+
+<!--** baselink to gnss antenna (translation) **-->
+<arg name="bl_gnss_tf_x" default="3.565" />
+<arg name="bl_gnss_tf_y" default="0.0" />
+<arg name="bl_gnss_tf_z" default="2.867" />
+<arg name="bl_gnss_tf_roll" default="0" />
+<arg name="bl_gnss_tf_pitch" default="0" />
+<arg name="bl_gnss_tf_yaw" default="0" />
+
+<!--** baselink to imu  **-->
+<arg name="bl_imu_tf_x" default="3.6" />
+<arg name="bl_imu_tf_y" default="-0.725" />
+<arg name="bl_imu_tf_z" default="0.95" />
+<arg name="bl_imu_tf_roll" default="0" />
+<arg name="bl_imu_tf_pitch" default="0" />
+<arg name="bl_imu_tf_yaw" default="0.000" />
+
+<arg name="bl_2_ground" default="-0.5" />
+
+<rosparam param="tf/config/bl_sr_tf_x"   subst_value="True">$(arg bl_sr_tf_x)</rosparam>
+<rosparam param="tf/config/bl_sr_tf_y"     subst_value="True">$(arg bl_sr_tf_y)</rosparam>
+<rosparam param="tf/config/bl_sr_tf_z"     subst_value="True">$(arg bl_sr_tf_z)</rosparam>
+<rosparam param="tf/config/bl_sr_tf_roll"  subst_value="True">$(arg bl_sr_tf_roll)</rosparam>
+<rosparam param="tf/config/bl_sr_tf_pitch" subst_value="True">$(arg bl_sr_tf_pitch)</rosparam>
+<rosparam param="tf/config/bl_sr_tf_yaw"   subst_value="True">$(arg bl_sr_tf_yaw)</rosparam>
+
+<rosparam param="tf/config/bl_gnss_tf_x"     subst_value="True">$(arg bl_gnss_tf_x)</rosparam>
+<rosparam param="tf/config/bl_gnss_tf_y"     subst_value="True">$(arg bl_gnss_tf_y)</rosparam>
+<rosparam param="tf/config/bl_gnss_tf_z"     subst_value="True">$(arg bl_gnss_tf_z)</rosparam>
+<rosparam param="tf/config/bl_gnss_tf_roll"  subst_value="True">$(arg bl_gnss_tf_roll)</rosparam>
+<rosparam param="tf/config/bl_gnss_tf_pitch" subst_value="True">$(arg bl_gnss_tf_pitch)</rosparam>
+<rosparam param="tf/config/bl_gnss_tf_yaw"   subst_value="True">$(arg bl_gnss_tf_yaw)</rosparam>
+
+<rosparam param="tf/config/bl_imu_tf_x"     subst_value="True">$(arg bl_imu_tf_x)</rosparam>
+<rosparam param="tf/config/bl_imu_tf_y"     subst_value="True">$(arg bl_imu_tf_y)</rosparam>
+<rosparam param="tf/config/bl_imu_tf_z"     subst_value="True">$(arg bl_imu_tf_z)</rosparam>
+<rosparam param="tf/config/bl_imu_tf_roll"  subst_value="True">$(arg bl_imu_tf_roll)</rosparam>
+<rosparam param="tf/config/bl_imu_tf_pitch" subst_value="True">$(arg bl_imu_tf_pitch)</rosparam>
+<rosparam param="tf/config/bl_imu_tf_yaw"   subst_value="True">$(arg bl_imu_tf_yaw)</rosparam>
+<!--**************************************************************************************************-->
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_view_bl_pitch" args="0.00000 0.00000 0.00000  0.00000 1.57079 0.00000 /base_link      /view_utm_pitch" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_view_bl_roll"  args="0.00000 0.00000 0.00000  0.00000 0.00000 1.57079 /base_link      /view_utm_roll" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_view_ll_pitch" args="0.00000 0.00000 0.00000  0.00000 1.57079 0.00000 /lidar_link      /view_utm_pitch" />
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_view_ll_roll"  args="0.00000 0.00000 0.00000  0.00000 0.00000 1.57079 /lidar_link      /view_utm_roll" />
+
+
+<!-- ************************************************************* Measured TF ********************************************************************** -->
+<!-- Radar tf -->                                                              <!--  x           y       z         y        p       r -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_SR_radar_link"               args=" 0 0 0 0 0 0 /sensor_root /radar_link   "/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_radar_link_smartmicro"       args=" 0 0 0 0 0 0 /radar_link /radar      "/>
+
+
+
+<!-- ************************************************************* Calibrated TF ********************************************************************** -->
+<!-- Lidar tf -->
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_SR_robosense"   args=" 0.00000  0.00000  0.00000  0.00000  0.00000  0.00000 sensor_root robosense  "/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RStc" args=" 0 0 0 -0.13 -0.0423 0.03506  robosense rs16_tc "/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RSbl" args=" 0.479 1.482 -2.070 0.003 -0.025 0.048  robosense rs16_bl "/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RSbr" args=" 0.394 -1.152 -2.224 -0.023 -0.033 0.003  robosense rs16_br "/>
+  <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RStr" args="-0.14983 -1.23218 -0.18128 -1.48369  1.08704  0.07871  robosense rs16_tr "/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RStl" args="-0.05248  1.10654 -0.29059  1.31771  1.04950 -0.25337  robosense rs16_tl "/> -->
+<!-- 
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_SR_robosense"     args=" 0 0 0 0 0 0 sensor_root lidar_link"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RStc"   args=" 0 0 0 -0.13 -0.0423 0.03506  lidar_link lidar_top_center"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RSbl"   args=" 0.445699 -1.16948 -2.20478 0.106726  0.0129267 -0.0274305 lidar_link lidar_bottom_right"/> 
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RSbr"   args=" 0.1946  1.45724 -2.13293  0.132248 0.0212422  0.019104 lidar_link lidar_bottom_left"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RStcv"  args=" 0 0 0 0 3.14 0 lidar_link lidar_top_center_vertical"/> -->
+
+<!-- Lidar tf -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_SR_robosense1"     args=" 0.0 0.0 0.0 0.0 0.0 0.0 sensor_root lidar_link"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RStc1"   args=" 0 0 0 -0.13 -0.0423 0.03506  lidar_link lidar_top_center"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RSbl1"   args=" 0.394 -1.152 -2.224 -0.023 -0.033 0.003 lidar_link lidar_bottom_right"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RSbr1"   args=" 0.479 1.482 -2.070 0.003 -0.025 0.048 lidar_link lidar_bottom_left"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_Robosense_RStcv1"  args=" -1.15 0.2 -0.1 1.5708 1.5708 0 lidar_link lidar_top_center_vertical"/>
+<!-- Camera Lidar tf -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_SR_camera_link"         args=" 0.0 0.0 0.0  0.00000  0.00000  0.00000 sensor_root camera_link                 "/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_camera_link_camera_tcf" args=" 0.713107 0.017696 -0.21299 -1.56214126139 -0.0194964953 -1.81619132784 camera_link camera_top_center_front"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_camera_link_camera_trf" args=" 0 0 0 0 0 0 camera_link camera_top_right_front"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_camera_link_camera_tlf" args=" 0 0 0 0 0 0 camera_link camera_top_left_front"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_camera_link_camera_tcr" args=" 0 0 0 0 0 0 camera_link camera_top_center_rear"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_camera_link_camera_trr" args=" 0 0 0 0 0 0 camera_link camera_top_right_rear"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_camera_link_camera_tlr" args=" 0 0 0 0 0 0 camera_link camera_top_left_rear"/>
+
+<!-- SICK Lidar tf -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_SICK_SCAN_FSS" args="  0.30 0.00 -2.5 0.00 -0.0 -0.0 /sensor_root /sick_fss "/>
+  
+  <node pkg="tf2_ros" type="static_transform_publisher" name="robosense_to_lidar_link" args=" 0.00000  0.00000  0.00000  0.00000  0.00000  0.00000 /robosense /lidar_link"/>
+  
+  <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="imu_link_to_HGuide" args=" 0.00000  0.00000  0.00000  0.00000  0.00000  0.00000 /imu_link /HGuide"/> -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="imu_link_to_HGuide" args="0.00000 0.00000 0.00000 0.0 -1.5708 1.5708 /imu_link /HGuide"/>
+
+<!-- ************************************************************* Parametric TF ********************************************************************** -->
+<!-- Base_link tf -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_bl_Robosense" args="$(arg bl_sr_tf_x) $(arg bl_sr_tf_y) $(arg bl_sr_tf_z) $(arg bl_sr_tf_yaw) $(arg bl_sr_tf_pitch) $(arg bl_sr_tf_roll) /base_link /sensor_root"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_bl_nt" args="$(arg bl_gnss_tf_x) $(arg bl_gnss_tf_y) $(arg bl_gnss_tf_z) $(arg bl_gnss_tf_yaw) $(arg bl_gnss_tf_pitch) $(arg bl_gnss_tf_roll) base_link gnss_link"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_gnss_gl_Link"       args=" 0.00000  0.00000  0.00000  0.00000  0.00000  0.00000 /gnss_link  /novatel"/> 
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_bl_xs" args="$(arg bl_imu_tf_x) $(arg bl_imu_tf_y) $(arg bl_imu_tf_z) $(arg bl_imu_tf_yaw) $(arg bl_imu_tf_pitch) $(arg bl_imu_tf_roll) /base_link /xsens1"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_bl_xsil" args="$(arg bl_imu_tf_x) $(arg bl_imu_tf_y) $(arg bl_imu_tf_z) $(arg bl_imu_tf_yaw) $(arg bl_imu_tf_pitch) $(arg bl_imu_tf_roll) /base_link /imu_link"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="TF_bl_ground" args="0 0 $(arg bl_2_ground) 0 0 0 /base_link /ground_approx"/>
+
+<!-- ************************************************************* Map TF ********************************************************************** -->
+<!--**************************** aide_map_origin utm frame ****************************-->
+<arg name="aide_map_origin_tf_x" default="365424.53" />
+<arg name="aide_map_origin_tf_y" default="140536.49" />
+<arg name="aide_map_origin_tf_z" default="0.0" />
+<arg name="aide_map_origin_tf_roll" default="0" />
+<arg name="aide_map_origin_tf_pitch" default="0" />
+<arg name="aide_map_origin_tf_yaw" default="-0.538048356" /> <!-- 30.8279deg -->
+
+<rosparam param="tf/map/aide_map_origin_tf_x"     subst_value="True">$(arg aide_map_origin_tf_x)</rosparam>
+<rosparam param="tf/map/aide_map_origin_tf_y"     subst_value="True">$(arg aide_map_origin_tf_y)</rosparam>
+<rosparam param="tf/map/aide_map_origin_tf_z"     subst_value="True">$(arg aide_map_origin_tf_z)</rosparam>
+<rosparam param="tf/map/aide_map_origin_tf_roll"  subst_value="True">$(arg aide_map_origin_tf_roll)</rosparam>
+<rosparam param="tf/map/aide_map_origin_tf_pitch" subst_value="True">$(arg aide_map_origin_tf_pitch)</rosparam>
+<rosparam param="tf/map/aide_map_origin_tf_yaw"   subst_value="True">$(arg aide_map_origin_tf_yaw)</rosparam>
+
+<node pkg="tf2_ros" type="static_transform_publisher" name="utm_to_aidemap" args="$(arg aide_map_origin_tf_x) $(arg aide_map_origin_tf_y) $(arg aide_map_origin_tf_z) $(arg aide_map_origin_tf_yaw) $(arg aide_map_origin_tf_pitch) $(arg aide_map_origin_tf_roll) /utm /aide_map "/>
+
+<!-- ******************************************************************************************************************************************** -->
+</launch>
+

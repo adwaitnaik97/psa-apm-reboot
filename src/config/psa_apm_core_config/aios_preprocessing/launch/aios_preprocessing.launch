@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="machine_id" default="Host" />
+  <arg name="launch_name" default="aios_preprocessing" />
+
+  <!--****** Ros Console Config ****** -->
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+
+  <arg name="aios_debug" default="False"/>
+  <arg name="xterm_req" default="" if="$(eval aios_debug==False)" /> 
+  <arg name="xterm_req" default="xterm -e" if="$(eval aios_debug==True)" /> 
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aios_config)/apm_rosconsole.conf"/>
+
+      <!--****** Remote Setup ****** -->
+      <include file="$(find aios_config)/remote_env/launch/remote.launch">
+        <arg name="machine_id" value="$(arg machine_id)"/>
+        <arg name="launch_name" value="$(arg launch_name)"/>
+      </include>
+
+  <!--****** Global Configs ****** -->
+  <arg name="project_session_config_file_path" default="$(find psa_apm_core_config)/aios_preprocessing/config/global_session_management_config.yaml" />
+  <arg name="project_summarizer_config_file_path" default="$(find psa_apm_core_config)/aios_preprocessing/config/global_session_summarizer_config.yaml" />
+
+
+    <!--****** Node Launch - aios_preprocessing ****** -->
+    <include file="$(find aios_preprocessing)/launch/aios_preprocessing.launch" />
+
+    <!--****** Node Launch - session_management ****** -->
+    <include file="$(find session_management)/launch/session_management.launch">
+      <arg name="global_config_file_path" value="$(arg project_session_config_file_path)"/>
+    </include>
+
+    <!--****** Node Launch - session_summarizer ****** -->
+    <include file="$(find session_summarizer)/launch/session_summarizer.launch" >
+      <arg name="global_config_file_path" value="$(arg project_summarizer_config_file_path)"/>
+    </include>
+
+    
+    <!--****** Node Launch - instruction_management ****** -->
+    <include file="$(find new_instruction_management)/launch/instruction_management.launch"/>
+
+    <!--****** Node Launch - aios_apm_visualizer ****** -->
+    <include file="$(find aios_apm_visualizer)/launch/aios_apm_visualizer.launch">
+    </include>
+
+    <!--****** Node Launch - weather_status ****** -->
+    <include file="$(find weather_management)/launch/weather_management.launch">
+    </include>
+
+    <!--****** Node Launch - Data_Logging ****** -->
+    <include file="$(find session_monitoring)/launch/session_monitoring.launch">
+    </include>
+
+</launch>

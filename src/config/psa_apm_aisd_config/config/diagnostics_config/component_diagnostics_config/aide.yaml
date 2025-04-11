@@ -1,0 +1,738 @@
+# This is a generic system monitoring node. This yaml is the configurations for the nodes and topics that needs to be monitored.
+# This node can monitor the nodes and topics, define whether the nodes and topics are currently working or not.
+# The node also output an action value (std_msgs::Float32) to determine what kind of action we want to be carried out, if there are
+# abnormalities in the components.
+# There are a set of other nodes that do the monitoring. This node mainly works to unify the input information, output the determined actions
+# and perform logics.
+# nodes: The information about the nodes that need to be monitored.
+#   topic_name: The topic that is the input of the monitored list.
+#   control_loop_rate: I am not sure what this is but it is always set to 5
+#   output_topic: I am not sure what this is either
+#   list: The list of the nodes that needs to be monitored.
+#     - {id: number_by_order, name: name_of_the_node}. The id is not used in computaiton, but it is convenient for checking.
+# topics: The information about the nodes that need to be monitored.
+#   topic_name: The topic that is the input of the monitored list.
+#   control_loop_rate: I am not sure what this is but it is always set to 5
+#   output_topic: I am not sure what this is either
+#   list: The list of the nodes that needs to be monitored.
+#     -  {id: number_by_order, name: name_of_the_node, timeout_sec: how_long_since_the_topic_last_published_to_be_considered_timed_out,
+#        check_frequency_sec: how_often_the_topic_needs_to_be_checked}
+# message_field: This is to declare the message fields that is used to perform logics. This message field has to output as a boolean value.
+#  - {id: number_by_order, name: unique_name_for_this_message_field , topic: topic_name, field: full_flatten_out_field}
+#
+# computation: The group of information to perform logics
+#   action: The group of information for which action to be published
+#     default: The default action if there is no issues with the nodes
+#     list: The list of information about the action. Only one action logic can be true at a time. 
+#           If MORE THAN ONE action logic is true, that means there are something wrong with the node, and the action 0 will be published 
+#     - name: The name of the derived logic that will determine the action_value below. If the logic determined is true, the action_value below will be 
+#             published
+#       action_value: The value that will be published if the logic determined by the name above is true.
+#   logic_list: The list of information to perform logics. Each entry can perform either && or || . To have both && and || in the same logic, 
+#               please use another to merge. For example logic 0 does &&, logic 2 does || , logic 3 does "logic 1 && logic 2".
+#   - id: The id in ordered number. This is not used in logics, but would be useful for debugging.
+#     name: The unique identification name.
+#     relationship: "or" or "and". The relationships between the values in the list.
+#     list: The list of the logics that needs to be performed. Note that the logics needs to be done in order.
+#     - type: The type of the input. Can be "topic", "node", "message_field" or "derived". "derived" is one of the topics
+#       name: Name of the input. Use the "name:" field in the yaml.
+#       negate: "true" or "false". Determine whether the logic of the input needs to be negated or not.
+# output: The information of the output 
+#   system_monitoring_topic: The topic name for the ouput of the system monitoring, including the results of all the logics.
+#   action_topic: The topic name for the ouput of the action.
+
+
+
+#Check if they are running or not
+nodes:
+  topic_name: /aisd/apm_diagnostic/aide/nodes 
+  control_loop_rate: 5
+  output_topic: nodes
+  list:
+    - {id: 0, name: /aide/aide_bridge}
+    - {id: 1, name: /aide/aide2aidc_bridge}
+    - {id: 2, name: /aide/localization_filtered_with_sm_TB_TC}
+    - {id: 3, name: /aide/localization_filtered_with_sm_TQ_TQ}
+    - {id: 4, name: /aide/apm_preprocessing}
+    - {id: 5, name: /aide/imu_preprocessing}
+    - {id: 6, name: /aide/gnss_preprocessing}
+    - {id: 7, name: /aide/navsat_transform_node}
+    - {id: 8, name: /aide/localization_filtered}
+    - {id: 9, name: /aide/wheel_odometry_node}
+    - {id: 10, name: /aide/imu_tracker2}
+    - {id: 11, name: /hdl_localization_nodelet}
+    - {id: 12, name: /aide/gl_sm_switch_node}
+    - {id: 13, name: /aide/gnss_management_node} 
+    - {id: 14, name: /aide/imu_management_node} 
+    - {id: 15, name: /aide/scan_matching_management_node}
+    - {id: 16, name: /aide/utm_to_lane_heading_TB_TC}
+    - {id: 17, name: /aide/utm_to_lane_heading_TP_TQ}
+    - {id: 18, name: /aide/apm_diagnostic/heading_parser}
+    - {id: 19, name: /aide/gnss_localization_node} 
+    - {id: 20, name: /aide/online_calibration}
+    - {id: 21, name: /map_server}
+    - {id: 22, name: /prefiltering_nodelet}
+    - {id: 23, name: /aide/apm_diagnostic/heading_benchmark}
+    - {id: 24, name: /utm_to_aidemap}
+
+topics:
+  topic_name: /aisd/apm_diagnostic/aide/topics
+  control_loop_rate: 5
+  output_topic: topics
+  list:
+    - {id: 0, name: /aide/odometry/filtered/utm/baselink, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 1, name: /aide/odometry/filtered/map/baselink, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 2, name: /aide/odometry/gl/map/baselink, timeout_sec: 15.0, check_frequency_sec: 1.0}
+    - {id: 3, name: /aide/imu_tracker/imu_calibrate_parameter, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 4, name: /aide/odometry/wheelodom/map/baselink, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 5, name: /globalmap, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 6, name: /aide_status/apmstatus, timeout_sec: 5.0, check_frequency_sec: 1.0} 
+    - {id: 7, name: /aide/odometry/gl/no_heading, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 8, name: /fix_processed, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 9, name: /imu_processed, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 10, name: /aide_status/pos, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 11, name: /aide/odometry/filtered_with_sm/lane_heading_TP_TQ/baselink, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 12, name: /aide/odometry/filtered_with_sm_fuse/lane_heading/baselink, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 13, name: /aide/odometry/filtered_with_sm/lane_heading_TB_TC/baselink, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 14, name: /scan_matching_odom, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 15, name: /aide/apm_diagnostic/heading_benchmark, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 16, name: /aide/odometry/transformed/lane_heading/baselink, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 17, name: /aide_info/northref/heading, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 18, name: /aide/sensor_management/imu/fq_with_cov, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 19, name: /aide_info/zones, timeout_sec: 5.0, check_frequency_sec: 1.0 }
+    - {id: 20, name: /aide/info/gnss_management, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 21, name: /aide/info/gnss_preprocessing, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 22, name: /aide/odometry/2d_grounding, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 23, name: /aide/sm_fuse_lat, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 24, name: /aide/sm_fuse_long, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 25, name: /aligned_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 26, name: /filtered_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+
+message_field:
+  - {id: 0, name: inyard_condition , topic: /aide_status/apmstatus, field: /zone_inyard, type: bool}
+computation:
+  action:
+    default: 3
+    list:
+    - name: aisd_action_1
+      action_value: 1
+    - name: aisd_action_0
+      action_value: 0
+      
+  logic_list:
+  - id: 0
+    name: aide_bridge_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/aide_bridge
+    - type: topic
+      name: /aide/odometry/filtered/utm/baselink
+
+  - id: 1
+    name: aide2aidc_bridge_error 
+    relationship: or
+    list:
+    - type: node
+      name: /aide/aide2aidc_bridge
+    - type: topic
+      name: /aide_status/pos
+
+  - id: 2
+    name: localization_filtered_with_sm_TB_TC_error 
+    relationship: or
+    list:
+    - type: node
+      name: /aide/localization_filtered_with_sm_TB_TC
+    - type: topic
+      name: /aide/odometry/filtered_with_sm/lane_heading_TB_TC/baselink
+
+  - id: 3
+    name: localization_filtered_with_sm_TP_TQ_error 
+    relationship: or
+    list:
+    - type: node
+      name: /aide/localization_filtered_with_sm_TQ_TQ
+    - type: topic
+      name: /aide/odometry/filtered_with_sm/lane_heading_TP_TQ/baselink
+
+  - id: 4
+    name: apm_preprocessing_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/apm_preprocessing
+      
+    - type: topic
+      name: /aide_status/apmstatus
+      
+  
+  - id: 5
+    name: imu_preprocessing_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/imu_preprocessing
+      
+    - type: topic
+      name: /imu_processed
+      
+  
+  - id: 6
+    name: gnss_preprocessing_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/gnss_preprocessing
+      
+    - type: topic
+      name: /aide/info/gnss_preprocessing
+      
+  
+  - id: 7
+    name: navsat_transform_node_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/navsat_transform_node
+      
+    - type: topic
+      name: /aide/odometry/gl/no_heading
+      
+  
+  - id: 8
+    name: localization_filtered_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/localization_filtered
+      
+    - type: topic
+      name: /aide/odometry/filtered/map/baselink
+      
+  
+  - id: 9
+    name: wheel_encoder_failure
+    relationship: or
+    list:
+    - type: node
+      name: /aide/wheel_odometry_node
+      
+    - type: topic
+      name: /aide/odometry/wheelodom/map/baselink
+      
+
+
+  - id: 10
+    name: imu_tracker2_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/imu_tracker2
+      
+    - type: topic
+      name: /aide/imu_tracker/imu_calibrate_parameter 
+      
+
+  - id: 11
+    name: hdl_localization_nodelet_error
+    relationship: or
+    list:
+    - type: node
+      name: /hdl_localization_nodelet
+      
+    - type: topic
+      name: /scan_matching_odom 
+      
+
+  - id: 12
+    name: gl_sm_switch_node_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/gl_sm_switch_node
+      
+    - type: topic
+      name: /aide/odometry/transformed/lane_heading/baselink
+      
+
+  - id: 13
+    name: gnss_management_node_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/gnss_management_node
+      
+    - type: topic
+      name: /aide/info/gnss_management
+      
+  
+  - id: 14
+    name: imu_management_node_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/imu_management_node
+      
+    - type: topic
+      name: /aide/sensor_management/imu/fq_with_cov
+      
+  
+  - id: 15
+    name: scan_matching_management_node_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/scan_matching_management_node
+      
+    - type: topic
+      name: /aide/odometry/filtered_with_sm_fuse/lane_heading/baselink
+      
+
+  - id: 16
+    name: utm_to_lane_heading_TB_TC_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/utm_to_lane_heading_TB_TC
+      
+
+  - id: 17
+    name: utm_to_lane_heading_TP_TQ_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/utm_to_lane_heading_TP_TQ
+      
+  
+  - id: 18
+    name: apm_diagnostic_heading_parser_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/apm_diagnostic/heading_parser
+      
+    - type: topic
+      name: /aide/apm_diagnostic/heading_benchmark
+      
+
+  - id: 19
+    name: gnss_localization_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/gnss_localization_node
+      
+    - type: topic
+      name: /aide/odometry/gl/map/baselink
+      
+
+  - id: 20
+    name: online_calibration_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/online_calibration
+      
+
+  - id: 21
+    name: map_server_error
+    relationship: or
+    list:
+    - type: node
+      name: /map_server
+      
+
+  - id: 22
+    name: prefiltering_nodelet_error
+    relationship: or
+    list:
+    - type: node
+      name: /prefiltering_nodelet
+      
+    - type: topic
+      name: /filtered_points
+      
+
+  - id: 23
+    name: apm_diagnostic_heading_benchmark_node_error
+    relationship: or
+    list:
+    - type: node
+      name: /aide/apm_diagnostic/heading_benchmark
+      
+    - type: topic
+      name: /aide_info/zones
+      
+
+  - id: 24
+    name: utm_to_aidemap_error
+    relationship: or
+    list:
+    - type: node
+      name: /utm_to_aidemap
+      
+
+  - id: 25
+    name: non_critical_failure
+    relationship: or
+    list:
+    - type: derived
+      name: imu_tracker2_error
+      
+    - type: derived
+      name: online_calibration_error
+      
+    - type: topic
+      name: /aide/odometry/2d_grounding
+      
+
+  - id: 26
+    name: non_component_failure 
+    relationship: or
+    list:
+    - type: derived
+      name: aide_bridge_error
+      
+    - type: derived
+      name: aide2aidc_bridge_error
+      
+    - type: derived
+      name: apm_preprocessing_error
+      
+    - type: derived
+      name: localization_filtered_error
+      
+    - type: derived
+      name: apm_diagnostic_heading_parser_error
+      
+
+  - id: 27
+    name: scan_matching_failure 
+    relationship: or
+    list:
+    - type: derived
+      name: localization_filtered_with_sm_TB_TC_error
+      
+    - type: derived
+      name: localization_filtered_with_sm_TP_TQ_error
+      
+    - type: derived
+      name: hdl_localization_nodelet_error
+      
+    - type: derived
+      name: gl_sm_switch_node_error
+      
+    - type: derived
+      name: scan_matching_management_node_error
+      
+    - type: derived
+      name: utm_to_lane_heading_TB_TC_error
+      
+    - type: derived
+      name: utm_to_lane_heading_TP_TQ_error
+      
+    - type: derived
+      name: map_server_error
+      
+    - type: topic
+      name: /aide/sm_fuse_lat
+      
+    - type: topic
+      name: /aide/sm_fuse_long
+      
+    - type: derived
+      name: apm_diagnostic_heading_benchmark_node_error
+      
+    - type: derived
+      name: utm_to_aidemap_error
+      
+
+  - id: 28
+    name: gnss_failure 
+    relationship: or
+    list:
+    - type: derived
+      name: gnss_preprocessing_error
+      
+    - type: derived
+      name: navsat_transform_node_error
+      
+    - type: derived
+      name: gnss_management_node_error
+      
+    - type: derived
+      name: gnss_localization_error
+      
+    - type: topic
+      name: /fix_processed
+      
+
+  - id: 29
+    name: imu_failure
+    relationship: or
+    list:
+      
+    - type: derived
+      name: imu_preprocessing_error
+      
+    - type: derived
+      name: imu_management_node_error
+      
+
+  - id: 30
+    name: gnss_fail_out_of_yard 
+    relationship: and
+    list:
+    - type: message_field
+      name: inyard_condition
+      negate: true
+    - type: derived
+      name: gnss_failure
+      
+
+  - id: 31
+    name: gnss_and_sm_fail_in_yard 
+    relationship: and
+    list:
+    - type: message_field
+      name: inyard_condition
+      
+    - type: derived
+      name: scan_matching_failure
+      
+    - type: derived
+      name: gnss_failure 
+
+  - id: 32
+    name: aisd_action_0
+    relationship: or
+    list:
+    - type: derived
+      name: non_component_failure
+      
+    - type: derived
+      name: imu_failure
+      
+    - type: derived
+      name: wheel_encoder_failure
+  
+  - id: 33
+    name: aisd_action_1
+    relationship: or
+    list:
+    - type: derived
+      name: gnss_fail_out_of_yard
+      
+    - type: derived
+      name: gnss_and_sm_fail_in_yard
+      
+
+output: 
+  system_monitoring_topic: "/aisd/system_monitoring/aide_result_new"
+  action_topic: "/aisd/actions/aide_diagnostic_new"
+
+aisd_rviz_plugins:
+  - name: Aide Bridge
+    field:
+      - source: /aide/aide_bridge
+        type: node
+        error_message: "Error"
+      - source: /aide/odometry/filtered/utm/baselink
+        type: topic 
+        error_message: "Time Out"
+  - name: Aide2aidc Bridge
+    field:
+      - source: /aide/aide2aidc_bridge
+        type: node
+        error_message: "Error"
+      - source: /aide_status/pos
+        type: topic
+        error_message: "Time Out"
+  - name: SM Filtered TBTC
+    field:
+      - source: /aide/localization_filtered_with_sm_TB_TC
+        type: node
+        error_message: "Error"
+      - source: /aide/odometry/filtered_with_sm/lane_heading_TB_TC/baselink
+        type: topic
+        error_message: "Time Out"
+  - name: SM Filtered TPTQ
+    field:
+      - source: /aide/localization_filtered_with_sm_TQ_TQ
+        type: node
+        error_message: "Error"
+      - source: /aide/odometry/filtered_with_sm/lane_heading_TP_TQ/baselink
+        type: topic
+        error_message: "Time Out"
+  - name: Apm Preprocessing
+    field:
+      - source: /aide/apm_preprocessing
+        type: node
+        error_message: "Error"
+      - source: /aide_status/apmstatus
+        type: topic
+        error_message: "Time Out"
+  - name: Imu Preprocessing
+    field:
+      - source: /aide/imu_preprocessing
+        type: node
+        error_message: "Error"
+      - source: /imu_processed
+        type: topic
+        error_message: "Time Out"
+  - name: Gnss Preprocessing
+    field:
+      - source: /aide/gnss_preprocessing
+        type: node
+        error_message: "Error"
+      - source: /aide/info/gnss_preprocessing
+        type: topic
+        error_message: "Time Out"
+  - name: Navsat Transform
+    field:
+      - source: /aide/navsat_transform_node
+        type: node
+        error_message: "Error"
+      - source: /aide/odometry/gl/no_heading
+        type: topic
+        error_message: "Time Out"
+  - name: Aide Filtered Localization
+    field:
+      - source: /aide/localization_filtered
+        type: node
+        error_message: "Error"
+      - source: /aide/odometry/filtered/map/baselink
+        type: topic
+        error_message: "Time Out"
+  - name: Wheel Odom
+    field:
+      - source: /aide/wheel_odometry_node
+        type: node
+        error_message: "Error"
+      - source: /aide/odometry/wheelodom/map/baselink
+        type: topic
+        error_message: "Time Out"
+  - name: Imu Tracker
+    field:
+      - source: /aide/imu_tracker2
+        type: node
+        error_message: "Error"
+      - source: /aide/imu_tracker/imu_calibrate_parameter
+        type: topic
+        error_message: "Time Out"
+  - name: SM Localization
+    field:
+      - source: /hdl_localization_nodelet
+        type: node
+        error_message: "Error"
+      - source: /scan_matching_odom
+        type: topic
+        error_message: "Time Out"
+  - name: GL SM Switch
+    field:
+      - source: /aide/gl_sm_switch_node
+        type: node
+        error_message: "Error"
+      - source: /aide/odometry/transformed/lane_heading/baselink
+        type: topic
+        error_message: "Time Out"
+  - name: Gnss Management
+    field:
+      - source: /aide/gnss_management_node
+        type: node
+        error_message: "Error"
+      - source: /aide/info/gnss_management
+        type: topic
+        error_message: "Time Out"
+  - name: Imu Management
+    field:
+      - source: /aide/imu_management_node
+        type: node
+        error_message: "Error"
+      - source: /aide/sensor_management/imu/fq_with_cov
+        type: topic
+        error_message: "Time Out"
+  - name: SM Management
+    field:
+      - source: /aide/scan_matching_management_node
+        type: node
+        error_message: "Error"
+      - source: /aide/odometry/filtered_with_sm_fuse/lane_heading/baselink
+        type: topic
+        error_message: "Time Out"
+  - name: UTM to Lane Heading TBTC
+    field:
+      - source: /aide/utm_to_lane_heading_TB_TC
+        type: node
+        error_message: "Error"
+      # - source: /aide/odometry/filtered_with_sm/lane_heading_TB_TC/baselink
+      #   type: topic
+      #   error_message: "Time Out"
+  - name: UTM to Lane Heading TPTQ
+    field:
+      - source: /aide/utm_to_lane_heading_TP_TQ
+        type: node
+        error_message: "Error"
+      # - source: /aide/odometry/filtered_with_sm/lane_heading_TB_TC/baselink
+      #   type: topic
+      #   error_message: "Time Out"
+  - name: Heading Parser
+    field:
+      - source: /aide/apm_diagnostic/heading_parser
+        type: node
+        error_message: "Error"
+      - source: /aide/apm_diagnostic/heading_benchmark
+        type: topic
+        error_message: "Time Out"
+  - name: Gnss Localization
+    field:
+      - source: /aide/gnss_localization_node
+        type: node
+        error_message: "Error"
+      - source: /aide/odometry/gl/map/baselink
+        type: topic
+        error_message: "Time Out"
+  - name: Wheel Odom Calibration
+    field:
+      - source: /aide/online_calibration
+        type: node
+        error_message: "Error"
+      # - source: /aide/odometry/filtered_with_sm/lane_heading_TB_TC/baselink
+      #   type: topic
+      #   error_message: "Time Out"
+  - name: Map Server
+    field:
+      - source: /map_server
+        type: node
+        error_message: "Error"
+      # - source: /aide/odometry/filtered_with_sm/lane_heading_TB_TC/baselink
+      #   type: topic
+      #   error_message: "Time Out"
+  - name: Lidar Prefiltering
+    field:
+      - source: /prefiltering_nodelet
+        type: node
+        error_message: "Error"
+      - source: /filtered_points
+        type: topic
+        error_message: "Time Out"
+  - name: Site Localizer
+    field:
+      - source: /aide/apm_diagnostic/heading_benchmark
+        type: node
+        error_message: "Error"
+      - source: /aide_info/zones
+        type: topic
+        error_message: "Time Out"
+  - name: UTM to Aide Map
+    field:
+      - source: /utm_to_aidemap
+        type: node
+        error_message: "Error"
+      # - source: /aide/odometry/filtered_with_sm/lane_heading_TB_TC/baselink
+      #   type: topic
+      #   error_message: "Time Out"
+
+
+

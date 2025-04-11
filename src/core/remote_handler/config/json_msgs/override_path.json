@@ -1,0 +1,9 @@
+{
+  "toMqttTopicName": "",
+  "fromMqttTopicName": "override_path",
+  "timestamp": 0,
+  "segmentId": [], 
+  "discretizedPathPointsX": [],
+  "discretizedPathPointsY": [],
+  "discretizedPathPointsYaw": []
+}   

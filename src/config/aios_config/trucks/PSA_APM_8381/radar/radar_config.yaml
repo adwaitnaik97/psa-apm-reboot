@@ -1,0 +1,7 @@
+# Params
+# 1 = plc setup with peak pci setup: 2 = plc setup with peak usb setup: 3 = kvaser driver setup;
+delphi_esr_kvaser_serial_number: 56103
+delphi_srr_kvaser_serial_number: 50404
+
+
+

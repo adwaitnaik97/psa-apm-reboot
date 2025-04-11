@@ -1,0 +1,439 @@
+# This is a generic system monitoring node. This yaml is the configurations for the nodes and topics that needs to be monitored.
+# This node can monitor the nodes and topics, define whether the nodes and topics are currently working or not.
+# The node also output an action value (std_msgs::Float32) to determine what kind of action we want to be carried out, if there are
+# abnormalities in the components.
+# There are a set of other nodes that do the monitoring. This node mainly works to unify the input information, output the determined actions
+# and perform logics.
+# nodes: The information about the nodes that need to be monitored.
+#   topic_name: The topic that is the input of the monitored list.
+#   control_loop_rate: I am not sure what this is but it is always set to 5
+#   output_topic: I am not sure what this is either
+#   list: The list of the nodes that needs to be monitored.
+#     - {id: number_by_order, name: name_of_the_node}. The id is not used in computaiton, but it is convenient for checking.
+# topics: The information about the nodes that need to be monitored.
+#   topic_name: The topic that is the input of the monitored list.
+#   control_loop_rate: I am not sure what this is but it is always set to 5
+#   output_topic: I am not sure what this is either
+#   list: The list of the nodes that needs to be monitored.
+#     -  {id: number_by_order, name: name_of_the_node, timeout_sec: how_long_since_the_topic_last_published_to_be_considered_timed_out,
+#        check_frequency_sec: how_often_the_topic_needs_to_be_checked}
+# message_field: This is to declare the message fields that is used to perform logics. This message field has to output as a boolean value.
+#  - {id: number_by_order, name: unique_name_for_this_message_field , topic: topic_name, field: full_flatten_out_field}
+#
+# computation: The group of information to perform logics
+#   action: The group of information for which action to be published
+#     default: The default action if there is no issues with the nodes
+#     list: The list of information about the action. Only one action logic can be true at a time. 
+#           If MORE THAN ONE action logic is true, that means there are something wrong with the node, and the action 0 will be published 
+#     - name: The name of the derived logic that will determine the action_value below. If the logic determined is true, the action_value below will be 
+#             published
+#       action_value: The value that will be published if the logic determined by the name above is true.
+#   logic_list: The list of information to perform logics. Each entry can perform either && or || . To have both && and || in the same logic, 
+#               please use another to merge. For example logic 0 does &&, logic 2 does || , logic 3 does "logic 1 && logic 2".
+#   - id: The id in ordered number. This is not used in logics, but would be useful for debugging.
+#     name: The unique identification name.
+#     relationship: "or" or "and". The relationships between the values in the list.
+#     list: The list of the logics that needs to be performed. Note that the logics needs to be done in order.
+#     - type: The type of the input. Can be "topic", "node", "message_field" or "derived". "derived" is one of the topics
+#       name: Name of the input. Use the "name:" field in the yaml.
+#       negate: "true" or "false". Determine whether the logic of the input needs to be negated or not.
+# output: The information of the output 
+#   system_monitoring_topic: The topic name for the ouput of the system monitoring, including the results of all the logics.
+#   action_topic: The topic name for the ouput of the action.
+
+
+
+#Check if they are running or not
+#Check if they are running or not
+nodes:
+  control_loop_rate: 5
+  topic_name: /aisd/apm_diagnostic/airs_system/nodes
+  output_topic: nodes
+  list:
+    #dummy
+    - {id: 0, name: /dummy}
+    #driver
+    - {id: 1, name: /terberg_dc_plc_driver_node}
+    - {id: 2, name: /airs/plc/at1/plc_driver_node}
+    #parser
+    - {id: 3, name: /airs/plc/at1/plc_parser}
+    - {id: 4, name: /airs/plc/at2/plc_parser}
+    - {id: 5, name: /plc_parser}
+    #constructor
+    - {id: 6, name: /plc_constructor}
+    - {id: 7, name: /new_plc_constructor}
+    - {id: 8, name: /airs/plc/at1/plc_constructor}
+    - {id: 9, name: /airs/plc/at2/plc_constructor}
+    #diagnostics
+    - {id: 10, name: /drive_by_wire_diagnostics}
+    - {id: 11, name: /drive_by_wire_diagnostics}
+    - {id: 12, name: /dbw_control_system_node}
+    - {id: 13, name: /dbw_steering_claibrator}
+    - {id: 14, name: /steering_control}
+    - {id: 15, name: /airs_bridge_node}
+    - {id: 16, name: /dbw_steering_controller}
+
+
+
+#Check if they are being advertised or not
+topics:
+  control_loop_rate: 5
+  topic_name: /aisd/apm_diagnostic/airs_system/topics
+  output_topic: topics
+  list:
+    #driver
+    - {node_id: 0, id: 0, name: /airs/plc/plc_raw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 1, name: /airs/plc/at1/plc_raw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 2, name: /airs/plc/at2/plc_raw, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    #parser
+    - {node_id: 0, id: 3, name: /airs/plc/critical_fbk/reg_37, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 4, name: /airs/plc/at1/PropB_ATCC2_06, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 5, name: /airs/plc/at1/CCVS1, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 6, name: /airs/plc/at2/STR_FB_MSG_M, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    #constructor
+    - {node_id: 7, id: 7, name: /airs/plc/critical_cmd/wreg18_cmd, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 7, id: 8, name: /airs/plc/fss/wreg22_cmd, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 7, id: 9, name: /airs/plc/pid/wreg24_cmd, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 7, id: 10, name: /plc_wreg26_cmd, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 7, id: 11, name: /airs/dbw_steering_final_cmd, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 12, name: /airs/plc/at1/wreg_PropB_DbwUser_02, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 13, name: /airs/plc/at2/wreg_AUX_JOY_P, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    #diagnostics
+    - {node_id: 0, id: 14, name: /aios/actions/airs_fss_diagnostic, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 15, name: /airs/dbw_status, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 16, name: /aios/actions/airs_plc_diagnostic, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 13, id: 17, name: /airs/steering/calibration, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 13, id: 18, name: /airs/steering/calibrated_offset, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 19, name: /airs/dbw_dashboard, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 20, name: /airs/plc/diag/reg_49, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 21, name: /airs/plc/diag/reg_51, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 22, name: /airs/plc/dbw_transmission_state, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 23, name: /airs/airs_speed_control, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 24, name: /airs/airs_steering_control, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 25, name: /airs/plc/at1/FS_VCU, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 26, name: /airs/plc/at1/PropB_DbwUser_01, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 27, name: /airs/plc/at1/PropB_DbwUser_02, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 28, name: /airs/plc/at1/PropB_DbwUser_03, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 29, name: /airs/plc/at1/PropB_DbwUser_04, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 30, name: /airs/plc/at1/PropB_DbwUser_05, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 31, name: /airs/plc/at1/PropB_DbwUser_07, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 32, name: /airs/plc/at2/AT2_PropB_DbwUser_01, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 33, name: /airs/plc/at2/AUX_JOY_P, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 34, name: /airs/plc/at2/AUX_JOY_R, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 35, name: /airs/plc/at2/steering_soft_reset, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 16, id: 36, name: /airs/dbw_steering_angle_req2, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 16, id: 37, name: /airs/dbw_steering_torque_req, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 16, id: 38, name: /airs/airs_steering_controller, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    #VCU & Safety Sensor 
+    - {node_id: 0, id: 19, name: /airs/plc/at1/FSS, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 14, id: 20, name: /airs/plc/steering_torque_active, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 15, id: 38, name: /airs/bridge_status, timeout_sec: 5.0, check_frequency_sec: 1.0}
+
+
+
+message_field:
+  - {id: 0, name: inyard_condition , topic: /aide_status/apmstatus, field: /zone_inyard, type: bool}
+
+computation:
+  action:
+    default: 3
+    list:
+    - name: aisd_action_0
+      action_value: 0
+    - name: aisd_action_2
+      action_value: 2
+      
+  logic_list:
+  - id: 0
+    name: airs_driver_timeout_component
+    relationship: or
+    list:
+    - type: topic
+      name: /airs/plc/at1/plc_raw
+      
+    - type: topic
+      name: /airs/plc/at2/plc_raw
+      
+  - id: 1
+    name: airs_driver_timeout
+    relationship: and
+    list:
+    - type: derived
+      name: airs_driver_timeout_component
+      
+    - type: topic
+      name: /airs/plc/plc_raw
+      
+  - id: 2
+    name: airs_read_timeout_component
+    relationship: or
+    list:
+    - type: topic
+      name: /airs/plc/at1/PropB_ATCC2_06
+      
+    - type: topic
+      name: /airs/plc/at2/STR_FB_MSG_M
+      
+  - id: 3
+    name: airs_read_timeout
+    relationship: and
+    list:
+    - type: derived
+      name: airs_read_timeout_component
+      
+    - type: topic
+      name: /airs/plc/critical_fbk/reg_37
+      
+  - id: 4
+    name: airs_write_timeout_component
+    relationship: or
+    list:
+    - type: topic
+      name: /airs/plc/at1/wreg_PropB_DbwUser_02
+      
+    - type: topic
+      name: /airs/plc/at2/wreg_AUX_JOY_P
+      
+  - id: 5
+    name: airs_write_timeout
+    relationship: and
+    list:
+    - type: derived
+      name: airs_write_timeout_component
+      
+    - type: topic
+      name: /airs/plc/critical_cmd/wreg18_cmd
+      
+  - id: 6
+    name: airs_drive_by_wire_diagnostics_timeout
+    relationship: and
+    list:
+    - type: topic
+      name: /aios/actions/airs_fss_diagnostic
+      
+    - type: topic
+      name: /aios/actions/airs_plc_diagnostic
+      
+  - id: 7
+    name: airs_drive_by_wire_control_node_timeout
+    relationship: and
+    list:
+    - type: topic
+      name: /airs/dbw_status
+      
+    - type: topic
+      name: /airs/plc/plc_raw
+      
+  - id: 8
+    name: airs_drive_by_wire_fs_vcu_timeout
+    relationship: and
+    list:
+    - type: topic
+      name: /airs/plc/plc_raw
+      
+    - type: topic
+      name: /airs/plc/at1/FSS
+      
+  - id: 9
+    name: airs_driver_error
+    relationship: and
+    list:
+    - type: node
+      name: /terberg_dc_plc_driver_node
+      
+    - type: node
+      name: /airs/plc/at1/plc_driver_node
+      
+  - id: 10
+    name: airs_read_error
+    relationship: and
+    list:
+    - type: node
+      name: /airs/plc/at1/plc_parser
+      
+    - type: node
+      name: /airs/plc/at2/plc_parser
+      
+    - type: node
+      name: /plc_parser
+      
+  - id: 11
+    name: airs_write_error
+    relationship: and
+    list:
+    - type: node
+      name: /plc_constructor
+      
+    - type: node
+      name: /airs/plc/at1/plc_constructor
+      
+    - type: node
+      name: /airs/plc/at2/plc_constructor
+      
+  - id: 12
+    name: airs_drive_by_wire_diagnostics_error
+    relationship: and
+    list:
+    - type: node
+      name: /drive_by_wire_diagnostics
+      
+    - type: node
+      name: /drive_by_wire_diagnostics
+      
+  - id: 13
+    name: airs_drive_by_wire_control_node_error
+    relationship: and
+    list:
+    - type: node
+      name: /dbw_control_system_node
+      
+    - type: node
+      name: /terberg_dc_plc_driver_node
+      
+  - id: 14
+    name: airs_drive_by_wire_fs_vcu_error
+    relationship: and
+    list:
+    - type: node
+      name: /airs/plc/at1/plc_parser
+      
+    - type: node
+      name: /terberg_dc_plc_driver_node
+      
+  - id: 15
+    name: driver_failed
+    relationship: or
+    list:
+    - type: derived
+      name: airs_driver_error
+      
+    - type: derived
+      name: airs_driver_timeout
+      
+  - id: 16
+    name: read_failed
+    relationship: or
+    list:
+    - type: derived
+      name: airs_read_error
+      
+    - type: derived
+      name: airs_read_timeout
+      
+  - id: 17
+    name: write_failed
+    relationship: or
+    list:
+    - type: derived
+      name: airs_write_error
+      
+    - type: derived
+      name: airs_write_timeout
+      
+  - id: 18
+    name: diagnostics_failed
+    relationship: or
+    list:
+    - type: derived
+      name: airs_drive_by_wire_diagnostics_error
+      
+    - type: derived
+      name: airs_drive_by_wire_diagnostics_timeout
+      
+  - id: 19
+    name: dbw_control_node_failed
+    relationship: or
+    list:
+    - type: derived
+      name: airs_drive_by_wire_control_node_error
+      
+    - type: derived
+      name: airs_drive_by_wire_control_node_timeout
+      
+  - id: 20
+    name: functional_safety_sensor_failed
+    relationship: or
+    list:
+    - type: derived
+      name: airs_drive_by_wire_fs_vcu_error
+      
+    - type: derived
+      name: airs_drive_by_wire_fs_vcu_timeout
+      
+  - id: 21
+    name: aisd_action_0
+    relationship: or
+    list:
+    - type: derived
+      name: read_failed
+      
+    - type: derived
+      name: write_failed
+      
+    - type: derived
+      name: driver_failed
+      
+  - id: 22
+    name: aisd_action_1
+    relationship: or
+    list:
+    - type: derived
+      name: dbw_control_node_failed
+      
+    - type: derived
+      name: functional_safety_sensor_failed
+      
+
+aisd_rviz_plugins:
+  - name: airs_driver
+    field:
+      - source: airs_driver_error
+        type: derived
+        error_message: "Error"
+      - source: airs_driver_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: airs_read
+    field:
+      - source: airs_read_error
+        type: derived
+        error_message: "Error"
+      - source: airs_read_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: airs_write
+    field:
+      - source: airs_write_error
+        type: derived
+        error_message: "Error"
+      - source: airs_write_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: airs_drive_by_wire_diagnostics
+    field:
+      - source: airs_drive_by_wire_diagnostics_error
+        type: derived
+        error_message: "Error"
+      - source: airs_drive_by_wire_diagnostics_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: airs_drive_by_wire_control_node
+    field:
+      - source: airs_drive_by_wire_control_node_error
+        type: derived
+        error_message: "Error"
+      - source: airs_drive_by_wire_control_node_timeout
+        type: derived
+        error_message: "Time Out"
+  - name: airs_functional_safety_system
+    field:
+      - source: airs_drive_by_wire_fs_vcu_error
+        type: derived
+        error_message: "Error"
+      - source: airs_drive_by_wire_fs_vcu_timeout
+        type: derived
+        error_message: "Time Out"
+
+output: 
+  system_monitoring_topic: "/aisd/system_monitoring/airs_system_result_new"
+  action_topic: "/aisd/actions/airs_system_diagnostic_new"

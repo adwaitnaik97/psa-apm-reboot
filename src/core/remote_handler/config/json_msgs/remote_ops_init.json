@@ -1,0 +1,9 @@
+{
+    "metricsType": [0, 0, 1, 1, 2],
+    "metricsValueType": [3, 3, 3, 3, 4],
+    "alertType": [0, 1, 3, 4, 5],
+    "alertThreshold": ["15", "5", "", "300", ""],
+    "alertIds": [0, 1, 2, 3, 4, 5],
+    "alertDescriptions": ["Low Fuel", "Critically Low Fuel", "Traffic Light Unknown", "Waiting (Traffic Light)", "Stuck (Traffic Light)",
+    "Vehicle Slowing Down"]
+}   

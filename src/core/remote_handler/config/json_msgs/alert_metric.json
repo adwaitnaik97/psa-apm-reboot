@@ -1,0 +1,121 @@
+{ 
+     
+     "metricValueType": 
+     [
+        {
+            "id": 0,
+            "desc": "Unknown"
+        },
+        {
+            "id": 1,
+            "desc": "Bool"
+        },
+        {
+            "id": 2,
+            "desc": "Float"
+        },
+        {
+            "id": 3,
+            "desc": "Double"
+        },
+        {
+            "id": 4,
+            "desc": "String"
+        },
+        {
+            "id": 5,
+            "desc": "UInt8"
+        },
+        {
+            "id": 6,
+            "desc": "Int32"
+        },
+        {
+            "id": 7,
+            "desc": "UInt64"
+        }
+     ],
+    
+      "alerts": [
+         {
+            "id": 0,
+            "description": "Low Fuel",
+            "type": "A"
+         },
+         {
+            "id": 1,
+            "description": "Critically Low Fuel", 
+            "type": "R"
+         },
+         {
+            "id": 2,
+            "description": "Traffic Light Unknown", 
+            "type": "AA" 
+         }  ,
+         {
+            "id": 3, 
+            "description": "Waiting (Traffic Light)", 
+            "type": "A"
+         }  ,
+         {
+            "id": 4,
+            "description": "Stuck (Traffic Light)", 
+            "type": "AA"
+         }  ,
+         {
+            "id": 5,
+            "description": "Vehicle Slowing Down",
+            "type": "A"
+         }     
+      ],
+
+      "metrics": [
+         {
+            "id": 0,
+            "description": "Fuel Level", 
+            "valueType": 3
+
+         },
+         {
+            "id": 1,
+            "description": "Duration", 
+            "valueType":3     
+
+         },
+         {
+            "id": 2,
+            "description": "Reason", 
+            "valueType": 4
+
+         }
+
+      ],
+
+      "alertMetric": [
+        {
+            "alertID": 0,
+            "metricID": 0,
+            "threshold": "15"
+        },
+        {
+            "alertID": 1,
+            "metricID": 0,
+            "threshold": "5"
+        },
+        {
+            "alertID": 3,
+            "metricID": 1,
+            "threshold": ""
+        },
+        {
+            "alertID": 4,
+            "metricID": 1,
+            "threshold": "300"
+        },
+        {
+            "alertID": 5,
+            "metricID": 2,
+            "threshold": ""
+        }
+      ]
+}

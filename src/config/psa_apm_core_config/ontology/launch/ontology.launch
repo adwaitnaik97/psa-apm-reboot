@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<launch>
+
+
+  <arg name="machine_id" default="Host" />
+  <arg name="launch_name" default="ontology" />
+
+  <!--****** Ros Console Config ****** -->
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+
+  <arg name="aios_debug" default="False"/>
+  <arg name="xterm_req" default="" if="$(eval aios_debug==False)" /> 
+  <arg name="xterm_req" default="xterm -e" if="$(eval aios_debug==True)" /> 
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aios_config)/apm_rosconsole.conf"/>
+
+  <!--****** Remote Setup ****** -->
+  <include file="$(find aios_config)/remote_env/launch/remote.launch">
+    <arg name="machine_id" value="$(arg machine_id)"/>
+    <arg name="launch_name" value="$(arg launch_name)"/>
+  </include>
+
+
+  <!--****** Apllication args ****** -->
+    <arg name="frame_id" default="utm"/>
+    <arg name="vehicle_id" default="8380"/>
+    <arg name="trailer_id" default="1235"/>
+    <!-- <arg name="weather" default=""/> -->
+    <arg name="rndf_file" default=""/>
+    <arg name="display_join_exit_entry" default="False"/>
+    <arg name="display_exit_entry_id" default="False"/>
+    <arg name="display_original_way_point" default="False"/>
+    <arg name="display_curve_lanes" default="False"/>
+    <!-- <arg name="weather_int" default="0" if="$(eval arg('weather') =='Dry')" />
+    <arg name="weather_int" default="1" if="$(eval arg('weather') =='Wet')" /> 
+    <arg name="weather_int" default="2" if="$(eval arg('weather') =='Foggy')" /> 
+    <arg name="weather_int" default="0" if="$(eval arg('weather') == '')" /> -->
+
+
+    <rosparam param="/aios/config/rndf/filepath"   subst_value="True">$(arg rndf_file)</rosparam>
+    <rosparam param="/aios/config/rndf/frame_id"   subst_value="True">$(arg frame_id)</rosparam>
+    <rosparam param="/aios/config/vehicle_id"   subst_value="True">"$(arg vehicle_id)"</rosparam>
+    <rosparam param="/aios/config/trailer_id"   subst_value="True">"$(arg trailer_id)"</rosparam>
+    <!--rosparam param="/aios/config/weather"       subst_value="True">$(arg weather)</rosparam>
+    <rosparam param="/aios/config/weather_int"   subst_value="True">$(arg weather_int)</rosparam-->
+
+  <!--****** Global Config ****** -->
+  <arg name="project_global_config_file_path" default="$(find psa_apm_core_config)/ontology/config/global_ontology_manager_config.yaml" />
+
+  <!--****** Node Launch - Ontology ****** -->
+
+  <include file="$(find ontology)/launch/ontology.launch">
+    <arg name="global_config_file_path" value="$(arg project_global_config_file_path)"/>
+  </include>
+
+  <!--****** Node Launch - RNDF Visualizer ****** -->
+    <!-- <node name="rndf_visualiser" pkg="interactive_visualiser" type="interactive_visualiser_rndf.py" output="screen">
+            <param name="frame_id" type="str" value="utm"/>
+            <param name="rndf_path" type="str" value="$(arg rndf_file)"/>
+            <param name="display_join_exit_entry" type="bool" value="$(arg display_join_exit_entry)"/>
+            <param name="display_exit_entry_id" type="bool" value="$(arg display_exit_entry_id)"/>
+            <param name="display_original_way_point" type="bool" value="$(arg display_original_way_point)"/>
+            <param name="display_curve_lanes" type="bool" value="$(arg display_curve_lanes)"/>
+    </node> -->
+
+  <!--****** Node Launch - Trajectory Visualizer ****** -->
+    <!-- <node name="trajectory_visualiser" pkg="interactive_visualiser" type="interactive_visualiser_trajectory.py" output="screen">
+            <param name="frame_id" type="str" value="utm"/>
+            <param name="rndf_path" type="str" value="$(arg rndf_file)"/>
+    </node> -->
+
+
+
+</launch>
+

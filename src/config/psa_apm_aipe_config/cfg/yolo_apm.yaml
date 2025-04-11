@@ -1,0 +1,33 @@
+# suppress detections beyond this confidence level
+obj_threshold: 0.4
+
+# merge detections above this level of overlap
+nms_threshold: 0.2
+
+# show live detections in a window
+show_topic: false
+
+# shrink interpolation technique - either INTER_AREA or INTER_LINEAR
+interp_method: "INTER_AREA"
+
+# topics
+image_topics: "/camera_top_left_front/image_raw /camera_top_center_front/image_raw /camera_top_right_front/image_raw"
+det_topics: "/aipe/camera_top_left_front/detections /aipe/camera_top_center_front/detections /aipe/camera_top_right_front/detections"
+
+# inference dimensions
+width: 704
+height: 704
+channels: 3
+batch_size: 1
+
+# ROI params
+roi: false
+roi_x: 0
+roi_y: 0
+roi_w: 0
+roi_h: 0
+
+# weights params
+onnx_file: "$(find aipe_config)/assets/scaled_yolo/yolov4-p5-apm-test-3.onnx"
+engine_file: "$(find aipe_config)/assets/scaled_yolo/yolov4-p5-apm-test-3.trt"
+labels_file: "$(find aipe_config)/assets/scaled_yolo/apm.names"

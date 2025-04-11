@@ -1,0 +1,14 @@
+<launch>
+  <include file="$(find psa_apm_sensor_config)/lidar/rslidar_sdk_apm_simulation.launch">
+    <arg name="lidar_id" value="lidar_bottom_right" />
+  </include>
+  <include file="$(find psa_apm_sensor_config)/lidar/rslidar_sdk_apm_simulation.launch">
+    <arg name="lidar_id" value="lidar_top_center" />
+  </include>
+  <include file="$(find psa_apm_sensor_config)/lidar/rslidar_sdk_apm_simulation.launch">
+    <arg name="lidar_id" value="lidar_bottom_left" />
+  </include>
+  <include file="$(find psa_apm_sensor_config)/lidar/rslidar_sdk_apm_simulation.launch">
+    <arg name="lidar_id" value="lidar_top_center_vertical" />
+  </include>
+</launch>

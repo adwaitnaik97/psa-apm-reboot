@@ -1,0 +1,3 @@
+/aipe/qcrane_localization:
+  generic_box_filter:
+    pointcloud_intopic: "/lidar_top_center_vertical/rslidar_points"

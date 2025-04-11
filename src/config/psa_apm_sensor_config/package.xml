@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>psa_apm_sensor_config</name>
+  <version>0.0.0</version>
+  <description>The psa_apm_sensor_config package</description>
+  <maintainer email="mahi@todo.todo">mahi</maintainer>
+  <license>TODO</license>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

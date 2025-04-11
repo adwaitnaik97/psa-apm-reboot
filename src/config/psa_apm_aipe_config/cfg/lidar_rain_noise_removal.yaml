@@ -1,0 +1,15 @@
+subscriber:
+  roi_topic: "/aipe/lidar/roi_filter_points"
+  heavy_rain_topic: "/aipe/lidar/heavy_rain_detection"
+
+publisher:
+  rate: 1.0  
+  roi_pointcloud_topic: "/viz/aipe/lidar/rain_noise_removal_roi"
+  outlier_removal_topic: "/aipe/lidar/rain_noise_filter"
+  
+statistical_outlier_removal:
+  meanK: 5               # Number of neighbors to analyze for each point                         
+  stdDevThreshold: 0.75  # Standard deviation threshold
+
+visualisation_info:
+  show: flase         # if True  publisher_roi_pointcloud_topic is published

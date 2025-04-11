@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!--****** Ros Param Config ****** -->
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find hg_node)/config/imu_rosconsole.conf"/>
+
+  <!--****** Ros Console Config ****** -->
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+
+  <!--****** Simulation args ****** -->
+  <arg name="simulation" default="False"/>
+
+  <rosparam param="/airs/config/imu"  subst_value="True">2</rosparam>
+  <rosparam param="/aide/imu_preprocessing/imu_relative_orientation">[0.0, 0.0, 180.0] </rosparam>
+  <group ns="HgDataProvider">
+	<node pkg="hg_node" name="pub" type="serial_publisher" respawn="true"  unless="$(arg simulation)" args="/dev/ttyhg4930 1000000"/>
+	<node pkg="turtlesim" name="sim" type="turtlesim_node"/>
+	<node pkg="hg_node" name="sub" type="listener_example"/>
+  </group>
+
+	<group ns="imu">
+       <node pkg="robot_localization" type="ukf_localization_node" name="imu_filtered" output="log">
+          <rosparam command="load" file="$(find hg_node)/config/imu_config.yaml" />
+          <param name="base_link_frame"   value="imu_link"/>
+          <remap from="odometry/filtered" to="filtered/"/>
+      </node>
+    </group>
+
+
+</launch>

@@ -1,0 +1,39 @@
+  remote_console:  
+    mimic_remote_console: true
+    console_id: Console1
+    vehicle_id: APM8380
+    mqtt_broker_addr: 127.0.0.1:1883
+    
+    #Remote Console published topics to MQTT Broker
+    pub_topic_namespace:  /remoteops/
+    linkup_pub_topic: linkup
+    breaklink_pub_topic: breaklink 
+    teardown_pub_topic: teardown 
+    ping_pub_topic: ping
+
+    #Remote Console subscribed to MQTT Broker topics
+    sub_topic_namespace: /remoteops/
+    linkup_sub_topic: linkup 
+    breaklink_sub_topic: breaklink
+    teardown_sub_topic: teardown
+    ping_sub_topic: ping
+
+    #PSA Goal Assignment
+    block_name: TD
+    block_id: 2
+    lane_id: 11
+    slot_id: 28
+    container_type: 1
+    job_type: 1
+
+    #Non yard goal Assignment
+    destination_id: 18
+
+    #Move by distance
+    move_by_distance: 2 #2m
+    
+
+    
+
+    
+

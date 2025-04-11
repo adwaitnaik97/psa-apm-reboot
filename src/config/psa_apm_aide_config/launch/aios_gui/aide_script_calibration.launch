@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+<arg name="aide_debug" default="False"/>
+<arg name="machine_id" default="Host" />
+
+<include file="$(find aide_odometry_localization)/launch/online_calibration.launch" >
+	<arg name="aide_debug" value="$(arg aide_debug)"/>
+  	<arg name="machine_id" value="$(arg machine_id)" />
+</include>
+
+
+
+</launch>

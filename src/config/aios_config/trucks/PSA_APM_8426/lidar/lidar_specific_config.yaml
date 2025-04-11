@@ -1,0 +1,33 @@
+# Updated config
+
+lidar_bottom_right/rslidar_driver_nodelet:
+  device_ip: "172.20.2.103"
+  serial: "1007BD0C0007"
+  msop_port: 6703
+  difop_port: 7703
+  frame_id: "lidar_bottom_right"
+  horizontal_angle_res: 0.18
+
+lidar_top_center/rslidar_driver_nodelet:
+  device_ip: "172.20.2.101"
+  serial: "1006BCE00100"
+  msop_port: 6701
+  difop_port: 7701
+  frame_id: "lidar_top_center"
+  horizontal_angle_res: 0.18
+
+lidar_top_center_vertical/rslidar_driver_nodelet:
+  device_ip: "172.20.2.102"
+  serial: "1007BD0C0011"
+  msop_port: 6702
+  difop_port: 7702
+  frame_id: "lidar_top_center_vertical"
+  horizontal_angle_res: 0.18
+
+lidar_bottom_left/rslidar_driver_nodelet:
+  device_ip: "172.20.2.104"
+  serial: "1007BD0C0010"
+  msop_port: 6704
+  difop_port: 7704
+  frame_id: "lidar_bottom_left"
+  horizontal_angle_res: 0.18

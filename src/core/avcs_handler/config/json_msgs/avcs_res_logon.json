@@ -1,0 +1,16 @@
+{
+    "type": "logon_response",
+    "data":
+	{
+	    "success": 1,
+	    "num_trailers": 1,
+	    "trailer_numbers": ["567001"],
+	    "trailer_lengths": [14.5],
+	    "trailer_widths": [2.85],
+	    "trailer_heights": [7],
+	    "trailer_types": ["-SST"],
+	    "trailer_seq_numbers": [1],
+	    "trailer_payloads": [500],
+	    "trailer_unladen_weights": [250]
+	}
+}

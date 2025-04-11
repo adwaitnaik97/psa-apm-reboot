@@ -1,0 +1,21 @@
+{
+    "timestamp": 12345678901123,
+    "apm_id": "apm8380",
+    "operation_mode": "OP",
+    "mi_mode": "00",
+    "apm_power_status": 1,
+    "apm_logon_status": 1,
+    "faults": [],
+    "fuel_level": 70,
+    "pose": {},
+    "request_by_apm": {},
+    "response_by_apm": {},
+    "speed": 5.5,
+    "gear": "D",
+    "inside_yard_i": "N",
+    "curr_block": "",
+    "curr_lane": "",
+    "job_id": "",
+    "view_port_st_c": "NL",
+    "control_port_st_c": "NL"
+}

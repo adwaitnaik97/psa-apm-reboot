@@ -1,0 +1,5 @@
+{
+  "toMqttTopicName": "",
+  "fromMqttTopicName":  "emergency_brake_command",
+  "applyBrake":false
+}   

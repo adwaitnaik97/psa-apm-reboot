@@ -1,0 +1,190 @@
+#Check if they are running or not
+nodes:
+  control_loop_rate: 5
+  output_topic: /aisd/apm_diagnostic/aios/nodes 
+  list:
+    - {id: 0, name: /session_management}
+    - {id: 1, name: /aios_preprocessing}
+    - {id: 2, name: /instruction_management}
+    - {id: 3, name: /aios/aifo_handler/aifo_handler}
+    - {id: 4, name: /ontology_manager}
+    - {id: 5, name: /aios/avcs_handler/avcs_handler}
+    - {id: 6, name: /aios/v2i_handler/v2i_handler_node}
+    - {id: 7, name: /remote_handler}
+    - {id: 8, name: /alignment_control}
+
+    
+
+
+#Check if they are being advertised or not
+topics:
+  control_loop_rate: 5
+  output_topic: /aisd/apm_diagnostic/aios/topics
+  list:
+    - {id: 0, name: /aios/session_management/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 1, name: /aios/session_management/info/path_ll, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 2, name: /aios_complete_job, timeout_sec: 15.0, check_frequency_sec: 1.0}
+    - {id: 3, name: /avcs/bool_manual_route_path, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 4, name: /v2x/pose_offset, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 5, name: /aifo/dst_coordi, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 6, name: /aipe/cas_alignment_type, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 7, name: /v2x/align_end_pose2d, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 8, name: /avcs/manual_route_path_trajectory, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 9, name: /viz/aios/session_management/accepted_trajectory, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 10, name: /aios/preprocess/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 11, name: /aios/preprocess/tractory_pcl, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 12, name: /aios/preprocess/tractory_raw_pcl, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 13, name: /viz/aios/preprocess/run_tractory_raw_pcl, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 14, name: /aios/preprocess/tractory_dst_src_pcl, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 15, name: /aios/preprocess/trajectory_polygon, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 16, name: /aios/instructions, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 17, name: /mqtt/to_client, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 18, name: /aifo/road_block_track_id_string_avcs2, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 19, name: /aifo/speed_reduction_track_id_string, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 20, name: /avcs/manual_route_path_trajectory2, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 21, name: /v2e_client/payload_str, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 22, name: /v2e_client/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 23, name: /v2x/pose_offset, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 24, name: /viz/aios/avcs_handler/cloud/avcs_responded_path, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 25, name: /viz/aios/avcs_handler/cloud/avcs_given_path, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 26, name: /viz/aios/avcs_handler/cloud/avcs_map_points, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 27, name: /viz/aios/avcs_handler/debug/cntr_fr_pos, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 28, name: /viz/aios/avcs_handler/debug/cntr_bk_pos, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 29, name: /viz/aios/avcs_handler/debug/cntr_fr_id, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 30, name: /viz/aios/avcs_handler/debug/cntr_bk_id, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 31, name: /viz/aios/avcs_handler/point_name, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 32, name: /viz/aios/avcs_handler/operation_mode, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 33, name: /viz/aios/avcs_handler/response_st, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 34, name: /aios/avcs_handler/blocks, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 35, name: /aios/avcs_handler/speed_restriction, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 36, name: /aios/ontology/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 37, name: /aios/ontology/map, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 38, name: /viz/aios/ontology/cloud/junction, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 39, name: /viz/aios/ontology/cloud/pedestrian, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 40, name: /viz/aios/ontology/cloud/roi, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 41, name: /viz/aios/ontology/cloud/lanes, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 42, name: /viz/aios/ontology/cloud/next_exits, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 43, name: /viz/aios/ontology/cloud/zones, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 44, name: /viz/aios/ontology/cloud/filled_lanes, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 45, name: /viz/aios/ontology/cloud/lanechange_zone, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 46, name: /viz/aios/ontology/cloud/interested_lanes, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 47, name: /viz/aios/ontology/cloud/queried_lanes, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 48, name: /viz/aios/ontology/cloud/stop/junction, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 49, name: /viz/aios/ontology/cloud/stop/tl, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 50, name: /viz/aios/ontology/cloud/stop, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 51, name: /viz/aios/ontology/cloud/stop/bypass, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 52, name: /viz/aios/ontology/cloud/stop/pedestrian, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 53, name: /viz/aios/ontology/cloud/lane_heading, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 54, name: /viz/aios/ontology/cloud/wp_direction, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 55, name: /viz/aios/ontology/cloud/road_network, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 56, name: /viz/aios/ontology/cloud/waypoints, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 57, name: /viz/aios/ontology/cloud/slots_20front, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 58, name: /viz/aios/ontology/cloud/slots_20rear, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 59, name: /viz/aios/ontology/cloud/slots_45front, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 60, name: /viz/aios/ontology/query/laneid, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 61, name: /viz/aios/ontology/markers/lane_id, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 62, name: /viz/aios/ontology/markers/slots_id, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 63, name: /viz/aios/ontology/markers/junction_id , timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 64, name: /aios/aifo_handler/config/action_req, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 65, name: /aios/aifo_handler/https/from_client, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 66, name: /aios/aifo_handler/https/from_client/srv, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 67, name: /aios/aifo_handler/https/to_client, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 68, name: /aios/aifo_handler/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 69, name: /aios/v2i_handler/https/from_client, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 70, name: /aios/v2i_handler/https/from_client/srv, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 71, name: /aios/v2i_handler/https/to_client, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 72, name: /aios/v2i_handler/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 73, name: /aios/v2i_handler/tl_signal, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 74, name: /aios/remote_handler/mqtt/to_client, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 75, name: /aios/remote_handler/to_instruction , timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 76, name: /aios/remote_handler/ego_state, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 77, name: /aios/remote_handler/vehicle_control_mode, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 78, name: /aios/remote_handler/tl_state, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 79, name: /aios/remote_handler/remote_ops_init, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 80, name: /remote_ops_request, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 81, name: /aios/alignment/info , timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 82, name: /aios/alignment_control/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {id: 83, name: /aios/alignment_control/info/signal, timeout_sec: 5.0, check_frequency_sec: 1.0}
+                                                                                        
+
+
+message_field:
+  - {id: 0, name: inyard_condition , topic: /aide_status/apmstatus, field: /zone_inyard, type: bool}
+
+computation:
+  action:
+    default: 3
+    list:
+    - name: aisd_action_0
+      action_value: 0
+      
+  logic_list:
+  - id: 0
+    name: aisd_action_0
+    relationship: or
+    list:
+    - type: node
+      name: /session_management
+
+    - type: node
+      name: /aios_preprocessing
+
+    - type: node
+      name: /instruction_management
+
+    - type: node
+      name: /aifo_handler
+           
+    - type: topic
+      name: /aios/preprocess/info
+
+    - type: topic
+      name: /aios/ontology_query/info
+      
+
+output: 
+  system_monitoring_topic: "/aisd/system_monitoring/aios_result_new"
+  action_topic: "/aisd/actions/aios_diagnostic_new"
+
+aisd_rviz_plugins:
+  - name: session_managemen
+    field:
+      - source: /session_management
+        type: node
+        error_message: "Error"
+      - source: /aios/session_management/info
+        type: topic 
+        error_message: "Time Out"
+  - name: aios_preprocessing
+    field:
+      - source: /aios_preprocessing
+        type: node
+        error_message: "Error"
+      - source: /aios/preprocess/info
+        type: topic
+        error_message: "Time Out"
+  - name: aifo_handler
+    field:
+      - source: /aifo_handler
+        type: node
+        error_message: "Error"
+      - source: /aios/session_summarizer/info
+        type: topic
+        error_message: "Time Out"
+  - name: ontology
+    field:
+      - source: /ontology_manager
+        type: node
+        error_message: "Error"
+      - source: /aios/ontology_query/info
+        type: topic
+        error_message: "Time Out"
+
+  # - name: control
+  #   field:
+  #     - source: /topic_subscriber_control
+  #       type: node
+  #       error_message: "Error"
+  #     - source: /aidc/control/ctrl_cmd_unity
+  #       type: topic
+  #       error_message: "Time Out"

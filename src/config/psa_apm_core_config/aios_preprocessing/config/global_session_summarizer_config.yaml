@@ -1,0 +1,5 @@
+aios/summarizer:
+  config:
+    origin_offset_x: 2000
+    origin_offset_y: 1750
+

@@ -1,0 +1,9 @@
+# Object types allowed to be projected from vision to point cloud
+# Do not add lane markings here!
+lidar_detection_filter:
+  whitelist: "Car, Person, Truck, Cone"
+  
+
+
+
+

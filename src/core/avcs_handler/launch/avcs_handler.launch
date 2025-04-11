@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<launch>
+  <!--****** Ros Console Config ****** -->
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+
+  <arg name="aios_debug" default="False"/>
+  <arg name="xterm_req" default="" if="$(eval aios_debug==False)" /> 
+  <arg name="xterm_req" default="xterm -e" if="$(eval aios_debug==True)" /> 
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aios_config)/apm_rosconsole_debug.conf" if="$(eval aios_debug)"/>
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aios_config)/apm_rosconsole.conf" unless="$(eval aios_debug)"/>
+  <rosparam command="load" file="$(find avcs_handler)/config/avcs_handler_config.yaml" />
+   <node pkg = "supporting_ui" type ="avcs_gui" name = "avcs_gui" output="screen" respawn="true"/>
+  <!--****** Node Launch ****** -->
+  <group ns="aios/avcs_handler" >
+    <node pkg = "avcs_handler" type ="avcs_handler" name = "avcs_handler" launch-prefix="$(arg xterm_req)" output="screen" >
+
+      <param name="aios_req_apm_move" value="$(find avcs_handler)/config/json_msgs/aios_req_apm_move.json"/>
+      <param name="aios_req_dest_arrived" value="$(find avcs_handler)/config/json_msgs/aios_req_dest_arrived.json"/>
+      <param name="aios_req_logoff" value="$(find avcs_handler)/config/json_msgs/aios_req_logoff.json"/>
+      <param name="aios_req_new_job" value="$(find avcs_handler)/config/json_msgs/aios_req_new_job.json"/>
+      <param name="aios_req_poweroff" value="$(find avcs_handler)/config/json_msgs/aios_req_poweroff.json"/>
+      <param name="aios_req_poweron" value="$(find avcs_handler)/config/json_msgs/aios_req_poweron.json"/>
+      <param name="aios_req_update_trailer" value="$(find avcs_handler)/config/json_msgs/aios_req_update_trailer.json"/>
+      <param name="aios_req_mode_change_update" value="$(find avcs_handler)/config/json_msgs/aios_req_mode_change_update.json"/>
+      <param name="aios_res_switch_mode" value="$(find avcs_handler)/config/json_msgs/aios_res_switch_mode.json"/>
+      <param name="avcs_res_logon" value="$(find avcs_handler)/config/json_msgs/avcs_res_logon.json"/>
+      <param name="hb_field_fault_req" value="$(find avcs_handler)/config/json_msgs/hb_field_fault_req.json"/>
+      <param name="hb_field_pose_req" value="$(find avcs_handler)/config/json_msgs/hb_field_pose_req.json"/>
+      <param name="hb_root_apm_to_avcs" value="$(find avcs_handler)/config/json_msgs/hb_root_apm_to_avcs.json"/>
+      <param name="hb_root_avcs_to_apm" value="$(find avcs_handler)/config/json_msgs/hb_root_avcs_to_apm.json"/>
+      <param name="aios_res_job_response" value="$(find avcs_handler)/config/json_msgs/aios_res_job_response.json"/>
+      <param name="avcs_req_job_instruction" value="$(find avcs_handler)/config/json_msgs/avcs_req_job_instruction.json"/>
+      <param name="aios_res_refuel_response" value="$(find avcs_handler)/config/json_msgs/aios_res_refuel_response.json"/>
+      <param name="avcs_req_refuel_instruction" value="$(find avcs_handler)/config/json_msgs/avcs_req_refuel_instruction.json"/>
+      <param name="aios_res_maintenance_response" value="$(find avcs_handler)/config/json_msgs/aios_res_maintenance_response.json"/>
+      <param name="avcs_req_maintenance_instruction" value="$(find avcs_handler)/config/json_msgs/avcs_req_maintenance_instruction.json"/>
+      <param name="aios_res_park_response" value="$(find avcs_handler)/config/json_msgs/aios_res_park_response.json"/>
+      <param name="avcs_req_park_instruction" value="$(find avcs_handler)/config/json_msgs/avcs_req_park_instruction.json"/>
+      <param name="aios_res_cancel_res" value="$(find avcs_handler)/config/json_msgs/aios_res_cancel_res.json"/>
+      <param name="avcs_req_mi_req" value="$(find avcs_handler)/config/json_msgs/avcs_req_mi_req.json"/>
+      <param name="avcs_req_linkup_req" value="$(find avcs_handler)/config/json_msgs/avcs_req_linkup_req.json"/>
+      <param name="aios_res_linkup_res" value="$(find avcs_handler)/config/json_msgs/aios_res_linkup_res.json"/>
+
+      <param name="avcs_req_path_update" value="$(find avcs_handler)/config/json_msgs/avcs_req_path_update.json"/>
+      <param name="aios_res_path_update" value="$(find avcs_handler)/config/json_msgs/aios_res_path_update.json"/>
+
+      <param name="avcs_req_stop_job_instruction" value="$(find avcs_handler)/config/json_msgs/avcs_req_stop_job_instruction.json"/>
+      <param name="aios_res_stop_job_res" value="$(find avcs_handler)/config/json_msgs/aios_res_stop_job_res.json"/>
+      <param name="avcs_req_resume_job_instruction" value="$(find avcs_handler)/config/json_msgs/avcs_req_resume_job_instruction.json"/>
+      <param name="aios_res_resume_job_res" value="$(find avcs_handler)/config/json_msgs/aios_res_resume_job_res.json"/>
+
+      <param name="aios_res_dock_res" value="$(find avcs_handler)/config/json_msgs/aios_res_dock_res.json"/>
+      <param name="avcs_req_dock" value="$(find avcs_handler)/config/json_msgs/avcs_req_dock.json"/>
+      
+      <param name="aios_res_mount_res" value="$(find avcs_handler)/config/json_msgs/aios_res_mount_res.json"/>
+      <param name="aios_res_offload_res" value="$(find avcs_handler)/config/json_msgs/aios_res_offload_res.json"/>
+      <param name="avcs_req_mount" value="$(find avcs_handler)/config/json_msgs/avcs_req_mount.json"/>
+      <param name="avcs_req_offload" value="$(find avcs_handler)/config/json_msgs/avcs_req_offload.json"/>
+      
+      <param name="avcs_req_manual_route_instruction" value="$(find avcs_handler)/config/json_msgs/avcs_req_manual_route_instruction.json"/>
+      <param name="aios_res_manual_route_response" value="$(find avcs_handler)/config/json_msgs/aios_res_manual_route_response.json"/>
+      <param name="avcs_req_manual_route_confirmation_request" value="$(find avcs_handler)/config/json_msgs/avcs_req_manual_route_confirmation_request.json"/>
+      <param name="aios_res_manual_route_confirmation_response" value="$(find avcs_handler)/config/json_msgs/aios_res_manual_route_confirmation_response.json"/>
+
+      <param name="empty_json" value="$(find avcs_handler)/config/json_msgs/empty_json.json"/>
+      <param name="aios_mqtt_config" value="$(find avcs_handler)/config/json_msgs/aios_mqtt_config.json"/>
+      <param name="status_msg_csv_filepath" value="$(env HOME)/.ros/avcs_handler_status.txt"/>
+      <param name="map_csv_filepath" value="$(env HOME)/.ros/avcs_handler_map.txt"/>
+      <param name="converted_map_csv_filepath" value="$(env HOME)/.ros/avcs_handler_converted_map.txt"/>
+      <param name="reformat_map_csv_filepath" value="$(env HOME)/.ros/avcs_handler_reformat_map.txt"/>
+      <param name="acceptable_distance_from_current" value="6"/>
+    </node>
+
+    <!--node pkg = "v2e_client" type ="v2e_client_parser.py" name = "v2e_client_parser" output="screen"/-->
+
+
+    <include file="$(find mqtt_client)/launch/mqtt_client.launch" >
+      <arg name="config_file" value="$(find avcs_handler)/config/mqtt_client_config.yaml" />
+    </include>
+
+  </group>
+
+
+</launch>

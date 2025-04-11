@@ -1,0 +1,15 @@
+
+# Subscribe topics
+remote_mqtt_client/intopic_client_payload: /aios/remote_handler/mqtt/to_client
+
+
+# Published topics
+remote_mqtt_client/output_topic_client_payload: /aios/remote_handler/mqtt/from_client
+
+
+remote_mqtt_client/timeout_sec: 1
+remote_mqtt_client/broker_addr: 127.0.0.1:1883
+remote_mqtt_client/client_id: APM8380
+remote_mqtt_client/mqtt_pub_wait_sec: 0.0
+
+

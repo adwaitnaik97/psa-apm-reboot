@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<launch>
+
+
+  <arg name="machine_id" default="Host" />
+  <arg name="launch_name" default="not_set" />
+
+
+  <!--****** Remote Setup ****** -->
+  <group if="$(eval arg('machine_id') =='DL')">
+  	<arg name="launch_remote" default="true" />
+  	<arg name="user" default="$(optenv AIOS_DATALOGGER_USER aidrivers)" />
+  	<arg name="env_path" default="$(find aios_config)/remote_env/dl_env.sh" />
+	<arg name="machine_ip_address" default="$(optenv AIOS_DATALOGGER_IP 172.16.1.30)" />
+	<machine name="$(arg machine_id)" address="$(arg machine_ip_address)" user="$(arg user)" env-loader="$(arg env_path)" default="$(arg launch_remote)"> </machine>
+  </group>
+  <group if="$(eval arg('machine_id') =='CE')">
+  	<arg name="launch_remote" default="true" />
+  	<arg name="user" default="$(optenv AIOS_CONTROL_ENGINE_USER aidrivers)" />
+  	<arg name="env_path" default="$(find aios_config)/remote_env/ce_env.sh" />
+	<arg name="machine_ip_address" default="$(optenv AIOS_CONTROL_ENGINE_IP 172.16.1.10)" />
+	<machine name="$(arg machine_id)" address="$(arg machine_ip_address)" user="$(arg user)" env-loader="$(arg env_path)" default="$(arg launch_remote)"> </machine>
+  </group>
+  <group if="$(eval arg('machine_id') =='PE')">
+  	<arg name="launch_remote" default="true" />
+  	<arg name="user" default="$(optenv AIOS_PERCEPTION_ENGINE_USER aidrivers)" />
+  	<arg name="env_path" default="$(find aios_config)/remote_env/pe_env.sh" />
+	<arg name="machine_ip_address" default="$(optenv AIOS_PERCEPTION_ENGINE_IP 172.16.1.20)" />
+	<machine name="$(arg machine_id)" address="$(arg machine_ip_address)" user="$(arg user)" env-loader="$(arg env_path)" default="$(arg launch_remote)"> </machine>
+  </group>
+
+  <rosparam param="/aios/machine/$(arg launch_name)" subst_value="True">$(arg machine_id)</rosparam>
+
+</launch>
+

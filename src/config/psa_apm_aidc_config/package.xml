@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>psa_apm_aidc_config</name>
+  <version>0.0.0</version>
+  <description>The psa_apm_aidc_config package</description>
+  <maintainer email="pavan@aidrivers.ai">pavan</maintainer>
+  <license>TODO</license>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

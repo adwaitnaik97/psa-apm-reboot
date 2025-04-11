@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>aios_config</name>
+  <version>0.0.1</version>
+  <description>Configuration for aiOS run platforms</description>
+
+  <maintainer email="aios@aidrivers.ai">AIOS</maintainer>
+  <license>AIOS</license>
+  <buildtool_depend>catkin</buildtool_depend>
+
+</package>

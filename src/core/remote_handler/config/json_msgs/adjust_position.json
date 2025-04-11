@@ -1,0 +1,6 @@
+{
+  "toMqttTopicName": "",
+  "fromMqttTopicName": "adjust_position",
+  "distance": 0.0,
+  "safetyOverride": false
+}   

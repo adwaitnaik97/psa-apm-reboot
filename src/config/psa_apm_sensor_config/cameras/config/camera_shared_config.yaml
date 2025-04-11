@@ -1,0 +1,11 @@
+# used by all pointgrey blackfly cameras across PSA-APM project
+camera_driver_nodelet:
+    format7_color_coding: rgb8
+    video_mode: format7_mode0
+    packet_delay: 1500
+    day_start_time: 7:00
+    night_start_time: 19:00
+    night_auto_shutter: false
+    night_shutter_speed: 0.005
+    inside_bay_shutter_speed: 0.0025
+    frame_rate: 5

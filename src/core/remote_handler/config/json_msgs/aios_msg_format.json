@@ -1,0 +1,158 @@
+﻿
+//1. HeadLight: [0 - Head light off], [1 - Low beam], [2 - High beam] 
+
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                     "msg_type": "cmd_head_light_remote",
+                     "timestamp":  1716387013010863210, //uint64_t nanosecond 
+                     "main_beam": false,
+                     "dipped_beam": true
+                    }
+    
+      }   
+
+//2. Hazard Light  [3 - Hazard light is to be turned on], [off for all other values]
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                     "msg_type": "cmd_signal_light",
+                     "timestamp":  1716387013010863210, //uint64_t 
+                     "hazard_light": 3
+                   }
+      }  
+
+//3. Horn 
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                     "msg_type": "cmd_horn",
+                     "timestamp":  1716387013010863210, //uint64_t 
+                     "horn": true
+                   }
+      } 
+
+//4. Pause / Resume  [0 - Currently paused, resume desired], [1 - Current resumed, pause desired]
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                     "msg_type": "stop",
+                     "timestamp":  1716387013010863210, //uint64_t 
+                     "pause_navigation": true
+                   }
+    }  
+
+//5. E-Stop [0 - Emergency brake should be turned off], [1 - Emergency brake should be turned on]
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                     "msg_type": "emergency_brake_command",
+                     "timestamp":  1716387013010863210, //uint64_t 
+                     "e_stop": true
+                   }
+      }     
+    
+    
+//6.Traffic light override  [0 - Red light and Red turn right], [1 - Green light], [3 - Green turn right]
+/*!!!! tl_signal_red_green field has been used for type 3: Green turn right **/
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                     "msg_type": "traffic_light_override",
+                     "timestamp":  1716387013010863210, //uint64_t 
+                     "tl_signal_red": false,
+                     "tl_signal_green": true,
+                     "tl_signal_red_green": false
+                    }
+       }  
+
+//7.Precedence Override ( Go Ahead )
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                     "msg_type": "precedence_override",
+                     "timestamp":  1716387013010863210, //uint64_t 
+                     "clear_aisc": true
+                    }
+        }        
+
+//8. Goal (Set Destination)
+// TO DO - No Mapping with instruction msg ???
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                     "msg_type": "goal",
+                     "timestamp":  1716387013010863210, //uint64_t 
+                     "blockName": "A-1",  //string
+                     "blockId": 1,    //UInt8;
+                     "laneId": 20,     //UInt8;
+                     "slotId": 230,    //UInt8;
+                     "containerType": 0,  //UInt8; get lookup table from PSA
+                     "jobType": 0    //UInt8; get lookup table from PSA
+                    }
+        }          
+
+//9. Adjust Position
+// TO DO - No Mapping with instruction msg ???
+// !!!there will be distance or safetyOverride in this msg, only one of then in a msg payload
+
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                     "msg_type": "adjust_position",
+                     "timestamp":  1716387013010863210, //uint64_t 
+                     //distance or safetyOverride field will be in the message, not both
+                     "distance": 2.0, //float64
+                     "safetyOverride": false 
+                    }
+        }            
+              
+//10. Relocalization
+// TO DO - No Mapping with instruction msg ???
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                        "msg_type": "location",
+                        "timestamp":  1716387013010863210, //uint64_t 
+                        "x": 0.0, //float64
+                        "y": 0.0, //float64
+                        "yaw": 0.0 //float64
+                   }
+        }  
+//11. Set Non-Yard Destination 
+// TO DO - No Mapping with instruction msg ???       
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                        "msg_type": "non_yard_goal",
+                        "timestamp":  1716387013010863210, //uint64_t 
+                        "destination": 1 //uint32_t  Non-yard destination id
+                   }
+        } 
+
+//12. Nudge Forward- Force move forwards command        
+// TO DO - No Mapping with instruction msg ???       
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                        "msg_type": "manual_push_remote",
+                        "timestamp":  1716387013010863210, //uint64_t 
+                        "engage": 1, //uint8_t [1 - Vehicle should nudge forward]
+                        "nudgeInstanceId": 2 //uint8_t; 
+                   }
+        } 
+
+
+//13. Trajectory Override
+// TO DO - No Mapping with instruction msg ???       
+data: {
+        "timestamp": 1716387013010863319, //uint64_t 
+        "payload": {
+                        "msg_type": "/route_plan",
+                        "timestamp":  1716387013010863210, //uint64_t 
+                        "segmentId": [1, 2], //uint32_t array
+                        "discretizedPathPointsX": [1.0, 2.0], //float32 array
+                        "discretizedPathPointsY": [5.0, 6.0], //float32 array
+                        "discretizedPathPointsYaw": [0.5, 0.2] //float32 array
+                   }
+        }         

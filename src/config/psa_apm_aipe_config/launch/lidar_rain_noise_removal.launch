@@ -1,0 +1,15 @@
+<launch>  
+    <!-- path to node config -->
+    <arg name="config" default="$(find psa_apm_aipe_config)/cfg/lidar_rain_noise_removal.yaml" />
+
+    <!-- Flag to determine whether to start RViz or not -->
+    <arg name="enable_rviz" default="true" />
+
+    <!-- Start RViz if enabled -->
+    <node pkg="rviz" type="rviz" name="rviz" if="$(arg enable_rviz)" args="-d $(find aios_config)/rviz/archive/aipe_lidar_rain_noise_removal.rviz" />
+    
+    <node pkg="lidar_rain_noise_removal" type="lidar_rain_noise_removal_node" name="lidar_rain_noise_removal_node" output="screen">   
+      <rosparam command="load" file="$(arg config)" />
+    </node>
+    
+</launch>

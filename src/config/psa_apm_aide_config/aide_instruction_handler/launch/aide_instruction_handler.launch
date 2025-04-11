@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="aide_debug" default="False"/>
+
+  <!--****** Ros Param Config ****** -->
+  <arg name="project_global_config_file_path" default="$(find psa_apm_aide_config)/aide_instruction_handler/config/aide_instruction_handler_global_config.yaml" />
+  
+
+  <include file="$(find aide_instruction_handler)/launch/aide_instruction_handler.launch">
+    <arg name="global_config_file_path" value="$(arg project_global_config_file_path)"/>
+    <arg name="aide_debug" value="$(arg aide_debug)"/>
+  </include>
+
+
+
+</launch>

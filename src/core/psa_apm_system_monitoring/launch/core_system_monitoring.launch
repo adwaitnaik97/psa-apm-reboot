@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+
+<arg name="machine_id" default="Host" />
+  <arg name="launch_name" default="psa_apm_system_monitoring" />
+
+
+      <!--****** Remote Setup ****** -->
+      <include file="$(find aios_config)/remote_env/launch/remote.launch">
+        <arg name="machine_id" value="$(arg machine_id)"/>
+        <arg name="launch_name" value="$(arg launch_name)"/>
+      </include>
+
+
+<node name="$(arg launch_name)" pkg="psa_apm_system_monitoring" type="core_system_monitoring" output="log"/>
+</launch>

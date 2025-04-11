@@ -1,0 +1,34 @@
+# PLC type 1-at, 2-dc
+airs_bridge_node/plc_type: 2
+
+# params
+airs_bridge_node/max_steer_res: 32
+
+
+# Subscribe topics
+# Common Topics 
+airs_bridge_node/intopic_reg37: /airs/plc/critical_fbk/reg_37
+airs_bridge_node/intopic_reg49: /airs/plc/diag/reg_49
+airs_bridge_node/intopic_reg51: /airs/plc/diag/reg_51
+airs_bridge_node/intopic_headlamp: /aios/head_lamp
+/airs_bridge_node/intopic_indicator: /aidc/run_iterator/light/indicator
+
+
+# Topics for type at - plc_type: 1
+#
+#
+#
+
+
+# Topics for type dc - plc_type: 2
+airs_bridge_node/intopic_reg59: /airs/plc/diag/steering/reg_59
+airs_bridge_node/intopic_reg61: /airs/plc/diag/throttle/reg_61
+airs_bridge_node/intopic_reg63: /airs/plc/diag/throttle/reg_63
+airs_bridge_node/intopic_reg67: /airs/plc/diag/throttle/reg_67
+
+# Published topics
+airs_bridge_node/outtopic_bridge: /airs/bridge_status
+
+
+
+

@@ -1,0 +1,35 @@
+<launch>
+  <!-- Settable in GUI -->
+  <!-- Is this a simulation (ie. bag file) or with live sensors? If simulation, driver won't be lauched -->
+  <arg name="simulation" default="false" />
+
+  <!-- lidar id, must be one of: rs16_br, rs16_tr, rs16_tc, rs16_tl, rs16_bl -->
+  <arg name="lidar_id" default="lidar_bottom_left"/>
+
+  <!-- AIOS_ID, eg. PSA_APM_8380, PSA_APM_8381
+       Only needed if using live sensors to load proper calibration etc.
+       Set by default using the the $AIOS_ID env variable 
+       can be optionally supplied/overridden by launch argument
+       if neither $AIOS_ID is set in the env OR supplied as an argument, will be set to AIOS_ID_NOT_SET -->
+  <arg name="aios_id" default="$(optenv AIOS_ID AIOS_ID_NOT_SET)"/>
+
+  <!-- load config, load shared config first, so specific can optionally overwrite it -->
+  <rosparam command="load" subst_value="True" file="$(find psa_apm_sensor_config)/lidar/lidar_shared_config.yaml" ns="$(arg lidar_id)"/>
+  <rosparam command="load" subst_value="True" file="$(find aios_config)/trucks/$(arg aios_id)/lidar/lidar_specific_config.yaml" unless="$(arg simulation)"/>
+
+  <group ns="$(arg lidar_id)" >
+    <!-- start nodelet manager -->
+    <arg name="manager_name" value="rslidar_nodelet_manager"/>
+    <node pkg="nodelet" type="nodelet" name="$(arg manager_name)" args="manager"/>
+
+    <!-- load driver nodelet (if not simulation) -->
+    <node pkg="nodelet" type="nodelet" name="rslidar_driver_nodelet"
+          args="load rslidar_driver/DriverNodelet $(arg manager_name)" output="screen" unless="$(arg simulation)">
+    </node>
+    <!-- load cloud construction nodelet -->
+    <node pkg="nodelet" type="nodelet" name="rslidar_cloud_nodelet"
+          args="load rslidar_pointcloud/CloudNodelet $(arg manager_name)" output="screen">
+    </node>
+  </group>
+
+</launch>

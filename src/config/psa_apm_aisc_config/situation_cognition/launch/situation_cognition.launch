@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="psa_aisc_config_file_path" default="$(find psa_apm_aisc_config)/situation_cognition/situation_cognition.yaml" />
+  <arg name="psa_junction_box_csv" default="$(find psa_apm_core_config)/ontology/junction_box/junction_box_wgs84_22_03_2023.csv"/>
+  <arg name="psa_pedestrian_box_csv" default="$(find psa_apm_core_config)/ontology/pedestrian_box/pedestrian_box_09_12_2022.csv"/>
+  <arg name="psa_lane_info_csv" default="$(find psa_apm_core_config)/ontology/lane_dictionary/Terminal_2_16_07_2024_wharf.csv"/>
+
+  <include file="$(find situation_cognition)/launch/situation_cognition.launch">
+    <arg name="global_config_file_path" value="$(arg psa_aisc_config_file_path)"/>
+    <arg name="junction_box_csv" value="$(arg psa_junction_box_csv)"/>
+    <arg name="pedestrian_box_csv" value="$(arg psa_pedestrian_box_csv)"/>
+    <arg name="lane_info_csv" value="$(arg psa_lane_info_csv)"/>
+  </include>
+
+  <include file="$(find behaviour_summarizer)/launch/behaviour_summarizer.launch">
+  </include>
+
+</launch>

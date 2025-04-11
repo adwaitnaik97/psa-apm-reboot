@@ -1,0 +1,8 @@
+# Subscribe topics
+mqtt_client_node/intopic_client_payload: mqtt/to_client
+
+
+# Published topics
+mqtt_client_node/output_topic_client_payload: mqtt/from_client
+mqtt_client_node/output_topic_client_payload_block: mqtt/from_client/block
+

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+
+<include file="$(find aidc_bridge)/launch/aidc_bridge.launch" />
+<include file="$(find aidc_preprocessing)/launch/aidc_preprocessing.launch" />
+
+</launch>
+

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="machine_id" default="Host" />
+  <arg name="launch_name" default="aifo_handler" />
+
+  <!--****** Ros Console Config ****** -->
+  <env name="ROSCONSOLE_FORMAT" value="[${node}]: ${message}"/>
+
+  <arg name="aios_debug" default="False"/>
+  <arg name="xterm_req" default="" if="$(eval aios_debug==False)" /> 
+  <arg name="xterm_req" default="xterm -e" if="$(eval aios_debug==True)" /> 
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find aios_config)/apm_rosconsole.conf"/>
+
+      <!--****** Remote Setup ****** -->
+      <include file="$(find aios_config)/remote_env/launch/remote.launch">
+        <arg name="machine_id" value="$(arg machine_id)"/>
+        <arg name="launch_name" value="$(arg launch_name)"/>
+      </include>
+
+  <!--****** Global Configs ****** -->
+  <arg name="project_aifo_handler_config_file_path" default="$(find psa_apm_core_config)/aifo_handler/config/global_aifo_handler_config.yaml" />
+
+
+    <!--****** Node Launch - session_management ****** -->
+    <include file="$(find aifo_handler)/launch/aifo_handler.launch">
+      <arg name="global_config_file_path" value="$(arg project_aifo_handler_config_file_path)"/>
+      <arg name="aios_debug" value="$(arg aios_debug)"/>
+    </include>
+
+
+</launch>

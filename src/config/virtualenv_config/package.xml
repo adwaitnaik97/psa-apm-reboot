@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package>
+  <name>virtualenv_config</name>
+  <version>0.0.1</version>
+  <description>Configuration for python virtualenv packages</description>
+  <maintainer email="luke@aidrivers.ai">Luke</maintainer>
+  <license>SOMETHING</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

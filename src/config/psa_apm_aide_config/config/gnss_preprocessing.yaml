@@ -1,0 +1,61 @@
+# case0: Novatel
+# case1: Honeywell INS
+# case2: INS-D INS
+
+# Subscribe topics
+# In the input there should be only ONE "default" output topic, which is the one that we use to fuse into AIDE.
+input:
+    position:
+        navsatfix:
+    #        - {input_topic: "/HGuide/Std/NavSatFix", output_topic: "navsatfix/HGuideStdNavSatFix", output_frame: "imu_link"}
+    #        - {input_topic: "/insd/fix", output_topic: "navsatfix/insdfix", output_frame: "imu_link"}
+    #        - {input_topic: "/fix", output_topic: "navsatfix/fix", output_frame: "novatel"}
+            - {input_topic: "/oem7/ppp/fix",
+            output_topic: "navsatfix/oem7pppfix",
+            output_frame: "novatel"
+            }
+            - {input_topic: "/oem7/fix",
+            output_topic: "navsatfix/oem7fix",
+            output_frame: "novatel"
+            }
+            - {input_topic: "/gps/fix",
+            output_topic: "navsatfix/gpsfix",
+            output_frame: "novatel"
+            }
+        shapeshifter:
+            - {input_topic: "/novatel/oem7/bestpos",
+            output_topic: "default",
+            output_frame: "novatel",
+            input_fields:
+                #easting is similar to longitude
+                #northing is similar to latitude
+            {altitude: "hgt",
+            latitude: "lat",
+            longitude: "lon",
+            header: "header",
+            position_covariance:
+            {east_covariance: "lon_stdev", east_covariance_type: "stdev",
+            north_covariance: "lat_stdev", north_covariance_type: "stdev",
+            up_covariance: "hgt_stdev", up_covariance_type: "stdev"}}
+            }
+            - {input_topic: "/novatel/oem7/ppppos",
+            output_topic: "navsatfix/navsatfix/novateloem7ppppos",
+            output_frame: "novatel",
+            input_fields:
+            #easting is similar to longitude
+            #northing is similar to latitude
+            {altitude: "hgt",
+            latitude: "lat",
+            longitude: "lon",
+            header: "header",
+            position_covariance:
+            {east_covariance: "lon_stdev", east_covariance_type: "stdev",
+            north_covariance: "lat_stdev", north_covariance_type: "stdev",
+            up_covariance: "hgt_stdev", up_covariance_type: "stdev"}}
+            }
+    north_ref_heading:
+        {input_topic: "/novatel/oem7/heading2",
+        heading_stdev_available: false,
+        unit: "deg",
+        input_fields:
+        {heading: "heading", heading_stdev: "heading_stdev" }}

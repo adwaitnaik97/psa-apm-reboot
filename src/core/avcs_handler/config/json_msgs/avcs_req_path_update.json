@@ -1,0 +1,14 @@
+{
+    "type":"path_update_request",
+    "data":
+    {
+        "id": "WFMOAPM833011092023135500",
+        "destination_waypoint": "TB3_lane_11_slot_32",
+        "target_dock_position": "1",
+        "container_size": "20",
+        "destination_lane": "2",
+        "destination_name": "P,PQC922                  _Waiting Area TB3 Lane 11 Slot 32",
+        "route_dag": [],
+        "route_type": "G"
+    }
+}

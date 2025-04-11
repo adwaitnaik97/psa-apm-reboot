@@ -1,0 +1,10 @@
+<launch>
+
+  <!-- Traffic light management -->
+  <include file="$(find tl_management)/launch/tl_management.launch" >
+    <arg name="config_file" value="$(find aios_config)/traffic_light/traffic_light_management.yaml" />
+  </include>
+
+  <!-- CAS alignment wrapper -->
+  <include file="$(find psa_apm_core_config)/alignment_control/launch/alignment_control.launch"/>
+</launch>

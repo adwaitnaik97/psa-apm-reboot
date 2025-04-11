@@ -1,0 +1,10 @@
+<launch>
+  
+  <rosparam command="load" file="$(find psa_apm_aipe_config)/cfg/psa_apm_aipe_config.yaml" />
+
+  <node pkg="component_preprocessing" type="aipe_preprocessor.py"
+        name="aipe_preprocessor" output="screen">
+
+  </node>
+
+</launch>

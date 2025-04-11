@@ -1,0 +1,15 @@
+mountpoints:
+  mountpoint_1: 
+  ip_address: 
+  port:  
+  username:  
+
+  mountpoint_2:  
+  ip_address:  
+  port:  
+  username:  
+
+  mountpoint_3:  
+  ip_address:  
+  port:  
+  username:  

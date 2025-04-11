@@ -1,0 +1,6 @@
+{
+  "toMqttTopicName": "",
+  "fromMqttTopicName": "manual_push_remote",
+  "engage": 0, 
+  "nudgeInstanceId": 0
+}   

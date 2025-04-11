@@ -1,0 +1,8 @@
+<launch>
+  <!-- lidar id, must be one of: rs16_br, rs16_tr, rs16_tc, rs16_tl, rs16_bl -->
+  <arg name="lidar_id" default="lidar_bottom_left"/>
+
+  <node pkg="rslidar_sdk" name="rslidar_nodelet_manager" type="rslidar_sdk_node" output="screen" ns="$(arg lidar_id)">
+    <param name="config_path" value="$(find rslidar_sdk)/config/$(arg lidar_id)_simulation.yaml"/>
+  </node>
+</launch>

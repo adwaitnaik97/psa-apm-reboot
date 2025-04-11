@@ -1,0 +1,6 @@
+control_loop_rate: 1
+output_topic: /aios/server_params
+
+params:
+  - {param: /tf, include: True}
+  - {param: /aios, include: True}

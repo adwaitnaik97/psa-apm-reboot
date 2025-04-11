@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="remoteops_logo">images/remoteops.png</file>
+    </qresource>
+</RCC>

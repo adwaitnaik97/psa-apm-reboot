@@ -1,0 +1,86 @@
+remote_handler:
+  from_aios_preprocess_topic: /aios/preprocess/info  
+  to_aios_instructions_topic: /aios/remote_handler/to_instruction 
+  #to debug sent msgs 
+  to_aios_ego_state_topic: /aios/remote_handler/ego_state
+  to_aios_tl_state_topic: /aios/remote_handler/tl_state
+  to_aios_remote_ops_init_topic: /aios/remote_handler/remote_ops_init
+  to_aios_vehicle_control_mode_topic: /aios/remote_handler/vehicle_control_mode
+  to_aios_linkup_status_topic: /aios/remote_handler/linkup_status
+  to_aios_job_info_topic: /aios/remote_handler/job_info 
+
+  instruction_source: teleops_3rd_party
+  localization_status_topic: /aisd/actions/aide_diagnostic
+  enable_breaklink: true
+  ping_timeout: 10.0 #sec
+  ping_frequency: 10
+  main_loop_rate: 30
+  debug: false
+  send_ping_request: true
+  ego_state_publish_rate: 20
+ 
+  #aid_map_frame: aide_map
+  aid_map_frame: map_server_origin
+  aid_odom_frame: map
+  aid_base_link_frame: base_link
+  remote_map_frame: "0"
+  remote_odom_frame: "2"
+  remote_base_link_frame: "1"
+  
+  vehicle_control_mode_topic: /aisc/behaviour_summarizer/control_mode
+  ehmi_info_topic: /aios/ehmi_handler/state
+  
+
+  #PATH  READY TO TEST !
+  route_plan_topic: /aios/preprocess/trajectory_polygon_frame #map_server_origin frame
+  
+  #POLYGON READY TO TEST !
+  predicted_footprint_topic: /aios/preprocess/trajectory_footprint_polygon_frame #map_server_origin frame
+
+  #PCD Ready to test
+  vertical_points_topic: /aipe/lidar/vertical_points 
+
+   #MARKER ARRAY topics Ready to test
+  objects_topic: /aipe/lidar/objects/markers_1 #frame: base_link
+  objects_of_interest_topic: /aipe/lidar/objects_of_interest/markers_1  #frame: base_link
+
+
+
+  #MARKER topic
+  most_constrained_object_topic: /most_constrained_object_topic  #base_link 
+  
+  crosswalk_vis_topic: /viz/aisc/pedestrian_box_marker # frame: map_server_origin -[TESTED OK]
+  #MARKER ARRAY Dummy topics
+  road_global_vis_topic:  /road_global_vis_topic # frame: map_server_origin -READY TO TEST
+  traffic_jam_lanes_vis_topic:  /traffic_jam_lanes_vis_topic #NOT READY needs to be clarified
+  hatch_cover_detection_box_topic:  /hatch_cover_detection_box_topic #NOT READY needs to be clarified
+  rtg_detection_box_topic:  /rtg_detection_box_topic #NOT READY needs to be clarified
+ 
+ 
+  #PCD topic names
+  #dummy pcd topics
+  most_constrained_points_topic: /most_constrained_points_topic #/aipe/lidar/hazard_objects  #base_link *NOT TESTED
+  on_road_pc_topic: /on_road_pc_topic  #NA needs to be clarified
+  curb_pc_topic: /curb_pc_topic #NA needs to be clarified
+  road_intensity_detection_topic: /road_intensity_detection_topic #NA needs to be clarified
+    
+  #dummy topics
+  remote_ops_request_topic: /remote_ops_request  #NA
+
+  tf:
+    publish_rate: 20
+    frames:
+      - {frame_id: map_server_origin,  child_frame_id: map}
+      - {frame_id: map,       child_frame_id: base_link}
+   
+
+  mqtt:
+    pub_namespace: /remoteops/
+    sub_namespace: /remoteops/
+    to_client_topic: /aios/remote_handler/mqtt/to_client
+    from_client_topic: /aios/remote_handler/mqtt/from_client
+    timeout_sec: 1.0
+    local_broker_addr: 127.0.0.1:1883
+    #client_id: APM8380
+    
+  

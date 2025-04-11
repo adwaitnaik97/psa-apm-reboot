@@ -1,0 +1,18 @@
+traffic_light_management:
+  lane_src_topic: "/aidc/run_iterator/current_track_index"
+  light_indicator_src_topic: "/aidc/run_iterator/light/indicator"
+  odom_topic: "/aide/odometry/filtered/utm/baselink"
+  v2i_topic: "/aios/v2i_handler/info"
+  junction_id_topic: "/aipe/junction_id"
+  output_frame_id: "lidar_link"
+  direction_map: "traffic_light_management/cfg/direction_map.yaml"
+  junction_v2i_topic: "/aios/v2i_handler/tl_signal"
+  junction_vision_topic: "/aipe/tl_signal/junction"
+  junction_instruction_topic: "/aios/instructions"
+  cas_topic: "/aios/alignment_control/info/signal"
+  zone_topic: "/aide_info/zones_NOTUSED"
+  ontology_topic: "/aios/ontology/info"
+  apm_status_topic: "/aidc/apm_status/status"
+  output_tl_state_topic: "/aipe/traffic_light/signal"
+  time_buffer: 2000
+

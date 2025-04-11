@@ -1,0 +1,21 @@
+#Component diagnostics to be bypassed or considered into main actions
+
+sensing_bypass: false
+
+# Monitors the values and diagnostics published by airs
+airs_bypass: true
+# Monitors only the topics and diagnostics published by aios
+airs_system_bypass: true
+
+aide_bypass: true
+
+aipe_bypass: false
+
+aisc_bypass: false
+
+aidc_bypass: true
+
+core_bypass: false
+
+
+

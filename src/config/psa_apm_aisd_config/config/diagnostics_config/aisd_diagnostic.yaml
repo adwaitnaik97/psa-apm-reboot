@@ -1,0 +1,50 @@
+#Check if they are running or not
+nodes:
+  control_loop_rate: 5
+  output_topic: nodes
+  list:
+    #Dummy
+    - {id: 0, name: /dummy}
+    #core
+    - {id: 1, name: /aios/avcs_handler/avcs_handler}
+    - {id: 2, name: /aios/v2i_handler/v2i_handler_node}
+    - {id: 3, name: /avcs}
+    - {id: 4, name: /teleops}
+    - {id: 5, name: /junction_id_pub}
+    - {id: 6, name: /trafffic_light_vision_control}
+    - {id: 7, name: /traffic_light_common}
+    - {id: 8, name: /alignment_control_node}
+    - {id: 9, name: /gui}
+    - {id: 10, name: /tl_management}
+    - {id: 11, name: /ontology_manager}
+    - {id: 12, name: /aios_preprocessing}
+    - {id: 13, name: /session_management}
+    - {id: 14, name: /aios/session_summarizer}
+    - {id: 15, name: /remote_handler}
+    - {id: 16, name: /aisc/behaviour_summarizer}
+    
+    
+
+#Check if they are being advertised or not
+topics:
+  control_loop_rate: 5
+  output_topic: topics
+  list:
+    - {node_id: 0, id: 0, name: /gui/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 2, id: 1, name: /v2e_client/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 2, name: /aios/v2i_handler/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 3, name: /avcs/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 4, name: /teleops/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 5, name: /junction_id_pub/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 6, name: /trafffic_light_vision_control/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 0, id: 7, name: /traffic_light_common/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 8, id: 8, name: /aios/alignment_control/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 1, id: 9, name: /aios/avcs_handler/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 10, id: 10, name: /aipe/traffic_light/signal, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 11, id: 11, name: /aios/ontology/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 12, id: 12, name: /aios/preprocess/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 13, id: 13, name: /aios/session_management/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 14, id: 14, name: /aios/session_summarizer/info, timeout_sec: 5.0, check_frequency_sec: 1.0}
+    - {node_id: 16, id: 15, name: /aios/ehmi_handler/state, timeout_sec: 5.0, check_frequency_sec: 1.0}
+   
+    

@@ -1,0 +1,17 @@
+#Sensor diagnostics to be bypassed or considered into main actions
+
+lidar_top_center_bypass: false
+lidar_bottom_left_bypass: false
+lidar_bottom_right_bypass: false
+
+camera_top_center_front_bypass: false
+camera_top_right_front_bypass: false
+camera_top_left_front_bypass: false
+camera_top_center_rear_bypass: false
+
+radar_bottom_center_bypass: false
+
+imu_bypass: false
+
+gnss_bypass: false
+

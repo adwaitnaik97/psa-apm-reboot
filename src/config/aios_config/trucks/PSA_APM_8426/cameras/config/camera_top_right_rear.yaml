@@ -1,0 +1,4 @@
+camera_top_right_rear:
+  #  The DeviceUserID of the camera. If empty, the first camera found in the
+  #  device list will be used
+  device_user_id: "cam_trr"

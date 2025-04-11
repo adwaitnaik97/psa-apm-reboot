@@ -1,0 +1,238 @@
+# General Parameters
+# Common to all or used only in main
+aisc_general_parameters:
+  threshold_velocity: 0.83 # Minimum speed in m/s to consider a object is static or dynamic
+  threshold_time: 12.00 # General time to collission(TTC)
+  yard_lane_threshold_width: 5.0 # The additional lane width to consider for inside bay calcualtion for yard lanes
+  threshold_observation_distance: 40.0 # Observation area from junction centre
+  tlj_threshold_observation_distance: 80.0 # Threshold distance to consider TLJ and publish near_tlj
+  # Hazard flag delay time
+  bypass_hazard_flag_delay: 1500.0 # Bypass hazard flag delay time. time in real time millisecond
+  junction_hazard_flag_delay: 1500.0 # Junction hazard flag delay time. time in real time millisecond
+  trajectory_hazard_flag_delay: 1300.0 # Trajectory hazard flag delay time. time in real time millisecond
+  overtake_hazard_flag_delay: 1000.0 # Overtake hazard flag delay time. time in real time millisecond
+  inside_bay_flag_delay: 800.0 # Inside bay flag delay time. time in real time millisecond
+  # APM taxing flag
+  max_trailer_localization: 25 # The max range of difference between the APM and trailer yaw
+  max_distance_between_apm_and_lane_end_detected: 400 # Max difference between the distance from APM to left and right line detected(in mm)
+  max_angle_of_lane_detection: 5 # Max angle of APM on lane to set the is taxing flag
+  apm_to_stop_point_threshold_distance: 5.00 # The threshold distance to the stop point on current lane to trigger is_taxing false
+  threshold_apm_lateral_offset: 0.5
+  threshold_dist_to_centre: 0.15
+  threshold_lane_heading_diff_taxi_flag: 5.00
+  threshold_apm_lateral_offset_to_turn_off_taxi_flag: 2.0
+  minimum_apm_velocity_to_trigger_taxi_flag: 0.41
+  taxi_flag_required: true
+  taxi_flag_conditions:
+    use_aide_apm_lateral_offset: true
+    use_apm_heading_wrt_lane_heading: true
+    use_apm_and_trailer_orientation: false
+    use_lane_detection_for_taxi_flag: false
+    use_apm_on_current_lane_for_taxi_flag: true
+  # Reduce lane width (Bus-stop/yard/travelling-lane)
+  reduce_lane_width_for_yard_lanes: true
+  reduce_lane_width_for_bus_stop_lanes: true
+  bus_stop_lanes: ['9.1', '30.1']
+  bus_stop_lane_threshold_to_reduce: 0.6
+  travelling_lane_threshold_to_reduce: 2.0
+  travelling_lane_width_to_reduce: 1.0
+  yard_lane_width_to_reduce: 0.2
+  traffic_moving_on: "left"
+  # v2i - PSA
+  max_wait_for_v2i_to_publish: 800
+
+# RTG Hazard
+aisc_rtg_hazard:
+  filter_rtg_in_yard_lanes: false
+  threshold_height_to_consider_an_object_as_rtg: 7.0
+  threshold_lane_width_to_consider_rtg: 1.49
+  threshold_distance_to_consider_rtg_on_exit_lane: 100.00
+  rtg_threshold_x_max: 20.00
+  rtg_threshold_y_max: 40.00
+  rtg_threshold_x_min: -2.00
+  rtg_threshold_y_min: -40.00
+  distance_to_yard_lane_end_to_consider_rtg: 20.00
+  rtg_hazard_flag_window_size: 6
+  hazard_flag_threshold: 5
+
+# Trajectory Hazard
+aisc_trajectory_hazard:
+  trajectory_area_to_consider: 1.8 # The radius of area to consider around the trajectory
+  trajectory_width_inside_tlj: 1.8 # The radius of area to consider when the object is inside the TLJ
+  max_global_convex_hull_points_to_consider: 5 # The minimum convex hull points to consider the object is inside the junction
+  reduce_trajectory_distance_on_roundabout_lanes: false
+  roundabout_lanes: []
+  trajectory_distance_to_reduce_for_roundabout_lanes: 0.0 # 0.0 meter ahead of APM
+  threshold_width_on_turn: 1.3
+  angle_difference_to_identify_turn: 1.0
+  min_distance_near_to_junction: 5.0
+  max_distance_near_to_junction: 20.0
+
+# Lane Hazard
+aisc_lane_hazard:
+  min_distance_from_apm_to_consider: 0.0 # The minimum distance ahead of the APM to consider on the lane
+  max_distance_from_apm_to_consider: 100.0 # The maximum distance ahead of the APM to consider on the lane
+  reduce_distance_considered_on_roundabout_lanes: false # Reduce the distance considered ahead of the APM at roundabout 
+  max_distance_from_apm_to_consider_on_roundabout: 10.0 # The maximum distance ahead of the APM to consider on the roundabout lane
+  length_to_be_reduced_from_lane_width: 0.5 # The length to be reduced from the actual lane_width
+  # Reversing object
+  reversing_obj_min_orientation: 100.0 # The minimum orientation of object to be considered as reversing
+  reversing_obj_max_orientation: 260.0 # The maximum orientation of object to be considered as reversing
+  reversing_obj_window_size: 25 # The moving window size for the object which is reversing
+  max_count_to_consider: 22 # The max count to consider the object is reversing
+  min_count_to_delete: 20 # The minimum number of false flag to delete an object which was reversing
+  max_dist_to_jun_for_turning_off_lane_hazard: 20.00 # The max distance to the centre of the junction for turning off lane hazard if indicator is on
+  reversing_object_minimum_velocity: 0.1 # The minimum velocity to consider reversing object
+  # RTG
+  threshold_dist_to_consider_object_on_lane: 1.8
+
+# Pedestrian Crossing
+aisc_pedestrian_crossing_hazard:
+  max_global_convex_hull_points_to_consider: 2 # The maximum number of convex hull points to consider object inside the zebra crossing
+  object_diameter_threshold: 1.5 # The maximum diameter to consider an object is a pedestrian
+  object_height_threshold: 1.8 # The maximum height to consider an object is a pedestrian
+
+# Overtake Hazard
+aisc_overtake_hazard:
+  max_distance_of_obj_to_consider_on_overtake: 10.00 # The maximum distance ahead of APM to consider object as hazardous
+  max_distance_of_obj_to_consider_on_overtake_in_yard_lane: 25.00 # The maximum distance ahead of APM to consider object as hazardous on yard lane
+  min_distance_of_obj_to_consider_on_overtake: -20.0 # The minimum distance behind APM to consider object as hazardous
+  min_distance_of_obj_to_consider_on_overtake_in_yard_lane: -10.0 # The minimum distance behind APM to consider object as hazardous on yard lane
+  min_distance_behind_to_consider_dynamic_obj: -20.0 # The threshold distance behind the truck. Only consider dynamic objects
+  lane_width_to_reduce: 0.2 # The length to be reduced from the actual lane width
+  threshold_time: 10.00 # The threshold TTC for overtake hazard
+  hazardous_object_minimum_orientation: -60.00 # Minimum orientation of hazardous objects
+  hazardous_object_maximum_orientation: 60.00 # Maximum orientation of hazardous objects
+
+# Junction Hazard
+aisc_junction_hazard:
+  max_global_convex_hull_points_to_consider: 5 # Max global convex hull point to consider the object is inside the junction
+  additional_time_of_consideration: 3.0 # The additional time to consider along with the APM ttc to consider the object as hazardous
+  # Traffic Light Junction
+  static_object_on_hazardous_lane_max_distance: 20.0 # The hazardous distance of a static object near a Traffic Light Junction
+  # URJ and VJ max distance
+  exit_lane_distance_to_consider: 45.00 # The exit lane area to consider(General)
+  exit_lane_distance_to_consider_for_urj_on_lane: 40.00 # The exit lane area to consider(URJ on same lane)
+  exit_lane_threshold_width: 3.5 # Exit lane threshold width, to find the lane is a travelling lane
+  exit_lane_width_to_reduce: 1.20 # Exit lane width to reduce from the actual lane width of a travelling lane
+  exit_lane_threshold_velocity: 1.38 # Exit lane object threshold velocity to consider object is static or not
+  # Object orienation to consider when APM is in yard lanes
+  min_angle_of_object_orientation_to_consider_from_right: 30.0 # Min angle of objects to consider on right turn
+  max_angle_of_object_orientation_to_consider_from_right: 150.0 # Max angle of objects to consider on right turn
+  min_angle_of_object_orientation_to_consider_from_left: 210.0 # Min angle of objects to consider on left turn
+  max_angle_of_object_orientation_to_consider_from_left: 330.0 # Max angle of objects to consider on left turn
+  # Object orienation not to consider when inside URJ
+  max_orientation_in_same_direction: 30 # Max angle of objects to consider in same direction
+  min_orientation_in_same_direction: 330 # Min angle of objects to consider in same direction
+  min_orientation_in_opp_direction: 150 # Min angle of objects to consider in opposite direction
+  max_orientation_in_opp_direction: 210 # Max angle of objects to consider in opposite direction
+  junction_box_trajectory_threshold_width: 1.6 # Trajectory radius to consider hazardous objects inside the junction box
+  consider_parallel_lane_not_as_haz: false # To not consider objects on parallel lane as hazardous
+
+# Bypass Hazard
+aisc_bypass_hazard:
+  max_global_convex_hull_points_to_consider: 10 # The max number of points to consider the object is inside the junction box
+  min_angle_of_observation: -30.0 # The minimum angle of hazardous objects
+  max_angle_of_observation: 120.0 # The maximum angle of hazardous objects
+  max_static_distance_to_consider: 10.00 # The max distance around the APM to consider hazardous objects(static/dynamic)
+  max_length_on_haz_lanes_considered: 100.00 # The max distance on hazardous lane for APM to consider the object
+
+# Lane Merge Hazard
+aisc_lane_merging_hazard:
+  max_distance_ahead_to_consider: 10.00 # Max distance to consider on merging lane
+  increase_dis_considered_ahead_on_yard_lane: true # bool flag to increase the dist considered ahead in yard lanes
+  max_distance_ahead_to_consider_in_yard_lane: 20.00 # The distance to be considered for LM hazard to trigger in yard lanes
+  min_distance_behind_to_consider_apm_static: -17.0 # Min distance to consider on merging lane(APM static)
+  min_distance_behind_to_consider_apm_dynamic: -3.0 # Min distance to consider on merging lane(APM dynamic)
+  apm_threshold_velocity_to_consider: 0.60 # APM minimum velocity to consider the APM is static or dynamic
+  max_dis_ahead_on_current_lane: 10.00 # Max distance to consider the object on the current lane is hazard or not
+  travelling_lane_threshold_lane_width: 3.5
+  travelling_lane_width_to_reduce: 1.0
+  adjacent_travelling_lane: false
+  max_steer_to_turn_off_lane_change: 0.005
+  max_steer_to_turn_on_lane_change_main_lane: 0.035
+  apm_on_lane_threshold: 0.5
+
+# Veering Off Hazard
+aisc_veering_off_hazard:
+  additional_ttc_time_for_trajectory: 1.0 # Additional TTC to consider for objects which are veering in
+  additional_ttc_time_for_bypass_lane: 4.0 # Additional TTC to consider for objects which are veering in when APM is on bypass lane
+  additional_ttc_time_for_wharf_lanes: 4.0 # Additional TTC to consider for objects which are veering in when APM is on wharf lane
+  max_radius_around_trajectory_to_consider: 12.0 # Max radius around the trajectory to consider veering in objects
+  object_predicted_distance_ahead_for_trajectory: 50.0 # The object prediction distance
+  object_predicted_distance_ahead_for_bypass: 100.0 # The object prediction distance when APM is on bypass lane
+  object_predicted_distance_ahead_for_trajectory_wharf_side_lane: 150.0 # The object prediction distance
+  min_distance_of_object_to_consider: 0.0 # The minimum distance of APM to the predicted intersection point to consider the object
+  object_threshold_velocity: 3.5 # The threshold velocity to consider the object
+  veering_off_window_size: 4 # Veering off hazard flag window size
+  veering_off_trigger_threshold: 3 # Threshold number of flags in window to trigger veering off hazard
+  threshold_dist_from_apm_to_intersection_point: 40.0 # Threshold distance from APM to intersection point on wharf side navigation
+
+aisc_yard_l0_l1_occupancy:
+  threshold_distance_to_consider: 35.00 # The max distance considered on the l0 and l11 to trigger lo_l1_occupancy flag
+
+aisc_trailer_hazard:
+  trailer_box_scalar_factor: 1.3 # trailer hazardous region is 1.3x times the actual trailer points
+  x_distance_ahead: 10.00 # filtering the objects within 10m ahead of x axis
+  y_distance_ahead: 10.00 # filtering the objects within 10m ahead of y axis
+  x_distance_behind: -30.00 # filtering the objects within -30m behind of x axis
+  y_distance_behind: -10.00 # filtering the objects within -10m behind of y axis
+  min_height_of_object_considered: 1.00 # minimum height conisdered
+  threshold_counter: 5 # maximum number of convex hull points within the hazardous range
+  threshold_dist_false_object: 1.5 # The threshold distance to consider whether an object is a false object or not(trailer parts)
+  object_max_size: 1.9 # The max diameter of the object to be considered as hazardous
+  threshold_steering_to_consider_trailer_hazard: 0.1 # The threshold steering to consider the trailer hazard
+  trailer_localization_threshold: 5 # The max range of difference between the APM and trailer yaw
+  trailer_length: 13.68 # Trailer length
+  trailer_width: 4.2 # Trailer width
+  min_haz_distance_around_trailer: 0.6 # Hazardous distance on both sides and front of trailer(1m around except trailer back)
+  max_haz_distance_around_trailer: 1.5 # Hazardous distance on both sides and front of trailer(1m around except trailer back)
+  threshold_velocity_to_calc_max_distance: 15.00 # Threshold velocity to calculate the rate of distance to increase
+  visualize_trailer_hazard_area: false # Visualise the trailer hazard area in RVIZ
+  threshold_height_to_conider_hazardous: 4.0 # Threshold height to avoid considering the spreader
+  trailer_haz_flag_max_window_size: 5 # Trailer hazard max window size
+  threshold_to_trigger_trailer_hazard: 3 # Trailer hazard threshold count to trigger hazard
+
+aisc_reversing_object:
+  static_velocity: 0.5
+  trajectory_threshold_width: 1.25
+  max_count_to_consider_obj_reversing: 6
+  max_window_size: 8
+  object_diameter_threshold: 1.5
+  max_distance_ahead_to_consider_reversing_object: 50.00
+  min_distance_ahead_to_consider_reversing_object: 2.00
+  object_local_pose_threshold: 2.0
+  reversing_obj_min_orientation: 135.0 # The minimum orientation of object to be considered as reversing
+  reversing_obj_max_orientation: 225.0 # The maximum orientation of object to be considered as reversing
+
+aisc_spreader_hazard:
+  spreader_min_distance_x_to_consider: 5.00
+  spreader_max_distance_x_to_consider: 40.00
+  spreader_min_distance_y_to_consider: -9.00
+  spreader_max_distance_y_to_consider: 9.00
+  spreader_hazard_window_size: 5
+  spreader_hazard_trigger_threshold: 3
+  spreader_min_distance_behind_x_to_consider: -17.00
+  spreader_max_distance_behind_x_to_consider: 1.00
+  spreader_distance_y_to_consider_behind: 2.90
+  spreader_min_height_ahead: 8.00
+  spreader_min_height_behind: 8.00
+  safe_to_move_flag_window_size: 12
+  safe_to_move_flag_trigger_threshold: 5
+  max_time_delay_to_clear_spreader_object: 3000
+  trigger_spreader_and_moving_off_hazard: true
+  if_spreader_align_dist_to_publish: true
+  max_size_of_spreader_closest_dist_window: 20
+  threshold_count_to_clear_spreader_dist_window: 9
+  min_x_to_consider_spreader: -18.0
+  max_x_to_consider_spreader: 0.0
+  max_abs_y_to_consider_spreader: 2.5
+  max_height_z_to_consider_spreader: 8.0
+  min_height_z_to_consider_spreader: 1.7
+  min_threshold_to_update_spreader_dist: 0.5
+
+aisc_container_alignment:
+  container_distance_window_size: 20
+  max_diff_btw_apm_and_trailer_orientation: 10
+  threshold_velocity_to_calc_distance: 0.83
+  max_delay_to_clear_container_distance: 3000
