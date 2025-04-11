@@ -53,9 +53,6 @@
 [submodule "src/components/supporting-libraries"]
 	path = src/components/supporting-libraries
 	url = https://github.com/aidrivers/supporting-libraries.git
-[submodule "src/components/ehmi-driver"]
-	path = src/components/ehmi-driver
-	url = https://github.com/aidrivers/ehmi-driver.git
 [submodule "src/components/aipe"]
 	path = src/components/aipe
 	url = https://github.com/aidrivers/aipe-l.git
