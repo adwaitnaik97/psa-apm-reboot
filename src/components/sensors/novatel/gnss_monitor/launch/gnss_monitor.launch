@@ -1,9 +1,0 @@
-<!-- -*- mode: XML -*- -->
-<launch>
-
-  <node pkg="gnss_monitor" type="gnss_monitor" name="gnss_monitor" output = "screen">
-   <param name="narrow_float_cov" type="double" value="0.05" />
-   <param name="single_cov" type="double" value="0.95" />
-   <param name="heading_narrow_float_cov" type="double" value="0.95" />
-  </node>
-</launch>

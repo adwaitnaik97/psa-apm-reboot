@@ -1,5 +1,0 @@
-<launch>
-  <node pkg="rslidar_sdk" name="rslidar_nodelet_manager" type="rslidar_sdk_node" output="screen" ns="lidar_bottom_left">
-    <param name="config_path" value="$(find rslidar_sdk)/config/lidar_bottom_left.yaml"/>
-  </node>
-</launch>

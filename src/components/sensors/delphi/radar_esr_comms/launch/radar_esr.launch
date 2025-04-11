@@ -1,6 +1,0 @@
-<!-- -*- mode: XML -*- -->
-<launch>
-
-  <node pkg="radar_esr_comms" type="plc_esr.py" name="plc_to_esr"/>
-
-</launch>
