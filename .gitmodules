@@ -2,3 +2,27 @@
 	path = vcpkg
 	url = https://github.com/microsoft/vcpkg.git
 	branch = main
+[submodule "src/components/ehmi_driver"]
+	path = src/components/ehmi_driver
+	url = https://github.com/aidrivers/ehmi-driver.git
+[submodule "src/components/delphi"]
+	path = src/components/delphi
+	url = https://github.com/aidrivers/radar-delphi.git
+[submodule "src/components/honeywell"]
+	path = src/components/honeywell
+	url = https://github.com/aidrivers/imu-honeywell.git
+[submodule "src/components/cam_info_publisher"]
+	path = src/components/cam_info_publisher
+	url = https://github.com/aidrivers/cam_info_publisher.git
+[submodule "src/components/novatel"]
+	path = src/components/novatel
+	url = https://github.com/aidrivers/gnss-novatel.git
+[submodule "src/components/ptgrey"]
+	path = src/components/ptgrey
+	url = https://github.com/aidrivers/camera-ptgrey.git
+[submodule "src/components/rslidar"]
+	path = src/components/rslidar
+	url = https://github.com/aidrivers/lidar-robosense.git
+[submodule "src/components/rslidar_helios"]
+	path = src/components/rslidar_helios
+	url = https://github.com/aidrivers/lidar-robosense-sdk
